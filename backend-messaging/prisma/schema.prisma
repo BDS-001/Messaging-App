@@ -12,3 +12,56 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  email      String    @unique
+  createdAt  DateTime  @default(now())
+  
+  // Relations
+  participatedConversations ConversationParticipant[]
+  sentMessages              Message[]
+}
+
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  type      String    // 'one_on_one' or 'group'
+  name      String?   // null for one-on-one conversations
+  createdAt DateTime  @default(now())
+  
+  // Relations
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id            Int       @id @default(autoincrement())
+  conversationId Int
+  userId        Int
+  joinedAt      DateTime  @default(now())
+  lastClearedAt DateTime?
+
+  // Relations
+  conversation  Conversation @relation(fields: [conversationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  // Ensure a user can only be in a conversation once
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  conversationId Int          
+  senderId       Int          
+  content        String
+  sentAt         DateTime     @default(now())
+  isDeleted      Boolean      @default(false)
+
+  // Relations
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  sender        User         @relation(fields: [senderId], references: [id])
+
+  @@index([conversationId])
+  @@index([senderId])
+}
