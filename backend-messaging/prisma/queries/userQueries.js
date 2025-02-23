@@ -13,4 +13,16 @@ async function getUserById(userId) {
     })
 }
 
-module.exports = {getUserById}
+async function createUser(userData) {
+    return await prisma.user.create({
+        data: userData,
+        select: {
+            id,
+            username,
+            email,
+            createdAt,
+        }
+    });
+}
+
+module.exports = {getUserById, createUser}
