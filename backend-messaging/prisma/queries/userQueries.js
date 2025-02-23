@@ -17,12 +17,29 @@ async function createUser(userData) {
     return await prisma.user.create({
         data: userData,
         select: {
-            id,
-            username,
-            email,
-            createdAt,
+            id: true,
+            username: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true
         }
     });
 }
 
-module.exports = {getUserById, createUser}
+async function updateUser(id, updateData) {
+    return await prisma.user.update({
+        where: {
+            id
+        },
+        data: updateData,
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+}
+
+module.exports = {getUserById, createUser, updateUser}
