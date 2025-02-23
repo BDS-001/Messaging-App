@@ -3,7 +3,7 @@ const userQueries = require('../prisma/queries/userQueries')
 
 async function getUserById(req, res, next) {
     try {
-        const userId = matchedData(req, {locations: ['body'], onlyValidData: true});
+        const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const user = await userQueries.getUserById(userId)
         return res.json({
             message: 'User retrieved successfully',
@@ -17,6 +17,7 @@ async function getUserById(req, res, next) {
 
 async function createUser(req, res, next) {
     try {
+        const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userData = matchedData(req, {locations: ['body'], onlyValidData: true})
         //TODO: db query function
         return res.json({
