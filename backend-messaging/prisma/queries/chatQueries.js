@@ -10,7 +10,9 @@ async function getUserConversations(userId) {
               }
         },
         include: {
-            participants: true,
+            participants: {
+                include: {user: true}
+            },
         }
     })
 }
@@ -18,20 +20,45 @@ async function getUserConversations(userId) {
 async function createConversation({ type, name, participantIds }) {
     const uniqueParticipantIds = [...new Set(participantIds)];
     
-    return await prisma.conversation.create({
-      data: {
-        type,
-        name,
-        participants: {
-          create: uniqueParticipantIds.map(userId => ({ userId })),
+        return await prisma.conversation.create({
+        data: {
+            type,
+            name,
+            participants: {
+            create: uniqueParticipantIds.map(userId => ({ userId })),
+            },
         },
-      },
-      include: {
-        participants: {
-          include: { user: true },
+        include: {
+            participants: {
+            include: { user: true },
+            },
         },
-      },
     });
-  }
+}
 
-module.exports = {getUserConversations, createConversation}
+async function updateConversation(conversationId, updateData) {
+    return await prisma.conversation.update({
+        where: {
+            id: conversationId
+        },
+        data: updateData,
+        include: {
+            participants: {
+                include: { user: true },
+            },
+        },
+    });
+}
+
+async function deleteConversation(conversationId) {
+    return await prisma.conversation.delete({
+        where: {
+            id: conversationId
+        },
+        include: {
+            participants: true,
+        }
+    });
+}
+
+module.exports = {getUserConversations, createConversation, updateConversation, deleteConversation}
