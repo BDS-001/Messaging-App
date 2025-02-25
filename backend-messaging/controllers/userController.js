@@ -30,4 +30,19 @@ async function createUser(req, res, next) {
     }
 }
 
-module.exports = {getUserById, createUser}
+async function updateUser(req, res, next) {
+    try {
+        const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const userData = matchedData(req, {locations: ['body'], onlyValidData: true})
+        const user = await userQueries.updateUser(userId, userData)
+        return res.json({
+            message: 'User updated successfully',
+            data: user
+        });  
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+module.exports = {getUserById, createUser, updateUser}
