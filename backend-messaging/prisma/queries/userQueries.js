@@ -42,4 +42,28 @@ async function updateUser(id, updateData) {
     });
 }
 
+async function softDeleteUser(userId) {
+    const anonymousUsername = `deleted_user_${userId}`;
+    const anonymousEmail = `deleted_${userId}@example.com`;
+    
+    return await prisma.user.update({
+      where: {
+        id: userId,
+        isDeleted: false
+      },
+      data: {
+        username: anonymousUsername,
+        email: anonymousEmail,
+        password: await bcrypt.hash(crypto.randomBytes(32).toString('hex'), 10),
+        isDeleted: true,
+        deletedAt: new Date()
+      },
+      select: {
+        id: true,
+        isDeleted: true,
+        deletedAt: true
+      }
+    });
+  }
+
 module.exports = {getUserById, createUser, updateUser}
