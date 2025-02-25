@@ -66,4 +66,4 @@ async function softDeleteUser(userId) {
     });
   }
 
-module.exports = {getUserById, createUser, updateUser}
+module.exports = {getUserById, createUser, updateUser, softDeleteUser}
