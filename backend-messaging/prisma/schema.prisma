@@ -25,7 +25,7 @@ model User {
   
   // Relations
   participatedConversations ConversationParticipant[]
-  sentMessages              Message[]
+  sentMessages              Message[] @relation("UserToMessage")
 }
 
 model Conversation {
@@ -35,22 +35,22 @@ model Conversation {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   
-  // Relations
-  participants ConversationParticipant[]
-  messages     Message[]
+  // Relations with CASCADE delete
+  participants ConversationParticipant[] @relation("ConversationToParticipant", onDelete: Cascade)
+  messages     Message[]                @relation("ConversationToMessage", onDelete: Cascade)
 }
 
 model ConversationParticipant {
-  id            Int       @id @default(autoincrement())
+  id             Int        @id @default(autoincrement())
   conversationId Int
-  userId        Int
-  joinedAt      DateTime  @default(now())
-  lastClearedAt DateTime?
-
+  userId         Int
+  joinedAt       DateTime   @default(now())
+  lastClearedAt  DateTime?
+  
   // Relations
-  conversation  Conversation @relation(fields: [conversationId], references: [id])
+  conversation  Conversation @relation("ConversationToParticipant", fields: [conversationId], references: [id])
   user         User         @relation(fields: [userId], references: [id])
-
+  
   // Ensure a user can only be in a conversation once
   @@unique([conversationId, userId])
 }
@@ -62,11 +62,11 @@ model Message {
   content        String
   sentAt         DateTime     @default(now())
   isDeleted      Boolean      @default(false)
-
+  
   // Relations
-  conversation   Conversation @relation(fields: [conversationId], references: [id])
-  sender        User         @relation(fields: [senderId], references: [id])
-
+  conversation  Conversation @relation("ConversationToMessage", fields: [conversationId], references: [id])
+  sender        User         @relation("UserToMessage", fields: [senderId], references: [id])
+  
   @@index([conversationId])
   @@index([senderId])
 }
