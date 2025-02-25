@@ -45,4 +45,18 @@ async function updateUser(req, res, next) {
     }
 }
 
+async function deleteUser(req, res, next) {
+    try {
+        const userId =  req.user.id
+        const user = await userQueries.softDeleteUser(userId)
+        return res.json({
+            message: 'User deleted successfully',
+            data: user
+        });  
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
 module.exports = {getUserById, createUser, updateUser}
