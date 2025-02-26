@@ -1,10 +1,11 @@
 const { matchedData } = require('express-validator');
-const {getUserForAuth} = require('../prisma/queries/userQueries')
+const { getUserForAuth } = require('../prisma/queries/userQueries');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const httpStatusCodes = require('../path/to/httpStatusCodes');
 
 function getCurrentUser(req, res) {
-    return res.status(200).json({
+    return res.status(httpStatusCodes.OK).json({
         message: 'Current user retrieved successfully',
         data: req.user
     });
@@ -12,11 +13,11 @@ function getCurrentUser(req, res) {
 
 async function login(req, res, next) {
     try {
-        const {email, password} = matchedData(req, { locations: ['body'] });
-        const user = await getUserForAuth(email)
+        const { email, password } = matchedData(req, { locations: ['body'] });
+        const user = await getUserForAuth(email);
 
         if (!user) {
-            return res.status(401).json({
+            return res.status(httpStatusCodes.UNAUTHORIZED).json({
                 success: false,
                 message: 'Invalid credentials'
             });
@@ -25,7 +26,7 @@ async function login(req, res, next) {
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
-            return res.status(401).json({
+            return res.status(httpStatusCodes.UNAUTHORIZED).json({
                 success: false,
                 message: 'Invalid credentials'
             });
@@ -45,7 +46,7 @@ async function login(req, res, next) {
         );
 
         const { password: _, ...userWithoutPassword } = user;
-        return res.json({
+        return res.status(httpStatusCodes.OK).json({
             success: true,
             message: 'Login successful',
             data: {
@@ -54,14 +55,14 @@ async function login(req, res, next) {
             }
         });
     } catch (error) {
-        console.log(error)
-        res.status(error.status || 500).json({
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while authenticating the user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error)
+        return next(error);
     }
 }
 
-module.exports = {getCurrentUser, login}
+module.exports = { getCurrentUser, login };
