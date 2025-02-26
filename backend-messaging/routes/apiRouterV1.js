@@ -1,7 +1,14 @@
+const validateRequest = require('../middleware/validateRequest')
+
+//controllers
+const userController = require('../controllers/userController')
+const authController = require('../controllers/authController')
+
 const router = require("express").Router();
 
-router.get('/', (req, res) => {
-    return res.json({message: 'W.I.P'})
-})
+//auth
+router.get('/users/auth', authController.getCurrentUser)
+router.post('/users/login', validateRequest('auth', 'login'), authController.getCurrentUser)
+
 
 module.exports = router
