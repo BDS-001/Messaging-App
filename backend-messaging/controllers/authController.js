@@ -59,7 +59,6 @@ async function login(req, res, next) {
         res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while authenticating the user',
-            error: process.env.NODE_ENV === 'development' ? error : undefined
         });
         return next(error);
     }
