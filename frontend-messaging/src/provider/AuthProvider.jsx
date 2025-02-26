@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-//TODO: implement auth provider
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 export const AuthProvider = ({children}) => {
     const [isAuth, setIsAuth] = useState(false)
@@ -96,7 +96,44 @@ export const AuthProvider = ({children}) => {
         }
       };
 
+      const login = async (credentials) => {
+        try {
+            console.log('Sending login request with email:', credentials.email);
+            const response = await fetch('http://localhost:3000/api/v1/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials)
+            });
+      
+          const result = await response.json();
+          
+          if (response.ok) {
+            const { token, user } = result.data;
+            localStorage.setItem('token', token);
+            setIsAuth(true);
+            setUser(user);
+            return true;
+          } else {
+            console.error('Login failed:', result.message);
+            return false;
+          }
+        } catch (error) {
+          console.error('Login error:', error);
+          return false;
+        }
+      }
+      
+    const logout = () => {
+        localStorage.removeItem('token');
+        setIsAuth(false);
+        setUser(null)
+    };
+
     return (
+      <AuthContext.Provider value={{ isAuth, isLoading, login, logout, signup, user }}>
         {children}
+      </AuthContext.Provider>
     );
 }
