@@ -24,11 +24,11 @@ model User {
   deletedAt  DateTime?
   
   // Relations
-  participatedConversations ConversationParticipant[]
-  sentMessages              Message[] @relation("UserToMessage")
+  participatedChats ChatParticipant[]
+  sentMessages      Message[] @relation("UserToMessage")
 }
 
-model Conversation {
+model Chat {
   id        Int       @id @default(autoincrement())
   type      String    // 'one_on_one' or 'group'
   name      String?   // null for one-on-one conversations
@@ -36,37 +36,37 @@ model Conversation {
   updatedAt DateTime  @updatedAt
   
   // Relations with CASCADE delete
-  participants ConversationParticipant[] @relation("ConversationToParticipant", onDelete: Cascade)
-  messages     Message[]                @relation("ConversationToMessage", onDelete: Cascade)
+  participants ChatParticipant[] @relation("ChatToParticipant", onDelete: Cascade)
+  messages     Message[]         @relation("ChatToMessage", onDelete: Cascade)
 }
 
-model ConversationParticipant {
-  id             Int        @id @default(autoincrement())
-  conversationId Int
-  userId         Int
-  joinedAt       DateTime   @default(now())
-  lastClearedAt  DateTime?
+model ChatParticipant {
+  id           Int        @id @default(autoincrement())
+  chatId       Int
+  userId       Int
+  joinedAt     DateTime   @default(now())
+  lastClearedAt DateTime?
   
   // Relations
-  conversation  Conversation @relation("ConversationToParticipant", fields: [conversationId], references: [id])
-  user         User         @relation(fields: [userId], references: [id])
+  chat        Chat       @relation("ChatToParticipant", fields: [chatId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
   
-  // Ensure a user can only be in a conversation once
-  @@unique([conversationId, userId])
+  // Ensure a user can only be in a chat once
+  @@unique([chatId, userId])
 }
 
 model Message {
-  id             Int          @id @default(autoincrement())
-  conversationId Int          
-  senderId       Int          
-  content        String
-  sentAt         DateTime     @default(now())
-  isDeleted      Boolean      @default(false)
+  id       Int      @id @default(autoincrement())
+  chatId   Int          
+  senderId Int          
+  content  String
+  sentAt   DateTime @default(now())
+  isDeleted Boolean  @default(false)
   
   // Relations
-  conversation  Conversation @relation("ConversationToMessage", fields: [conversationId], references: [id])
-  sender        User         @relation("UserToMessage", fields: [senderId], references: [id])
+  chat     Chat     @relation("ChatToMessage", fields: [chatId], references: [id])
+  sender   User     @relation("UserToMessage", fields: [senderId], references: [id])
   
-  @@index([conversationId])
+  @@index([chatId])
   @@index([senderId])
 }
