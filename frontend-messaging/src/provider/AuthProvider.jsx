@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 //TODO: implement auth provider
 import { useState, useEffect } from 'react';
 
