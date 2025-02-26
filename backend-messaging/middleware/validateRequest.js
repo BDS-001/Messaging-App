@@ -1,8 +1,10 @@
 const { validationResult } = require('express-validator');
 const userValidators = require('../validators/userValidator')
+const authValidators = require('../validators/authValidator')
 
 const validators = {
     user: userValidators,
+    auth: authValidators
 };
 
 function validateRequest(resource, operation) {

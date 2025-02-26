@@ -64,6 +64,18 @@ async function softDeleteUser(userId) {
         deletedAt: true
       }
     });
-  }
+}
 
-module.exports = {getUserById, createUser, updateUser, softDeleteUser}
+async function getUserForAuth(email) {
+    return await prisma.User.findUnique({
+        where: {email},
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true
+        }
+    })
+}
+
+module.exports = {getUserById, createUser, updateUser, softDeleteUser, getUserForAuth}
