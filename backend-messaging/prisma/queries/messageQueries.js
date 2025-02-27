@@ -1,30 +1,5 @@
 const prisma = require('../prismaClient')
 
-async function getUsersChatMessages(chatId, userId) {
-    const participant = await prisma.chatParticipant.findUnique({
-        where: {
-            userId,
-            chatId,
-        },
-        select:{
-            lastClearedAt: true
-        }
-    })
-
-    if (!participant) throw new Error('User is not a participant in this chat');
-
-    return await prisma.message.findMany({
-        where: {
-            chatId,
-            sentAt: {
-                gt: participant.lastClearedAt
-            }
-        },
-        orderBy: {
-            createdAt: 'asc'
-          }
-    })
-}
 
 async function createMessage(messageData) {
     return await prisma.message.create({
@@ -57,4 +32,4 @@ async function updateMessage(messageId, newMessage) {
     });
 }
 
-module.exports = {getUsersChatMessages, createMessage, softDeleteMessage, updateMessage}
+module.exports = {createMessage, softDeleteMessage, updateMessage}

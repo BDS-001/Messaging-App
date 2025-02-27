@@ -17,6 +17,43 @@ async function getUserChats(userId) {
   })
 }
 
+async function getChatWithMessages(chatId, userId) {
+  const participant = await prisma.chatParticipant.findUnique({
+      where: {
+        chatId_userId: {
+          chatId,
+          userId
+        }
+      },
+      select:{
+          lastClearedAt: true
+      }
+  })
+
+  if (!participant) throw new Error('User is not a participant in this chat');
+
+  return await prisma.chat.findUnique({
+      where: {
+          id: chatId,
+      },
+      include: {
+        messages: {
+          where: {
+            sentAt: participant.lastClearedAt ? {
+              gt: participant.lastClearedAt
+            } : undefined
+          },
+          orderBy: {
+            sentAt: 'asc'
+          }
+        },
+        participants: {
+          include: {user: true}
+        }
+      }
+  })
+}
+
 async function createChat({ type, name, participantIds }) {
   const uniqueParticipantIds = [...new Set(participantIds)];
   return await prisma.chat.create({
@@ -62,4 +99,4 @@ async function deleteChat(chatId) {
   });
 }
 
-module.exports = {getUserChats, createChat, updateChat, deleteChat}
+module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages}
