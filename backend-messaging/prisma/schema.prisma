@@ -61,7 +61,9 @@ model Message {
   senderId Int          
   content  String
   sentAt   DateTime @default(now())
+  updatedAt  DateTime  @updatedAt
   isDeleted Boolean  @default(false)
+  deletedAt  DateTime?
   
   // Relations
   chat     Chat     @relation("ChatToMessage", fields: [chatId], references: [id])
