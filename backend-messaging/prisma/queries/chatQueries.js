@@ -35,12 +35,14 @@ async function createChat({ type, name, participantIds }) {
   });
 }
 
-async function updateChat(chatId, updateData) {
+async function updateChat(chatId, newChatName) {
   return await prisma.chat.update({
     where: {
       id: chatId
     },
-    data: updateData,
+    data: {
+        name: newChatName
+    },
     include: {
       participants: {
         include: { user: true },
