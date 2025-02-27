@@ -1,64 +1,63 @@
 const prisma = require('../prismaClient')
 
-async function getUserConversations(userId) {
-    return await prisma.Conversation.findMany({
-        where: {
-            participants: {
-                some: {
-                  userId: userId
-                }
-              }
-        },
-        include: {
-            participants: {
-                include: {user: true}
-            },
+async function getUserChats(userId) {
+  return await prisma.chat.findMany({
+    where: {
+      participants: {
+        some: {
+          userId: userId
         }
-    })
+      }
+    },
+    include: {
+      participants: {
+        include: {user: true}
+      },
+    }
+  })
 }
 
-async function createConversation({ type, name, participantIds }) {
-    const uniqueParticipantIds = [...new Set(participantIds)];
-    
-        return await prisma.conversation.create({
-        data: {
-            type,
-            name,
-            participants: {
-            create: uniqueParticipantIds.map(userId => ({ userId })),
-            },
-        },
-        include: {
-            participants: {
-            include: { user: true },
-            },
-        },
-    });
+async function createChat({ type, name, participantIds }) {
+  const uniqueParticipantIds = [...new Set(participantIds)];
+  return await prisma.chat.create({
+    data: {
+      type,
+      name,
+      participants: {
+        create: uniqueParticipantIds.map(userId => ({ userId })),
+      },
+    },
+    include: {
+      participants: {
+        include: { user: true },
+      },
+    },
+  });
 }
 
-async function updateConversation(conversationId, updateData) {
-    return await prisma.conversation.update({
-        where: {
-            id: conversationId
-        },
-        data: updateData,
-        include: {
-            participants: {
-                include: { user: true },
-            },
-        },
-    });
+async function updateChat(chatId, updateData) {
+  return await prisma.chat.update({
+    where: {
+      id: chatId
+    },
+    data: updateData,
+    include: {
+      participants: {
+        include: { user: true },
+      },
+    },
+  });
 }
 
-async function deleteConversation(conversationId) {
-    return await prisma.conversation.delete({
-        where: {
-            id: conversationId
-        },
-        include: {
-            participants: true,
-        }
-    });
+async function deleteChat(chatId) {
+  return await prisma.chat.delete({
+    where: {
+      id: chatId
+    },
+    include: {
+      participants: true,
+    }
+  });
 }
 
-module.exports = {getUserConversations, createConversation, updateConversation, deleteConversation}
+module.exports = {getUserChats, createChat, updateChat, deleteChat}
