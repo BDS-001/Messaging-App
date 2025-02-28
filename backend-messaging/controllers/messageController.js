@@ -4,10 +4,10 @@ const httpStatusCodes = require('../path/to/httpStatusCodes');
 
 async function createMessage(req, res, next) {
     try {
-        const userId = req.user.id;
+        const senderId = req.user.id;
         const messageData = matchedData(req, { locations: ['body'], onlyValidData: true });
         
-        messageData.userId = userId;
+        messageData.senderId = senderId;
         
         const message = await messageQueries.createMessage(messageData);
         
@@ -30,7 +30,7 @@ async function createMessage(req, res, next) {
 async function updateMessage(req, res, next) {
     try {
         const { id: messageId } = matchedData(req, { locations: ['params'], onlyValidData: true });
-        const userId = req.user.id;
+        const senderId = req.user.id;
         const messageData = matchedData(req, { locations: ['body'], onlyValidData: true });
         
         const existingMessage = await messageQueries.getMessageById(messageId);
@@ -42,7 +42,7 @@ async function updateMessage(req, res, next) {
             });
         }
         
-        if (existingMessage.userId !== userId) {
+        if (existingMessage.senderId !== senderId) {
             return res.status(httpStatusCodes.FORBIDDEN).json({
                 success: false,
                 message: 'You are not authorized to update this message'
@@ -70,7 +70,7 @@ async function updateMessage(req, res, next) {
 async function deleteMessage(req, res, next) {
     try {
         const { id: messageId } = matchedData(req, { locations: ['params'], onlyValidData: true });
-        const userId = req.user.id;
+        const senderId = req.user.id;
         
         const existingMessage = await messageQueries.getMessageById(messageId);
         
@@ -81,7 +81,7 @@ async function deleteMessage(req, res, next) {
             });
         }
         
-        if (existingMessage.userId !== userId) {
+        if (existingMessage.senderId !== senderId) {
             return res.status(httpStatusCodes.FORBIDDEN).json({
                 success: false,
                 message: 'You are not authorized to delete this message'
