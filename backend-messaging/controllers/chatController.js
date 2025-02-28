@@ -152,6 +152,13 @@ async function removeUserFromChat(req, res, next) {
                 message: 'You are not a participant in this chat'
             });
         }
+
+        if (userId === currentUserId) {
+            return res.status(httpStatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: 'To leave a chat, use the leave chat endpoint'
+            });
+        }
         
         // Allow users to remove themselves or others (in a real app, you might want to restrict this)
         await chatQueries.removeUserFromChat(chatId, userId);
@@ -171,11 +178,77 @@ async function removeUserFromChat(req, res, next) {
     }
 }
 
+async function leaveChat(req, res, next) {
+    try {
+        const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const userId = req.user.id;
+        
+        // Check if user is a participant
+        const isParticipant = await chatQueries.isUserParticipantInChat(userId, chatId);
+        
+        if (!isParticipant) {
+            return res.status(httpStatusCodes.FORBIDDEN).json({
+                success: false,
+                message: 'You are not a participant in this chat'
+            });
+        }
+        
+        await chatQueries.removeUserFromChat(chatId, userId);
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'Successfully left the chat'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while leaving the chat',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+        return next(error);
+    }
+}
+
+async function clearChatHistory(req, res, next) {
+    try {
+        const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const userId = req.user.id;
+        
+        // Check if user is a participant
+        const isParticipant = await chatQueries.isUserParticipantInChat(userId, chatId);
+        
+        if (!isParticipant) {
+            return res.status(httpStatusCodes.FORBIDDEN).json({
+                success: false,
+                message: 'You are not a participant in this chat'
+            });
+        }
+        
+        await chatQueries.clearChatHistory(chatId, userId);
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'Chat history cleared successfully'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while clearing chat history',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+        return next(error);
+    }
+}
+
 module.exports = { 
     getChatMessages, 
     getUserChats, 
     createChat, 
     updateChat, 
     addUserToChat,
-    removeUserFromChat
+    removeUserFromChat,
+    clearChatHistory,
+    leaveChat
 };

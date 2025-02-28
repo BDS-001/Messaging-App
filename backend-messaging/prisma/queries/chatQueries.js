@@ -147,4 +147,18 @@ async function removeUserFromChat(chatId, userId) {
   });
 }
 
-module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages, isUserParticipantInChat, addUserToChat, removeUserFromChat}
+async function clearChatHistory(chatId, userId) {
+  return await prisma.chatParticipant.update({
+    where: {
+      chatId_userId: {
+        chatId,
+        userId
+      }
+    },
+    data: {
+      lastClearedAt: new Date()
+    }
+  });
+}
+
+module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages, isUserParticipantInChat, addUserToChat, removeUserFromChat, clearChatHistory}
