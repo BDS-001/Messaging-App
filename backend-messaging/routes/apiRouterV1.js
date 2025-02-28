@@ -28,4 +28,10 @@ router.post('/chats/:chatId/clear', authenticate, validateRequest('chat', 'clear
 router.post('/chats/:chatId/users', authenticate, validateRequest('chat', 'addUser'), chatController.addUserToChat);
 router.delete('/chats/:chatId/users/:userId', authenticate, validateRequest('chat', 'removeUser'), chatController.removeUserFromChat);
 
+//message
+router.post('/messages', authenticate, validateRequest('message', 'create'), messageController.createMessage);
+router.put('/messages/:id', authenticate, validateRequest('message', 'update'), messageController.updateMessage);
+router.delete('/messages/:id', authenticate, validateRequest('message', 'get'), messageController.deleteMessage);
+
+
 module.exports = router

@@ -60,4 +60,4 @@ async function getMessageById(messageId) {
   });
 }
 
-module.exports = {createMessage, softDeleteMessage, updateMessage}
+module.exports = {createMessage, softDeleteMessage, updateMessage, getMessageById}
