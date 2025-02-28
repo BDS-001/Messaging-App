@@ -110,4 +110,41 @@ async function isUserParticipantInChat(userId, chatId) {
   })
 }
 
-module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages, isUserParticipantInChat}
+async function addUserToChat(chatId, userId) {
+  const existingParticipant = await prisma.chatParticipant.findUnique({
+    where: {
+      chatId_userId: {
+        chatId,
+        userId
+      }
+    }
+  });
+
+  if (existingParticipant) {
+    throw new Error('User is already a participant in this chat');
+  }
+
+  return await prisma.chatParticipant.create({
+    data: {
+      chatId,
+      userId
+    },
+    include: {
+      user: true,
+      chat: true
+    }
+  });
+}
+
+async function removeUserFromChat(chatId, userId) {
+  return await prisma.chatParticipant.delete({
+    where: {
+      chatId_userId: {
+        chatId,
+        userId
+      }
+    }
+  });
+}
+
+module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages, isUserParticipantInChat, addUserToChat, removeUserFromChat}

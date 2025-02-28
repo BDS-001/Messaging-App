@@ -104,4 +104,78 @@ async function updateChat(req, res, next) {
     }
 }
 
-module.exports = { getChatMessages };
+async function addUserToChat(req, res, next) {
+    try {
+        const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const { userId } = matchedData(req, { locations: ['body'], onlyValidData: true });
+        const currentUserId = req.user.id;
+        
+        // Check if current user is a participant
+        const isParticipant = await chatQueries.isUserParticipantInChat(currentUserId, chatId);
+        
+        if (!isParticipant) {
+            return res.status(httpStatusCodes.FORBIDDEN).json({
+                success: false,
+                message: 'You are not a participant in this chat'
+            });
+        }
+        
+        const participant = await chatQueries.addUserToChat(chatId, userId);
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'User added to chat successfully',
+            data: participant
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while adding user to chat',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+        return next(error);
+    }
+}
+
+async function removeUserFromChat(req, res, next) {
+    try {
+        const { chatId, userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const currentUserId = req.user.id;
+        
+        // Check if current user is a participant
+        const isParticipant = await chatQueries.isUserParticipantInChat(currentUserId, chatId);
+        
+        if (!isParticipant) {
+            return res.status(httpStatusCodes.FORBIDDEN).json({
+                success: false,
+                message: 'You are not a participant in this chat'
+            });
+        }
+        
+        // Allow users to remove themselves or others (in a real app, you might want to restrict this)
+        await chatQueries.removeUserFromChat(chatId, userId);
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'User removed from chat successfully'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while removing user from chat',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+        return next(error);
+    }
+}
+
+module.exports = { 
+    getChatMessages, 
+    getUserChats, 
+    createChat, 
+    updateChat, 
+    addUserToChat,
+    removeUserFromChat
+};
