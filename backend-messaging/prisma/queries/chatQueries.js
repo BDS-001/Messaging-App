@@ -99,4 +99,15 @@ async function deleteChat(chatId) {
   });
 }
 
+async function isUserParticipantInChat(userId, chatId) {
+  return await prisma.chatParticipant.findUnique({
+    where: {
+      chatId_userId: {
+        chatId,
+        userId
+      }
+    }
+  })
+}
+
 module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages}
