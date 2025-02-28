@@ -110,4 +110,4 @@ async function isUserParticipantInChat(userId, chatId) {
   })
 }
 
-module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages}
+module.exports = {getUserChats, createChat, updateChat, deleteChat, getChatWithMessages, isUserParticipantInChat}
