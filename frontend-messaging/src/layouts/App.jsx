@@ -8,9 +8,7 @@ function App() {
     <>
     <AuthProvider>
       <Header />
-      <main>
         <Outlet/>
-      </main>
     </AuthProvider>
     </>
   )
