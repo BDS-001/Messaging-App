@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 //TODO: change classnames to use module.css
 
 function LoginPage() {
@@ -43,6 +43,7 @@ function LoginPage() {
                     </div>
                     <button type="submit">Login</button>
                 </form>
+                <p>Dont have an account? <Link to="/signup">Sign Up</Link></p>
             </div>
         </>
     );
