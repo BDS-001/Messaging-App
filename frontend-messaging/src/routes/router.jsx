@@ -2,7 +2,7 @@ import App from "../layouts/App.jsx";
 import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 import Homapage from "../pages/Homepage/Homepage.jsx";
 import Login from '../pages/LoginPage/Login.jsx'
-import Register from '../pages/Register/Register.jsx'
+import Signup from '../pages/SignupPage/SignupPage.jsx'
 
 const routes = [
   {
@@ -12,7 +12,7 @@ const routes = [
     children: [
         { index: true, element: <Homapage /> },
         { path: "login", element: <Login /> },
-        { path: "register", element: <Register /> },
+        { path: "signup", element: <Signup /> },
     ],
   },
 ];
