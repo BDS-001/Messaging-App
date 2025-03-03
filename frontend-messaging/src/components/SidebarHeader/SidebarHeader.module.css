@@ -1,0 +1,9 @@
+.sidebarHeader {
+    height: 6rem;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    align-items: center;
+}
