@@ -11,7 +11,7 @@ const router = require("express").Router();
 
 //auth
 router.get('/users/auth', authController.getCurrentUser);
-router.post('/users/login', validateRequest('auth', 'login'), authController.getCurrentUser);
+router.post('/users/login', validateRequest('auth', 'login'), authController.login);
 
 //user
 router.get('/users/:id', validateRequest('user', 'get'), userController.getUserById);
