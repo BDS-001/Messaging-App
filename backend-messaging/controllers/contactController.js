@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 const contactQueries = require('../prisma/queries/contactQueries');
-const httpStatusCodes = require('../path/to/httpStatusCodes');
+const httpStatusCodes = require('../utils/httpStatusCodes');
 
 async function getUserContacts(req, res, next) {
     try {

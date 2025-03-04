@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const { getUserForAuth } = require('../prisma/queries/userQueries');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const httpStatusCodes = require('../path/to/httpStatusCodes');
+const httpStatusCodes = require('../utils/httpStatusCodes');
 
 function getCurrentUser(req, res) {
     return res.status(httpStatusCodes.OK).json({

@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 const chatQueries = require('../prisma/queries/chatQueries');
-const httpStatusCodes = require('../path/to/httpStatusCodes');
+const httpStatusCodes = require('../utils/httpStatusCodes');
 
 async function getChatMessages(req, res, next) {
     try {

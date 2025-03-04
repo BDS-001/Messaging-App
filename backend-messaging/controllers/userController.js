@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 const userQueries = require('../prisma/queries/userQueries');
-const httpStatusCodes = require('../path/to/httpStatusCodes');
+const httpStatusCodes = require('../utils/httpStatusCodes');
 
 async function getUserById(req, res, next) {
     try {

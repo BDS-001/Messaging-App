@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 const messageQueries = require('../prisma/queries/messageQueries');
-const httpStatusCodes = require('../path/to/httpStatusCodes');
+const httpStatusCodes = require('../utils/httpStatusCodes');
 
 async function createMessage(req, res, next) {
     try {
