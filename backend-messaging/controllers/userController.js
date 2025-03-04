@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const userQueries = require('../prisma/queries/userQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
 
-async function getUserById(req, res, next) {
+async function getUserById(req, res) {
     try {
         const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const user = await userQueries.getUserById(userId);
@@ -13,16 +13,15 @@ async function getUserById(req, res, next) {
         });  
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while retrieving the user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function createUser(req, res, next) {
+async function createUser(req, res) {
     try {
         const userData = matchedData(req, {locations: ['body'], onlyValidData: true});
         const user = await userQueries.createUser(userData);
@@ -33,16 +32,15 @@ async function createUser(req, res, next) {
         });  
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while creating the user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function updateUser(req, res, next) {
+async function updateUser(req, res) {
     try {
         const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userData = matchedData(req, {locations: ['body'], onlyValidData: true});
@@ -54,16 +52,15 @@ async function updateUser(req, res, next) {
         });  
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while updating the user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function deleteUser(req, res, next) {
+async function deleteUser(req, res) {
     try {
         const userId = req.user.id;
         const user = await userQueries.softDeleteUser(userId);
@@ -74,16 +71,15 @@ async function deleteUser(req, res, next) {
         });  
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while deleting the user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function getUserByUsername(req, res, next) {
+async function getUserByUsername(req, res) {
     try {
         const { username } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const user = await userQueries.getUserByUsername(username);
@@ -102,12 +98,11 @@ async function getUserByUsername(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while finding user',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 

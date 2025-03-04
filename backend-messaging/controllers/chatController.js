@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const chatQueries = require('../prisma/queries/chatQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
 
-async function getChatMessages(req, res, next) {
+async function getChatMessages(req, res) {
     try {
         const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userId = req.user.id
@@ -14,16 +14,15 @@ async function getChatMessages(req, res, next) {
         });  
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while retrieving chat messages',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function getUserChats(req, res, next) {
+async function getUserChats(req, res) {
     try {
         const userId = req.user.id;
         const chats = await chatQueries.getUserChats(userId);
@@ -34,16 +33,15 @@ async function getUserChats(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while retrieving user chats',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function createChat(req, res, next) {
+async function createChat(req, res) {
     try {
         const userId = req.user.id;
         const chatData = matchedData(req, { locations: ['body'], onlyValidData: true });
@@ -61,16 +59,15 @@ async function createChat(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while creating the chat',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function updateChat(req, res, next) {
+async function updateChat(req, res) {
     try {
         const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userId = req.user.id;
@@ -95,16 +92,15 @@ async function updateChat(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while updating the chat',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function addUserToChat(req, res, next) {
+async function addUserToChat(req, res) {
     try {
         const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const { userId } = matchedData(req, { locations: ['body'], onlyValidData: true });
@@ -129,16 +125,15 @@ async function addUserToChat(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while adding user to chat',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function removeUserFromChat(req, res, next) {
+async function removeUserFromChat(req, res) {
     try {
         const { chatId, userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const currentUserId = req.user.id;
@@ -169,16 +164,15 @@ async function removeUserFromChat(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while removing user from chat',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function leaveChat(req, res, next) {
+async function leaveChat(req, res) {
     try {
         const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userId = req.user.id;
@@ -201,16 +195,15 @@ async function leaveChat(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while leaving the chat',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function clearChatHistory(req, res, next) {
+async function clearChatHistory(req, res) {
     try {
         const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userId = req.user.id;
@@ -233,12 +226,11 @@ async function clearChatHistory(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while clearing chat history',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 

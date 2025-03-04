@@ -11,7 +11,7 @@ function getCurrentUser(req, res) {
     });
 }
 
-async function login(req, res, next) {
+async function login(req, res) {
     try {
         const { email, password } = matchedData(req, { locations: ['body'] });
         const user = await getUserForAuth(email);
@@ -56,11 +56,11 @@ async function login(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        console.log(error);
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while authenticating the user',
         });
-        return next(error);
     }
 }
 

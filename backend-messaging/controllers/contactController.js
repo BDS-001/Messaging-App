@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const contactQueries = require('../prisma/queries/contactQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
 
-async function getUserContacts(req, res, next) {
+async function getUserContacts(req, res) {
     try {
         const userId = req.user.id;
         const contacts = await contactQueries.getUserContacts(userId);
@@ -14,16 +14,15 @@ async function getUserContacts(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while retrieving contacts',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function addContact(req, res, next) {
+async function addContact(req, res) {
     try {
         const userId = req.user.id;
         const { contactId, nickname } = matchedData(req, { locations: ['body'], onlyValidData: true });
@@ -45,16 +44,15 @@ async function addContact(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while adding contact',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function updateContact(req, res, next) {
+async function updateContact(req, res) {
     try {
         const userId = req.user.id;
         const { contactId } = matchedData(req, { locations: ['params'], onlyValidData: true });
@@ -69,16 +67,15 @@ async function updateContact(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while updating contact',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function removeContact(req, res, next) {
+async function removeContact(req, res) {
     try {
         const userId = req.user.id;
         const { contactId } = matchedData(req, { locations: ['params'], onlyValidData: true });
@@ -91,12 +88,11 @@ async function removeContact(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while removing contact',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 

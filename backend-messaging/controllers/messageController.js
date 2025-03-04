@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const messageQueries = require('../prisma/queries/messageQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
 
-async function createMessage(req, res, next) {
+async function createMessage(req, res) {
     try {
         const senderId = req.user.id;
         const messageData = matchedData(req, { locations: ['body'], onlyValidData: true });
@@ -18,16 +18,15 @@ async function createMessage(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while creating the message',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function updateMessage(req, res, next) {
+async function updateMessage(req, res) {
     try {
         const { id: messageId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const senderId = req.user.id;
@@ -58,16 +57,15 @@ async function updateMessage(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while updating the message',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
-async function deleteMessage(req, res, next) {
+async function deleteMessage(req, res) {
     try {
         const { id: messageId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const senderId = req.user.id;
@@ -96,12 +94,11 @@ async function deleteMessage(req, res, next) {
         });
     } catch (error) {
         console.log(error);
-        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: error.message || 'An error occurred while deleting the message',
             error: process.env.NODE_ENV === 'development' ? error : undefined
         });
-        return next(error);
     }
 }
 
