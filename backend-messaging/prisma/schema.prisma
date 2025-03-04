@@ -39,9 +39,9 @@ model Chat {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   
-  // Relations with CASCADE delete
-  participants ChatParticipant[] @relation("ChatToParticipant", onDelete: Cascade)
-  messages     Message[]         @relation("ChatToMessage", onDelete: Cascade)
+  // Relations
+  participants ChatParticipant[] @relation("ChatToParticipant")
+  messages     Message[]         @relation("ChatToMessage")
 }
 
 model ChatParticipant {
@@ -51,8 +51,8 @@ model ChatParticipant {
   joinedAt     DateTime   @default(now())
   lastClearedAt DateTime?
   
-  // Relations
-  chat        Chat       @relation("ChatToParticipant", fields: [chatId], references: [id])
+  // Relations with CASCADE delete
+  chat        Chat       @relation("ChatToParticipant", fields: [chatId], references: [id], onDelete: Cascade)
   user        User       @relation(fields: [userId], references: [id])
   
   // Ensure a user can only be in a chat once
@@ -69,8 +69,8 @@ model Message {
   isDeleted Boolean  @default(false)
   deletedAt  DateTime?
   
-  // Relations
-  chat     Chat     @relation("ChatToMessage", fields: [chatId], references: [id])
+  // Relations with CASCADE delete
+  chat     Chat     @relation("ChatToMessage", fields: [chatId], references: [id], onDelete: Cascade)
   sender   User     @relation("UserToMessage", fields: [senderId], references: [id])
   
   @@index([chatId])
