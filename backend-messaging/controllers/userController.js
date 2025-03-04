@@ -86,7 +86,7 @@ async function deleteUser(req, res, next) {
 async function getUserByUsername(req, res, next) {
     try {
         const { username } = matchedData(req, { locations: ['params'], onlyValidData: true });
-        const user = await contactQueries.getUserByUsername(username);
+        const user = await userQueries.getUserByUsername(username);
         
         if (!user) {
             return res.status(httpStatusCodes.NOT_FOUND).json({
