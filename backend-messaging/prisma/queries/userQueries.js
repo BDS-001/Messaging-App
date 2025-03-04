@@ -80,4 +80,18 @@ async function getUserForAuth(email) {
   })
 }
 
-module.exports = { getUserById, createUser, updateUser, softDeleteUser, getUserForAuth }
+async function getUserByUsername(username) {
+  return await prisma.user.findUnique({
+    where: {
+      username: username,
+      isDeleted: false
+    },
+    select: {
+      id: true,
+      username: true,
+      email: true
+    }
+  });
+}
+
+module.exports = { getUserById, createUser, updateUser, softDeleteUser, getUserForAuth, getUserByUsername }
