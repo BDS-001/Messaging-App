@@ -24,9 +24,8 @@ async function getUserById(req, res, next) {
 
 async function createUser(req, res, next) {
     try {
-        const { id: userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const userData = matchedData(req, {locations: ['body'], onlyValidData: true});
-        const user = await userQueries.createUser(userId, userData);
+        const user = await userQueries.createUser(userData);
         return res.status(httpStatusCodes.CREATED).json({
             success: true,
             message: 'User created successfully',
