@@ -84,4 +84,32 @@ async function deleteUser(req, res, next) {
     }
 }
 
-module.exports = { getUserById, createUser, updateUser, deleteUser };
+async function getUserByUsername(req, res, next) {
+    try {
+        const { username } = matchedData(req, { locations: ['params'], onlyValidData: true });
+        const user = await contactQueries.getUserByUsername(username);
+        
+        if (!user) {
+            return res.status(httpStatusCodes.NOT_FOUND).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'User found',
+            data: user
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while finding user',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+        return next(error);
+    }
+}
+
+module.exports = { getUserById, createUser, updateUser, deleteUser, getUserByUsername };

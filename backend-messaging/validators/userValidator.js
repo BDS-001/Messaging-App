@@ -110,7 +110,16 @@ const userValidators = {
                 }
                 return true;
               })
-          ]
+          ],
+          findUser: [
+            param('username')
+              .isString()
+              .trim()
+              .notEmpty()
+              .withMessage('Username is required')
+              .isLength({ min: 3, max: 30 })
+              .withMessage('Username must be between 3 and 30 characters')
+          ],
 }
 
 module.exports = userValidators

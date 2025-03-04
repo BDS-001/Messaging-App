@@ -1,12 +1,14 @@
 const { validationResult } = require('express-validator');
 const userValidators = require('../validators/userValidator');
 const authValidators = require('../validators/authValidator');
-const chatValidators = require('../validators/chatValidators')
+const chatValidators = require('../validators/chatValidator')
+const contactValidators = require('../validators/contactValidator')
 
 const validators = {
     user: userValidators,
     auth: authValidators,
-    chat: chatValidators
+    chat: chatValidators,
+    contact: contactValidators
 };
 
 function validateRequest(resource, operation) {
