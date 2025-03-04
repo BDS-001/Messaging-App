@@ -26,6 +26,10 @@ model User {
   // Relations
   participatedChats ChatParticipant[]
   sentMessages      Message[] @relation("UserToMessage")
+  
+  // Contact relations
+  contacts     Contact[] @relation("UserContacts")
+  contactOf    Contact[] @relation("ContactOf")
 }
 
 model Chat {
@@ -71,4 +75,20 @@ model Message {
   
   @@index([chatId])
   @@index([senderId])
+}
+
+model Contact {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  contactId   Int
+  nickname    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User      @relation("UserContacts", fields: [userId], references: [id])
+  contact     User      @relation("ContactOf", fields: [contactId], references: [id])
+  
+  // Ensure a contact relationship exists only once
+  @@unique([userId, contactId])
 }
