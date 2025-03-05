@@ -20,10 +20,10 @@ function SignupPage() {
         }))
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         setError(null)
         e.preventDefault()
-        const result = signup(signupData)
+        const result = await signup(signupData)
         if (!result.success) setError(result.errors)
     }
 

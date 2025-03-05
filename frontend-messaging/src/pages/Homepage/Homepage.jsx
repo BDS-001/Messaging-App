@@ -9,7 +9,8 @@ function Homapage() {
         const {isAuth} = useAuth()
     
         useEffect(() => {
-            if (isAuth) navigate('/login')
+            if (!isAuth) navigate('/login')
+            console.log(isAuth, 'here')
         }, [isAuth, navigate])
 
     return (
