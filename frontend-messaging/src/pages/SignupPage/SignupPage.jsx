@@ -24,7 +24,7 @@ function SignupPage() {
         setError(null)
         e.preventDefault()
         const result = await signup(signupData)
-        if (!result.success) setError(result.errors)
+        result.success ? navigate('/login') : setError(result.errors)
     }
 
     return (
