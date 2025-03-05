@@ -20,10 +20,10 @@ function LoginPage() {
         }))
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         setError(null)
         e.preventDefault()
-        const loginSuccess = login(loginData)
+        const loginSuccess = await login(loginData)
         if (!loginSuccess) setError('Incorrect Credentials, Try Again.')
     }
 
