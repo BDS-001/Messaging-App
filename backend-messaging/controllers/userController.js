@@ -1,6 +1,7 @@
 const { matchedData } = require('express-validator');
 const userQueries = require('../prisma/queries/userQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
+const bcrypt = require('bcryptjs');
 
 async function getUserById(req, res) {
     try {
@@ -24,6 +25,11 @@ async function getUserById(req, res) {
 async function createUser(req, res) {
     try {
         const userData = matchedData(req, {locations: ['body'], onlyValidData: true});
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userData.password, salt);
+        userData.password = hashedPassword
+
         const user = await userQueries.createUser(userData);
         return res.status(httpStatusCodes.CREATED).json({
             success: true,
