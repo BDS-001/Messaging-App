@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-//TODO: change classnames to use module.css
+import styles from './Login.module.css';
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -28,24 +28,24 @@ function LoginPage() {
     }
 
     return (
-        <>
-            {error && <div className="error-message">{error}</div>}
-            <div className="login-container">
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
+        <div className={styles.pageContainer}>
+            <div className={styles.loginContainer}>
+                <h2 className={styles.title}>Login</h2>
+                {error && <div className={styles.errorMessage}>{error}</div>}
+                <form className={styles.loginForm} onSubmit={handleSubmit}>
+                    <div className={styles.formGroup}>
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" value={loginData.email} onChange={handleChange} required/>
                     </div>
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="password">Password</label>
                         <input type="password" id="password" name="password" value={loginData.password} onChange={handleChange} required/>
                     </div>
-                    <button type="submit">Login</button>
+                    <button className={styles.loginButton} type="submit">Login</button>
                 </form>
-                <p>Dont have an account? <Link to="/signup">Sign Up</Link></p>
+                <p className={styles.bottomText}>Don&apos;t have an account? <Link to="/signup">Sign Up</Link></p>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-//TODO: change classnames to use module.css
+import styles from './SignupPage.module.css';
 
 function SignupPage() {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ function SignupPage() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        if (isAuth) navigate('/signup')
+        if (isAuth) navigate('/')
     }, [isAuth, navigate])
 
     function handleChange(e) {
@@ -28,30 +28,61 @@ function SignupPage() {
     }
 
     return (
-        <>
-            {error && error.map((error) => (<div key={error} className="error-message">{error}</div>))}
-            <div className="signup-container">
-                <h2>signup</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" name="username" onChange={handleChange} required/>
+        <div className={styles.pageContainer}>
+            <div className={styles.signupContainer}>
+                <h2 className={styles.title}>Sign Up</h2>
+                {error && (
+                    <div className={styles.errorContainer}>
+                        {error.map((errorMsg) => (
+                            <div key={errorMsg} className={styles.errorMessage}>
+                                {errorMsg}
+                            </div>
+                        ))}
                     </div>
-                    <div>
-                        <label htmlFor="email">Email:</label>
-                        <input type="email" id="email" name="email" onChange={handleChange} required/>
+                )}
+                <form className={styles.signupForm} onSubmit={handleSubmit}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="username">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            value={signupData.username}
+                            onChange={handleChange} 
+                            required
+                        />
                     </div>
-                    <div>
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" onChange={handleChange} required/>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            value={signupData.email}
+                            onChange={handleChange} 
+                            required
+                        />
                     </div>
-                    <div>
-                        <button type="submit">Sign In</button>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            value={signupData.password}
+                            onChange={handleChange} 
+                            required
+                        />
                     </div>
+                    <button className={styles.signupButton} type="submit">
+                        Sign Up
+                    </button>
                 </form>
-                <p>Already have an account? <Link to="/login">Login</Link></p>
+                <p className={styles.bottomText}>
+                    Already have an account? <Link to="/login">Login</Link>
+                </p>
             </div>
-        </>
+        </div>
     );
 }
 
