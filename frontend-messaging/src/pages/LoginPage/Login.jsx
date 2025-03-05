@@ -16,6 +16,7 @@ function LoginPage() {
         
         if (location.state?.fromSignup) {
             setSuccessMessage('Account created successfully! Please log in with your credentials.')
+            window.history.replaceState({}, document.title)
         }
     }, [isAuth, location.state, navigate])
 
