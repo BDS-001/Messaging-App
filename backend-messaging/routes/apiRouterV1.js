@@ -11,7 +11,7 @@ const contactController = require('../controllers/contactController')
 const router = require("express").Router();
 
 //auth
-router.get('/users/auth', isAuthenticated, authController.getCurrentUser);
+router.get('/users/auth', authController.getCurrentUser);
 router.post('/users/login', validateRequest('auth', 'login'), authController.login);
 
 //user
