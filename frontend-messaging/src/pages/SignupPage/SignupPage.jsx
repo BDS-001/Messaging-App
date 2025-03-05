@@ -24,7 +24,7 @@ function SignupPage() {
         setError(null)
         e.preventDefault()
         const result = await signup(signupData)
-        result.success ? navigate('/login') : setError(result.errors)
+        result.success ? navigate('/login', { state: { fromSignup: true, email: signupData.email } }) : setError(result.errors)
     }
 
     return (
