@@ -11,7 +11,7 @@ const Header = () => {
         <Link to="/">ChatSphere</Link>
       </div>
       
-      <nav className={styles.navigation}>
+      {isAuth && <nav className={styles.navigation}>
         <NavLink 
           to="/" 
           className={({ isActive }) => 
@@ -29,7 +29,7 @@ const Header = () => {
         >
           Contacts
         </NavLink>
-      </nav>
+      </nav>}
       
       <div className={styles.userSection}>
         {isAuth ? (
