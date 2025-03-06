@@ -3,7 +3,7 @@ import styles from './SidebarHeader.module.css';
 const SidebarHeader = () => {
   return (
     <header className={styles.sidebarHeader}>
-        <div className="title">Chats</div>
+      <h2 className={styles.title}>Chats</h2>
     </header>
   );
 };
