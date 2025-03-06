@@ -2,6 +2,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './Homepage.module.css';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 function Homapage() {
         const navigate = useNavigate();
@@ -15,7 +16,11 @@ function Homapage() {
     return (
         <>
         <main className={styles.homepageMain}>
-            <div className={styles.mainContent}></div>
+            <Sidebar></Sidebar>
+            <div className={styles.mainContent}>
+                <h2>Welcome to ChatSphere</h2>
+                <p>Select a chat from the sidebar or create a new conversation</p>
+            </div>
         </main>
         </>
     );
