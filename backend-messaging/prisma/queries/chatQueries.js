@@ -11,7 +11,15 @@ async function getUserChats(userId) {
     },
     include: {
       participants: {
-        include: {user: true}
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              email: true
+            }
+          }
+        }
       },
     }
   })
@@ -48,7 +56,15 @@ async function getChatWithMessages(chatId, userId) {
           }
         },
         participants: {
-          include: {user: true}
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                email: true
+              }
+            }
+          }
         }
       }
   })
@@ -66,7 +82,15 @@ async function createChat({ type, name, participantIds }) {
     },
     include: {
       participants: {
-        include: { user: true },
+        include: { 
+          user: {
+            select: {
+              id: true,
+              username: true,
+              email: true
+            }
+          }
+        },
       },
     },
   });
@@ -82,7 +106,15 @@ async function updateChat(chatId, newChatName) {
     },
     include: {
       participants: {
-        include: { user: true },
+        include: { 
+          user: {
+            select: {
+              id: true,
+              username: true,
+              email: true
+            }
+          }
+        },
       },
     },
   });
@@ -130,7 +162,13 @@ async function addUserToChat(chatId, userId) {
       userId
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+          email: true
+        }
+      },
       chat: true
     }
   });
