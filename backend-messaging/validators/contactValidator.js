@@ -4,7 +4,8 @@ const contactValidation = {
   add: [
     body('contactId')
       .isInt()
-      .withMessage('Contact ID must be an integer'),
+      .withMessage('Contact ID must be an integer')
+      .toInt(),
     body('nickname')
       .optional()
       .isString()
@@ -16,7 +17,8 @@ const contactValidation = {
   update: [
     param('contactId')
       .isInt()
-      .withMessage('Contact ID must be an integer'),
+      .withMessage('Contact ID must be an integer')
+      .toInt(),
     body('nickname')
       .isString()
       .trim()

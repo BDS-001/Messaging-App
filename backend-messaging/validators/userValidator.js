@@ -7,7 +7,7 @@ const userValidators = {
           .withMessage('User ID is required')
           .isInt()
           .withMessage('User ID must be a number')
-          .trim()
+          .toInt()
       ],
     create: [
         // Username validation
@@ -68,7 +68,7 @@ const userValidators = {
               .withMessage('User ID is required')
               .isInt()
               .withMessage('User ID must be a number')
-              .trim(),
+              .toInt(),
             
             // Optional username validation
             body('username')

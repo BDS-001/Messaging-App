@@ -7,7 +7,7 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim()
+            .toInt()
     ],
     create: [
         body('name')
@@ -41,7 +41,7 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim(),
+            .toInt(),
         
         body('name')
             .exists()
@@ -56,7 +56,7 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim()
+            .toInt()
     ],
     clear: [
         param('chatId')
@@ -64,7 +64,7 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim()
+            .toInt()
     ],
     addUser: [
         param('chatId')
@@ -72,13 +72,14 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim(),
+            .toInt(),
         
         body('userId')
             .exists()
             .withMessage('User ID is required')
             .isInt()
             .withMessage('User ID must be a number')
+            .toInt()
     ],
     removeUser: [
         param('chatId')
@@ -86,14 +87,14 @@ const chatValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
-            .trim(),
+            .toInt(),
         
         param('userId')
             .exists()
             .withMessage('User ID is required')
             .isInt()
             .withMessage('User ID must be a number')
-            .trim()
+            .toInt()
     ]
 };
 

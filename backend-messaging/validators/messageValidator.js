@@ -7,7 +7,7 @@ const messageValidators = {
             .withMessage('Message ID is required')
             .isInt()
             .withMessage('Message ID must be a number')
-            .trim()
+            .toInt()
     ],
     create: [
         body('content')
@@ -24,6 +24,7 @@ const messageValidators = {
             .withMessage('Chat ID is required')
             .isInt()
             .withMessage('Chat ID must be a number')
+            .toInt()
     ],
     update: [
         param('id')
@@ -31,7 +32,7 @@ const messageValidators = {
             .withMessage('Message ID is required')
             .isInt()
             .withMessage('Message ID must be a number')
-            .trim(),
+            .toInt(),
             
         body('content')
             .optional()
