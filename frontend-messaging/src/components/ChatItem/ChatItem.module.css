@@ -1,0 +1,89 @@
+.chatItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--main-border);
+    transition: background-color 0.2s;
+    cursor: pointer;
+  }
+  
+  .chatItem:hover {
+    background-color: rgba(44, 62, 80, 0.05);
+  }
+  
+  .avatarContainer {
+    margin-right: 0.75rem;
+  }
+  
+  .userAvatar, .groupAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+  }
+  
+  .userAvatar {
+    background-color: #3498db;
+  }
+  
+  .groupAvatar {
+    background-color: #9b59b6;
+  }
+  
+  .chatInfo {
+    flex: 1;
+    min-width: 0; /* Enables text truncation */
+  }
+  
+  .chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.25rem;
+  }
+  
+  .chatName {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .timeStamp {
+    font-size: 0.75rem;
+    color: #777;
+    white-space: nowrap;
+  }
+  
+  .chatMeta {
+    display: flex;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .participantCount {
+    display: flex;
+    align-items: center;
+  }
+  
+  .lastMessage {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: italic;
+    color: #888;
+  }
+  
+  /* For selected chat state */
+  .active {
+    background-color: rgba(44, 62, 80, 0.08);
+    border-left: 3px solid var(--navbar-main);
+  }

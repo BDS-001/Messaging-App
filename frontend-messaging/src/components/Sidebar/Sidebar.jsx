@@ -1,13 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {useChat} from '../../context/ChatContext'
 import styles from './Sidebar.module.css';
 import SidebarHeader from '../SidebarHeader/SidebarHeader';
+import ChatItem from '../ChatItem/ChatItem';
 
 const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState('direct');
+  const [activeTab, setActiveTab] = useState('one_on_one');
+  const [displayedChats, setDisplayedChats] = useState([])
+  const { chats, setActiveChat } = useChat()
+
+  useEffect(() => {
+    const filteredChats = chats.filter(chat => chat.type === activeTab)
+    setDisplayedChats(filteredChats)
+  }, [activeTab, chats])
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
+  const handleOnClick = (e, id) => {
+    setActiveChat(id)
+  }
 
   return (
     <aside className={styles.sidebar}>
@@ -15,8 +28,8 @@ const Sidebar = () => {
       
       <div className={styles.tabContainer}>
         <button 
-          className={`${styles.tabButton} ${activeTab === 'direct' ? styles.activeTab : ''}`}
-          onClick={() => handleTabChange('direct')}
+          className={`${styles.tabButton} ${activeTab === 'one_on_one' ? styles.activeTab : ''}`}
+          onClick={() => handleTabChange('one_on_one')}
         >
           Direct Messages
         </button>
@@ -29,8 +42,11 @@ const Sidebar = () => {
       </div>
 
       <div className={styles.chatList}>
-        {/* TODO: add chats here */}
-        {activeTab === 'direct' ? (
+        {displayedChats.length > 0 ? (
+          displayedChats.map((chat) => (
+            <ChatItem key={chat.id} chat={chat} handleOnClick={handleOnClick} />
+          ))
+        ) : activeTab === 'one_on_one' ? (
           <div className={styles.emptyState}>No direct messages yet</div>
         ) : (
           <div className={styles.emptyState}>No group chats yet</div>
@@ -39,7 +55,7 @@ const Sidebar = () => {
 
       <div className={styles.createButtonContainer}>
         <button className={styles.createButton}>
-          {activeTab === 'direct' ? 'New Message' : 'New Group Chat'}
+          {activeTab === 'one_on_one' ? 'New Message' : 'New Group Chat'}
         </button>
       </div>
     </aside>

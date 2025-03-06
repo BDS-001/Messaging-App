@@ -37,7 +37,8 @@ export const ChatProvider = ({children}) => {
         <ChatContext.Provider 
         value={{ 
             chats,
-            isLoading
+            isLoading,
+            setActiveChat
         }}
       >
         {children}
