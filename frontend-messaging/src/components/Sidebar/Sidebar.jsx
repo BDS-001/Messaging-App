@@ -7,7 +7,7 @@ import ChatItem from '../ChatItem/ChatItem';
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState('one_on_one');
   const [displayedChats, setDisplayedChats] = useState([])
-  const { chats, setActiveChat } = useChat()
+  const { chats, activeChat, setActiveChat } = useChat()
 
   useEffect(() => {
     const filteredChats = chats.filter(chat => chat.type === activeTab)
@@ -44,7 +44,7 @@ const Sidebar = () => {
       <div className={styles.chatList}>
         {displayedChats.length > 0 ? (
           displayedChats.map((chat) => (
-            <ChatItem key={chat.id} chat={chat} handleOnClick={handleOnClick} />
+            <ChatItem key={chat.id} chat={chat} handleOnClick={handleOnClick} isActive={activeChat === chat.id} />
           ))
         ) : activeTab === 'one_on_one' ? (
           <div className={styles.emptyState}>No direct messages yet</div>

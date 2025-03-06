@@ -2,7 +2,7 @@
 import { useAuth } from '../../context/AuthContext';
 import styles from './ChatItem.module.css';
 
-const ChatItem = ({ chat, handleOnClick }) => {
+const ChatItem = ({ chat, handleOnClick, isActive }) => {
   const { user } = useAuth();
   
   const isGroupChat = chat.type === 'group';
@@ -17,7 +17,7 @@ const ChatItem = ({ chat, handleOnClick }) => {
   });
   
   return (
-    <div className={styles.chatItem} onClick={(e) => handleOnClick(e, chat.id)}>
+    <div className={`${styles.chatItem} ${isActive ? styles.active : ''}`} onClick={(e) => handleOnClick(e, chat.id)}>
       <div className={styles.avatarContainer}>
         {isGroupChat ? (
           <div className={styles.groupAvatar}>

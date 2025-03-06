@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { ChatContext } from '../context/ChatContext';
 import { getUserChats } from '../services/chatService';
@@ -38,6 +37,7 @@ export const ChatProvider = ({children}) => {
         value={{ 
             chats,
             isLoading,
+            activeChat,
             setActiveChat
         }}
       >
