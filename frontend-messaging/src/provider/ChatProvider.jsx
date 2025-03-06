@@ -25,7 +25,7 @@ export const ChatProvider = ({children}) => {
         try {
             const chats = await getUserChats()
             setChats(chats)
-            console.log(chats)
+            console.log('fetched user chats:', chats)
         } catch (error) {
             console.error('Error fetching chats:', error);
         } finally {
