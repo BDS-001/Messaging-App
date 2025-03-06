@@ -1,25 +1,27 @@
+import { API_URL } from './apiService';
+
 export async function getUserChats() {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        return []
-      }
-      const response = await fetch('http://localhost:3000/api/v1/chats', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      if (response.ok) {
-        const result = await response.json()
-        console.log(`chat result ${JSON.stringify(result)}`)
-        const chats = result.data
-        return chats
-      } else {
-        console.error('Failed to fetch chats:', response.status, response.statusText)
-        return []
-      }
-    } catch (error) {
-      console.error('Get user chats failed:', error);
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) {
       return []
     }
+    const response = await fetch(`${API_URL}/chats`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    if (response.ok) {
+      const result = await response.json()
+      console.log(`chat result ${JSON.stringify(result)}`)
+      const chats = result.data
+      return chats
+    } else {
+      console.error('Failed to fetch chats:', response.status, response.statusText)
+      return []
+    }
+  } catch (error) {
+    console.error('Get user chats failed:', error);
+    return []
   }
+}
