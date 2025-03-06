@@ -2,13 +2,23 @@
 /* eslint-disable react/prop-types */
 import { ChatContext } from '../context/ChatContext';
 import { getUserChats } from '../services/chatService';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export const ChatProvider = ({children}) => {
     const {isAuth} = useAuth()
     const [chats, setChats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeChat, setActiveChat] = useState(null);
+
+    useEffect(() => {
+        if (isAuth) {
+            fetchUserChats()
+        } else {
+            setActiveChat(null)
+            setChats([])
+        }
+    }, [isAuth])
 
     async function fetchUserChats() {
         setIsLoading(true)
