@@ -4,7 +4,7 @@ export async function getUserChats() {
       if (!token) {
         return []
       }
-      const response = await fetch('http://localhost:3000/api/v1/users/chats', {
+      const response = await fetch('http://localhost:3000/api/v1/chats', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
