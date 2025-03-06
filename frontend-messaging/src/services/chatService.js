@@ -16,10 +16,10 @@ export async function getUserChats() {
         return chats
       } else {
         console.error('Failed to fetch chats:', response.status, response.statusText)
-        return null
+        return []
       }
     } catch (error) {
       console.error('Get user chats failed:', error);
-      return null
+      return []
     }
   }

@@ -1,0 +1,36 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { ChatContext } from '../context/ChatContext';
+import { getUserChats } from '../services/chatService';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+
+export const ChatProvider = ({children}) => {
+    const {isAuth} = useAuth()
+    const [chats, setChats] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    async function fetchUserChats() {
+        setIsLoading(true)
+        try {
+            const chats = await getUserChats()
+            setChats(chats)
+            console.log(chats)
+        } catch (error) {
+            console.error('Error fetching chats:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <ChatContext.Provider 
+        value={{ 
+            chats,
+            isLoading
+        }}
+      >
+        {children}
+      </ChatContext.Provider>
+    )
+}
