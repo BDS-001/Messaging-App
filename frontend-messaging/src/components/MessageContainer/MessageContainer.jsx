@@ -7,28 +7,52 @@ import styles from './MessageContainer.module.css';
 
 const MessageContainer = () => {
   const { user } = useAuth();
-  const { activeChatDetails, isLoading, isInitialChatLoad, setIsInitialChatLoad } = useChat();
+  const { 
+    activeChatDetails, 
+    isLoading, 
+    isInitialChatLoad, 
+    setIsInitialChatLoad 
+  } = useChat();
+  
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   
   // Auto-scroll to bottom
   const scrollToBottom = (behavior = 'smooth') => {
-    messagesEndRef.current?.scrollIntoView({ behavior });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior });
+    }
   };
   
-  // Initial mount - scroll to bottom without animation
-  useEffect(() => {
-    if (activeChatDetails?.messages?.length && isInitialChatLoad) {
-      scrollToBottom('auto');
-      setIsInitialChatLoad(false);
-    }
-  }, [activeChatDetails?.messages, isInitialChatLoad, setIsInitialChatLoad]);
+  // Track the previous chat ID to detect changes
+  const prevChatIdRef = useRef(null);
   
-  // When messages change after initial load - use smooth scrolling
+  // Handle scrolling when messages change
   useEffect(() => {
-    if (activeChatDetails?.messages?.length && !isInitialChatLoad) {
+    if (!activeChatDetails?.messages?.length) return;
+    
+    const currentChatId = activeChatDetails.id;
+    const isNewChat = currentChatId !== prevChatIdRef.current;
+    
+    // Update the previous chat ID reference
+    prevChatIdRef.current = currentChatId;
+    
+    console.log(`Messages updated. Chat ID: ${currentChatId}, isInitialChatLoad: ${isInitialChatLoad}, isNewChat: ${isNewChat}`);
+    
+    if (isInitialChatLoad || isNewChat) {
+      // For initial load or chat change, scroll immediately without animation
+      console.log('Using auto scroll behavior for new chat');
+      requestAnimationFrame(() => {
+        scrollToBottom('auto');
+        // Only set isInitialChatLoad to false AFTER we've scrolled
+        setIsInitialChatLoad(false);
+      });
+    } else {
+      // For new messages in the current chat, use smooth scrolling
+      console.log('Using smooth scroll for new message');
       scrollToBottom('smooth');
     }
-  }, [activeChatDetails?.messages, isInitialChatLoad]);
+  }, [activeChatDetails?.id, activeChatDetails?.messages, isInitialChatLoad, setIsInitialChatLoad]);
   
   if (isLoading) {
     return <div className={styles.emptyState}>Loading chat...</div>;
@@ -54,7 +78,7 @@ const MessageContainer = () => {
       </div>
       
       <div className={styles.messagesWrapper}>
-        <div className={`${styles.messages} custom-scrollbar`}>
+        <div className={`${styles.messages} custom-scrollbar`} ref={messagesContainerRef}>
         {activeChatDetails.messages.map(message => {
             // Find the participant whose userId matches the message's senderId
             const participant = activeChatDetails.participants.find(p => p.userId === message.senderId);

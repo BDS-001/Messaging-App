@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { ChatContext } from '../context/ChatContext';
 import { getUserChats, getChatDetails, sendMessage } from '../services/chatService';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export const ChatProvider = ({children}) => {
@@ -12,6 +12,8 @@ export const ChatProvider = ({children}) => {
     const [activeChatDetails, setActiveChatDetails] = useState(null);
     const [chatError, setChatError] = useState(null);
     const [isInitialChatLoad, setIsInitialChatLoad] = useState(true);
+    // Track the last active chat to detect changes
+    const lastActiveChatRef = useRef(null);
 
     async function fetchUserChats() {
         setIsLoading(true)
@@ -53,11 +55,18 @@ export const ChatProvider = ({children}) => {
     const fetchChatDetails = useCallback(async () => {
         if (!activeChat) return;
         
-        setIsLoading(true)
+        setIsLoading(true);
+        // Always mark as initial load when fetching a different chat
+        if (activeChat !== lastActiveChatRef.current) {
+            console.log(`Chat changed from ${lastActiveChatRef.current} to ${activeChat} - setting initial load`);
+            setIsInitialChatLoad(true);
+            lastActiveChatRef.current = activeChat;
+        }
+        
         try {
-            const details = await getChatDetails(activeChat)
-            setActiveChatDetails(details)
-            console.log('fetched chat details:', details)
+            const details = await getChatDetails(activeChat);
+            setActiveChatDetails(details);
+            console.log('fetched chat details:', details);
         } catch (error) {
             console.error('Error fetching chat details:', error);
         } finally {
@@ -71,9 +80,20 @@ export const ChatProvider = ({children}) => {
         } else {
             setActiveChat(null)
             setChats([])
+            lastActiveChatRef.current = null;
         }
     }, [isAuth])
 
+    // Handle changing the active chat
+    const changeActiveChat = useCallback((chatId) => {
+        if (chatId !== activeChat) {
+            console.log(`Changing active chat from ${activeChat} to ${chatId}`);
+            setActiveChat(chatId);
+            // Set initial load flag as soon as we switch chats
+            setIsInitialChatLoad(true);
+        }
+    }, [activeChat]);
+    
     useEffect(() => {
         if (isAuth && activeChat) {
             fetchChatDetails()
@@ -81,12 +101,6 @@ export const ChatProvider = ({children}) => {
             setActiveChatDetails(null)
         }
     }, [activeChat, fetchChatDetails, isAuth])
-
-    useEffect(() => {
-        if (activeChat) {
-          setIsInitialChatLoad(true);
-        }
-      }, [activeChat]);
 
     return (
         <ChatContext.Provider 
@@ -96,7 +110,7 @@ export const ChatProvider = ({children}) => {
             isLoading,
             activeChat,
             chatError,
-            setActiveChat,
+            setActiveChat: changeActiveChat,
             fetchChatDetails,
             processSendMessage,
             clearChatError,
