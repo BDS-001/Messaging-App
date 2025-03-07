@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { ChatContext } from '../context/ChatContext';
-import { getUserChats, getChatDetails } from '../services/chatService';
+import { getUserChats, getChatDetails, sendMessage } from '../services/chatService';
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,6 +10,7 @@ export const ChatProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeChat, setActiveChat] = useState(null);
     const [activeChatDetails, setActiveChatDetails] = useState(null);
+    const [chatError, setChatError] = useState(null);
 
     async function fetchUserChats() {
         setIsLoading(true)
@@ -23,6 +24,30 @@ export const ChatProvider = ({children}) => {
             setIsLoading(false);
         }
     }
+
+    async function processSendMessage(messageData) {
+        try {
+            const newMessage = await sendMessage(messageData)
+            if (newMessage) {
+                setActiveChatDetails(prev => ({
+                    ...prev,
+                    messages: [...prev.messages, newMessage]
+                }));
+                return true; // Return success
+            } else {
+                setChatError("Message couldn't be sent. Please try again.");
+                return false; // Return failure
+            }
+        } catch (error) {
+            console.error('Error sending message', error);
+            setChatError("Network error. Please check your connection and try again.");
+            return false; // Return failure
+        }
+    }
+
+    const clearChatError = () => {
+        setChatError(null);
+    };
 
     const fetchChatDetails = useCallback(async () => {
         if (!activeChat) return;
@@ -39,7 +64,7 @@ export const ChatProvider = ({children}) => {
         }
     }, [activeChat]);
 
-        useEffect(() => {
+    useEffect(() => {
         if (isAuth) {
             fetchUserChats()
         } else {
@@ -63,8 +88,11 @@ export const ChatProvider = ({children}) => {
             activeChatDetails,
             isLoading,
             activeChat,
+            chatError,
             setActiveChat,
-            fetchChatDetails
+            fetchChatDetails,
+            processSendMessage,
+            clearChatError
         }}
       >
         {children}

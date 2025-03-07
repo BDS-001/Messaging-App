@@ -50,3 +50,27 @@
     background-color: #ccc;
     cursor: not-allowed;
   }
+
+  .errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .errorMessage button {
+    background: transparent;
+    border: none;
+    color: #721c24;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 0.3rem;
+    margin-left: 0.5rem;
+    line-height: 1;
+  }

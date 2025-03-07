@@ -1,26 +1,32 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
+import { useChat } from '../../context/ChatContext';
 import styles from './MessageSender.module.css';
 
 const MessageSender = ({ chatId }) => {
+  const { processSendMessage, chatError, clearChatError } = useChat();
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     setMessage(e.target.value);
+    // Clear error when user starts typing again
+    if (chatError) {
+      clearChatError();
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
+    const messageData = {
+      chatId,
+      content: message
+    };
     
-    // TODO: Implement message sending logic
-    // 1. Call the API to send the message
-    // 2. Add the message to the chat context or trigger a refetch
-    // 3. Handle potential errors
-    
-    // Reset the input field after sending
-    setMessage('');
+    const success = await processSendMessage(messageData);
+    if (success) {
+      setMessage('');
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -32,6 +38,17 @@ const MessageSender = ({ chatId }) => {
 
   return (
     <div className={styles.container}>
+      {chatError && (
+        <div className={styles.errorMessage}>
+          {chatError}
+          <button 
+            onClick={clearChatError}
+            aria-label="Dismiss error"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className={styles.form}>
         <textarea 
           value={message}

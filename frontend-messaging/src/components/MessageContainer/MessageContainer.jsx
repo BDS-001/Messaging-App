@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
 import Message from '../Message/Message';
@@ -8,18 +8,28 @@ import styles from './MessageContainer.module.css';
 const MessageContainer = () => {
   const { user } = useAuth();
   const { activeChatDetails, isLoading } = useChat();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const messagesEndRef = useRef(null);
   
   // Auto-scroll to bottom
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  const scrollToBottom = (behavior = 'smooth') => {
+    messagesEndRef.current?.scrollIntoView({ behavior });
   };
   
+  // Initial mount - scroll to bottom without animation
   useEffect(() => {
-    if (activeChatDetails?.messages?.length) {
-      scrollToBottom();
+    if (activeChatDetails?.messages?.length && isInitialLoad) {
+      scrollToBottom('auto');
+      setIsInitialLoad(false);
     }
-  }, [activeChatDetails?.messages]);
+  }, [activeChatDetails?.messages, isInitialLoad]);
+  
+  // When messages change after initial load - use smooth scrolling
+  useEffect(() => {
+    if (activeChatDetails?.messages?.length && !isInitialLoad) {
+      scrollToBottom('smooth');
+    }
+  }, [activeChatDetails?.messages, isInitialLoad]);
   
   if (isLoading) {
     return <div className={styles.emptyState}>Loading chat...</div>;

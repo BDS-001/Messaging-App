@@ -49,3 +49,34 @@ export async function getChatDetails(chatId) {
     return []
   }
 }
+
+export async function sendMessage(messageData) {
+  console.log(messageData)
+  try {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      return []
+    }
+    const response = await fetch(`${API_URL}/messages`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(messageData)
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      const message = result.data
+      return message
+    } else {
+      console.error('Failed to send message:', response.status, response.statusText)
+      return null
+    }
+  } catch (error) {
+    console.error('Send message failed:', error);
+    return null
+  }
+}
