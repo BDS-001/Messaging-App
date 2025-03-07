@@ -92,3 +92,9 @@
 .createButton:hover {
     background-color: #1a2c3a;
 }
+
+.chatList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+}

@@ -11,6 +11,7 @@ export const ChatProvider = ({children}) => {
     const [activeChat, setActiveChat] = useState(null);
     const [activeChatDetails, setActiveChatDetails] = useState(null);
     const [chatError, setChatError] = useState(null);
+    const [isInitialChatLoad, setIsInitialChatLoad] = useState(true);
 
     async function fetchUserChats() {
         setIsLoading(true)
@@ -81,6 +82,12 @@ export const ChatProvider = ({children}) => {
         }
     }, [activeChat, fetchChatDetails, isAuth])
 
+    useEffect(() => {
+        if (activeChat) {
+          setIsInitialChatLoad(true);
+        }
+      }, [activeChat]);
+
     return (
         <ChatContext.Provider 
         value={{ 
@@ -92,7 +99,9 @@ export const ChatProvider = ({children}) => {
             setActiveChat,
             fetchChatDetails,
             processSendMessage,
-            clearChatError
+            clearChatError,
+            isInitialChatLoad,
+            setIsInitialChatLoad
         }}
       >
         {children}

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
 import Message from '../Message/Message';
@@ -7,8 +7,7 @@ import styles from './MessageContainer.module.css';
 
 const MessageContainer = () => {
   const { user } = useAuth();
-  const { activeChatDetails, isLoading } = useChat();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const { activeChatDetails, isLoading, isInitialChatLoad, setIsInitialChatLoad } = useChat();
   const messagesEndRef = useRef(null);
   
   // Auto-scroll to bottom
@@ -18,18 +17,18 @@ const MessageContainer = () => {
   
   // Initial mount - scroll to bottom without animation
   useEffect(() => {
-    if (activeChatDetails?.messages?.length && isInitialLoad) {
+    if (activeChatDetails?.messages?.length && isInitialChatLoad) {
       scrollToBottom('auto');
-      setIsInitialLoad(false);
+      setIsInitialChatLoad(false);
     }
-  }, [activeChatDetails?.messages, isInitialLoad]);
+  }, [activeChatDetails?.messages, isInitialChatLoad, setIsInitialChatLoad]);
   
   // When messages change after initial load - use smooth scrolling
   useEffect(() => {
-    if (activeChatDetails?.messages?.length && !isInitialLoad) {
+    if (activeChatDetails?.messages?.length && !isInitialChatLoad) {
       scrollToBottom('smooth');
     }
-  }, [activeChatDetails?.messages, isInitialLoad]);
+  }, [activeChatDetails?.messages, isInitialChatLoad]);
   
   if (isLoading) {
     return <div className={styles.emptyState}>Loading chat...</div>;
@@ -55,7 +54,7 @@ const MessageContainer = () => {
       </div>
       
       <div className={styles.messagesWrapper}>
-        <div className={styles.messages}>
+        <div className={`${styles.messages} custom-scrollbar`}>
         {activeChatDetails.messages.map(message => {
             // Find the participant whose userId matches the message's senderId
             const participant = activeChatDetails.participants.find(p => p.userId === message.senderId);

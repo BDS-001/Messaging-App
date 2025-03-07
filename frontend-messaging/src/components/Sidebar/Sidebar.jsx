@@ -41,7 +41,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className={styles.chatList}>
+      <div className={`${styles.chatList} custom-scrollbar`}>
         {displayedChats.length > 0 ? (
           displayedChats.map((chat) => (
             <ChatItem key={chat.id} chat={chat} handleOnClick={handleOnClick} isActive={activeChat === chat.id} />
