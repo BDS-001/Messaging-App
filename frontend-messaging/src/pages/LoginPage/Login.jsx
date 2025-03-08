@@ -12,8 +12,6 @@ function LoginPage() {
     const [successMessage, setSuccessMessage] = useState(null);
 
     useEffect(() => {
-        if (isAuth) navigate('/')
-        
         if (location.state?.fromSignup) {
             setSuccessMessage('Account created successfully! Please log in with your credentials.')
             window.history.replaceState({}, document.title)

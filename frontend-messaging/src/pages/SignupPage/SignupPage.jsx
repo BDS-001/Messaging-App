@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './SignupPage.module.css';
 
 function SignupPage() {
     const navigate = useNavigate();
-    const {signup, isAuth} = useAuth()
+    const {signup} = useAuth()
     const [signupData, setSignupData] = useState({email: '', username: '', password: ''});
     const [error, setError] = useState(null)
-
-    useEffect(() => {
-        if (isAuth) navigate('/')
-    }, [isAuth, navigate])
 
     function handleChange(e) {
         const {name, value} = e.target
