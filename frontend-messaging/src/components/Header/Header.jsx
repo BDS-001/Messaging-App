@@ -1,9 +1,14 @@
 import styles from './Header.module.css';
 import { useAuth } from '../../context/AuthContext';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { isAuth, user, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleUsernameClick = () => {
+    navigate('/settings');
+  };
   
   return (
     <header className={styles.header}>
@@ -29,12 +34,26 @@ const Header = () => {
         >
           Contacts
         </NavLink>
+        
+        <NavLink 
+          to="/settings" 
+          className={({ isActive }) => 
+            isActive ? styles.activeNavLink : styles.navLink
+          }
+        >
+          Settings
+        </NavLink>
       </nav>}
       
       <div className={styles.userSection}>
         {isAuth ? (
           <div className={styles.userInfo}>
-            <span className={styles.username}>{user.username}</span>
+            <span 
+              className={styles.username} 
+              onClick={handleUsernameClick}
+            >
+              {user.username}
+            </span>
             <button className={styles.logoutButton} onClick={logout}>
               Logout
             </button>

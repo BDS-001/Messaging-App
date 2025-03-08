@@ -1,8 +1,9 @@
 import App from "../layouts/App.jsx";
 import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 import Homapage from "../pages/Homepage/Homepage.jsx";
-import Login from '../pages/LoginPage/Login.jsx'
-import Signup from '../pages/SignupPage/SignupPage.jsx'
+import Login from '../pages/LoginPage/Login.jsx';
+import Signup from '../pages/SignupPage/SignupPage.jsx';
+import SettingsPage from '../pages/SettingsPage/Settings.jsx';
 
 const routes = [
   {
@@ -13,6 +14,7 @@ const routes = [
         { index: true, element: <Homapage /> },
         { path: "login", element: <Login /> },
         { path: "signup", element: <Signup /> },
+        { path: "settings", element: <SettingsPage /> },
     ],
   },
 ];
