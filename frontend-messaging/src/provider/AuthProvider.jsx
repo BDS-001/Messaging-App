@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { checkUserAuth, loginUser, signupUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthProvider = ({children}) => {
     const [isAuth, setIsAuth] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         checkAuth();
@@ -61,6 +63,7 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('token');
         setIsAuth(false);
         setUser(null)
+        navigate('/login');
     };
 
     return (
