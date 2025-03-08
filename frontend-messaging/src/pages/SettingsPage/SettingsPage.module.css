@@ -96,6 +96,7 @@
   .editField {
     margin-top: 0.5rem;
     width: 100%;
+    box-sizing: border-box;
   }
   
   .usernameInput {
@@ -107,6 +108,7 @@
     margin-bottom: 0.75rem;
     font-weight: 500;
     box-shadow: 0 2px 6px rgba(44, 62, 80, 0.1);
+    box-sizing: border-box;
   }
   
   .usernameInput:focus {
@@ -118,6 +120,7 @@
   .actionButtons {
     display: flex;
     gap: 0.5rem;
+    justify-content: flex-end;
   }
   
   .editButton, .saveButton, .cancelButton, .securityButton {
