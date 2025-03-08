@@ -4,6 +4,7 @@ import styles from './ChatItem.module.css';
 
 const ChatItem = ({ chat, handleOnClick, isActive }) => {
   const { user } = useAuth();
+  if (!user) return null;
   
   const isGroupChat = chat.type === 'group';
   const otherUser = !isGroupChat 

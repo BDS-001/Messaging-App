@@ -8,13 +8,15 @@ import MessageContainer from '../../components/MessageContainer/MessageContainer
 
 
 function Homapage() {
-        const navigate = useNavigate();
-        const {isAuth} = useAuth()
-        const { activeChatDetails } = useChat();
-    
-        useEffect(() => {
-            if (!isAuth) navigate('/login')
-        }, [isAuth, navigate])
+    const navigate = useNavigate();
+    const {isAuth} = useAuth()
+    const { activeChatDetails } = useChat();
+
+    useEffect(() => {
+        if (!isAuth) navigate('/login')
+    }, [isAuth, navigate])
+
+    if (!isAuth) return null
 
     return (
         <>
