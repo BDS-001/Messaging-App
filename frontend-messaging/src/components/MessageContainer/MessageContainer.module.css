@@ -1,49 +1,49 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-  }
-  
-  .header {
-    padding: 1rem;
-    border-bottom: 1px solid var(--main-border);
-    background-color: var(--main-color);
-  }
-  
-  .header h3 {
-    margin: 0;
-    color: var(--navbar-main);
-  }
-  
-  .messagesWrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .messages {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-    padding: 1rem;
-    background-color: var(--background-color);
-  }
-  
-  .inputArea {
-    border-top: 1px solid var(--main-border);
-    background-color: var(--main-color);
-  }
-  
-  .emptyState {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    flex: 1;
-    background-color: var(--background-color);
-    color: #666;
-  }
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+}
+
+.header {
+	padding: 1rem;
+	border-bottom: 1px solid var(--main-border);
+	background-color: var(--main-color);
+}
+
+.header h3 {
+	margin: 0;
+	color: var(--navbar-main);
+}
+
+.messagesWrapper {
+	flex: 1;
+	position: relative;
+	overflow: hidden;
+}
+
+.messages {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow-y: auto;
+	padding: 1rem;
+	background-color: var(--background-color);
+}
+
+.inputArea {
+	border-top: 1px solid var(--main-border);
+	background-color: var(--main-color);
+}
+
+.emptyState {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	flex: 1;
+	background-color: var(--background-color);
+	color: #666;
+}

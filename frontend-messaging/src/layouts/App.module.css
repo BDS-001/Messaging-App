@@ -1,11 +1,11 @@
 .appContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: var(--background-color);
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background-color: var(--background-color);
 }
 
 .mainContent {
-  flex: 1;
-  overflow-y: auto;
+	flex: 1;
+	overflow-y: auto;
 }
