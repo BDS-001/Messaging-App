@@ -1,190 +1,25 @@
 .pageContainer {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background-color: var(--background-color);
-    padding: 2rem;
-    flex: 1;
-  }
-  
-  .settingsContainer {
-    background-color: var(--main-color);
-    border-radius: 8px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 650px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .title {
-    color: var(--navbar-main);
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
-    border-bottom: 1px solid var(--main-border);
-    padding-bottom: 0.75rem;
-  }
-  
-  .section {
-    margin-bottom: 2.5rem;
-    background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eaecef;
-  }
-  
-  .sectionTitle {
-    color: var(--navbar-main);
-    font-size: 1.3rem;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eaecef;
-    position: relative;
-  }
-  
-  .sectionTitle::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 80px;
-    height: 3px;
-    background-color: var(--navbar-main);
-    border-radius: 2px;
-  }
-  
-  .infoGroup {
-    margin-bottom: 1.2rem;
-  }
-  
-  .infoGroup label {
-    display: block;
-    font-weight: 500;
-    color: #777;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .infoValue {
-    font-size: 1.1rem;
-    padding: 0.75rem 1rem;
-    color: #222;
-    font-weight: 500;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    border-left: 3px solid var(--navbar-main);
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .usernameDisplay {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f8f9fa;
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    border-left: 3px solid var(--navbar-main);
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #222;
-  }
-  
-  .editField {
-    margin-top: 0.5rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .usernameInput {
-    padding: 0.75rem;
-    border: 2px solid var(--navbar-main);
-    border-radius: 4px;
-    font-size: 1.1rem;
-    width: 100%;
-    margin-bottom: 0.75rem;
-    font-weight: 500;
-    box-shadow: 0 2px 6px rgba(44, 62, 80, 0.1);
-    box-sizing: border-box;
-  }
-  
-  .usernameInput:focus {
-    border-color: var(--navbar-main);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
-  }
-  
-  .actionButtons {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-  }
-  
-  .editButton, .saveButton, .cancelButton, .securityButton {
-    padding: 0.5rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.2s;
-  }
-  
-  .editButton {
-    background-color: #f0f4f8;
-    color: var(--navbar-main);
-  }
-  
-  .editButton:hover {
-    background-color: #e0e7f0;
-  }
-  
-  .saveButton {
-    background-color: var(--navbar-main);
-    color: white;
-  }
-  
-  .saveButton:hover {
-    background-color: #1a2c3a;
-  }
-  
-  .cancelButton {
-    background-color: #f1f1f1;
-    color: #555;
-  }
-  
-  .cancelButton:hover {
-    background-color: #e3e3e3;
-  }
-  
-  .securityButton {
-    background-color: var(--navbar-main);
-    color: white;
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
-    border-radius: 4px;
-    display: inline-block;
-    box-shadow: 0 2px 4px rgba(44, 62, 80, 0.2);
-    transition: all 0.2s ease;
-  }
-  
-  .securityButton:hover {
-    background-color: #1a2c3a;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(44, 62, 80, 0.3);
-  }
-  
-  .preferenceToggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 0;
-  }
-  
-  .toggleInput {
-    width: 3rem;
-    height: 1.5rem;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--background-color);
+  padding: 2rem;
+  flex: 1;
+}
+
+.settingsContainer {
+  background-color: var(--main-color);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: var(--navbar-main);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  border-bottom: 1px solid var(--main-border);
+  padding-bottom: 0.75rem;
+}
