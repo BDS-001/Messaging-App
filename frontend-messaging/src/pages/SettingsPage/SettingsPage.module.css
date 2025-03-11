@@ -1,25 +1,25 @@
 .pageContainer {
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	background-color: var(--background-color);
-	padding: 2rem;
-	flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: var(--background-color);
+    padding: 2rem;
+    flex: 1;
 }
 
 .settingsContainer {
-	background-color: var(--main-color);
-	border-radius: 8px;
-	padding: 2rem;
-	width: 100%;
-	max-width: 650px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--main-color);
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-	color: var(--navbar-main);
-	margin-bottom: 1.5rem;
-	font-size: 2rem;
-	border-bottom: 1px solid var(--main-border);
-	padding-bottom: 0.75rem;
+    color: var(--navbar-main);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    border-bottom: 1px solid var(--main-border);
+    padding-bottom: 0.75rem;
 }

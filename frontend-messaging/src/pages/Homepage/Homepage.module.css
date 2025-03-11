@@ -1,11 +1,11 @@
 .homepageMain {
-	display: flex;
-	flex: 1;
+    display: flex;
+    flex: 1;
 }
 
 .mainContent {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	padding: 1rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
 }

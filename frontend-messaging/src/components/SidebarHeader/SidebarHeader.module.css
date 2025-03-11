@@ -1,16 +1,16 @@
 .sidebarHeader {
-	height: 4rem;
-	padding: 0 1.5rem;
-	border-bottom: 1px solid var(--main-border);
-	display: flex;
-	align-items: center;
-	background-color: var(--main-color);
+    height: 4rem;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--main-border);
+    display: flex;
+    align-items: center;
+    background-color: var(--main-color);
 }
 
 .title {
-	color: var(--navbar-main);
-	font-size: 1.3rem;
-	font-weight: 600;
-	margin: 0;
-	letter-spacing: 0.5px;
+    color: var(--navbar-main);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
 }

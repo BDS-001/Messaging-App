@@ -1,63 +1,63 @@
 .messageWrapper {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 0.75rem;
-	max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+    max-width: 70%;
 }
 
 .ownMessage {
-	margin-left: auto;
-	align-items: flex-end;
+    margin-left: auto;
+    align-items: flex-end;
 }
 
 .otherMessage {
-	margin-right: auto;
-	align-items: flex-start;
+    margin-right: auto;
+    align-items: flex-start;
 }
 
 .senderName {
-	font-size: 0.75rem;
-	font-weight: 600;
-	margin-bottom: 2px;
-	color: #666;
-	padding-left: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: #666;
+    padding-left: 0.5rem;
 }
 
 .messageContent {
-	padding: 0.75rem 1rem;
-	border-radius: 18px;
-	position: relative;
-	word-break: break-word;
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
+    position: relative;
+    word-break: break-word;
 }
 
 .ownMessage .messageContent {
-	background-color: var(--navbar-main);
-	color: white;
-	border-bottom-right-radius: 4px;
+    background-color: var(--navbar-main);
+    color: white;
+    border-bottom-right-radius: 4px;
 }
 
 .otherMessage .messageContent {
-	background-color: #e9ecef;
-	color: #333;
-	border-bottom-left-radius: 4px;
+    background-color: #e9ecef;
+    color: #333;
+    border-bottom-left-radius: 4px;
 }
 
 .messageContent p {
-	margin: 0;
-	padding-right: 3.5rem;
-	min-width: 4rem;
+    margin: 0;
+    padding-right: 3.5rem;
+    min-width: 4rem;
 }
 
 .messageTime {
-	position: absolute;
-	bottom: 0.4rem;
-	right: 0.6rem;
-	font-size: 0.7rem;
-	opacity: 0.8;
-	white-space: nowrap;
+    position: absolute;
+    bottom: 0.4rem;
+    right: 0.6rem;
+    font-size: 0.7rem;
+    opacity: 0.8;
+    white-space: nowrap;
 }
 
 .deletedMessage {
-	font-style: italic;
-	opacity: 0.6;
+    font-style: italic;
+    opacity: 0.6;
 }

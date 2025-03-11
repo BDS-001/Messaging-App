@@ -4,16 +4,16 @@ import { ChatProvider } from '../provider/ChatProvider';
 import Header from '../components/Header/Header';
 
 function App() {
-	return (
-		<>
-			<AuthProvider>
-				<ChatProvider>
-					<Header />
-					<Outlet />
-				</ChatProvider>
-			</AuthProvider>
-		</>
-	);
+    return (
+        <>
+            <AuthProvider>
+                <ChatProvider>
+                    <Header />
+                    <Outlet />
+                </ChatProvider>
+            </AuthProvider>
+        </>
+    );
 }
 
 export default App;
