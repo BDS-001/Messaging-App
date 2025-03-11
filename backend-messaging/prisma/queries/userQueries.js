@@ -10,7 +10,9 @@ async function getUserById(userId) {
     select: {
       id: true,
       username: true,
-      email: true
+      email: true,
+      createdAt: true,
+      updatedAt: true
     }
   })
 }
@@ -75,6 +77,8 @@ async function getUserForAuth(email) {
       id: true,
       username: true,
       email: true,
+      createdAt: true,
+      updatedAt: true,
       password: true
     }
   })
@@ -89,7 +93,9 @@ async function getUserByUsername(username) {
     select: {
       id: true,
       username: true,
-      email: true
+      email: true,
+      createdAt: true,
+      updatedAt: true
     }
   });
 }
