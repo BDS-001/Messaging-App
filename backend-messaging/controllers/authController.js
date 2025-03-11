@@ -6,6 +6,7 @@ const httpStatusCodes = require('../utils/httpStatusCodes');
 
 function getCurrentUser(req, res) {
     return res.status(httpStatusCodes.OK).json({
+        success: true,
         message: 'Current user retrieved successfully',
         data: req.user
     });
