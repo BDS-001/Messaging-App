@@ -1,12 +1,13 @@
 import { API_URL } from './apiService';
 
-export async function updateUsername(userId, userData) {
+export async function updateUserInfo(userId, userData) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
             return [];
         }
         const response = await fetch(`${API_URL}/users/${userId}`, {
+            method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

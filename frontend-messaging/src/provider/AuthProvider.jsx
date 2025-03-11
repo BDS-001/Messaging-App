@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { checkUserAuth, loginUser, signupUser } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { updateUserInfo } from '../services/userService';
 
 export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false);
@@ -66,9 +67,33 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     };
 
+    async function updateUserData(userData) {
+        try {
+            const updatedUser = await updateUserInfo(user.id, userData);
+            console.log(user, updatedUser);
+            if (updatedUser) {
+                setUser(updatedUser);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error('Error sending message', error);
+            return false;
+        }
+    }
+
     return (
         <AuthContext.Provider
-            value={{ isAuth, isLoading, login, logout, signup, user }}
+            value={{
+                isAuth,
+                isLoading,
+                login,
+                logout,
+                signup,
+                user,
+                updateUserData,
+            }}
         >
             {children}
         </AuthContext.Provider>

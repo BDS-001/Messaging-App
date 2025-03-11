@@ -1,20 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import styles from './UserInfoSection.module.css';
 
 const UserInfoSection = ({ user }) => {
     const [newUsername, setNewUsername] = useState(user?.username || '');
     const [isEditing, setIsEditing] = useState(false);
+    const { updateUserData } = useAuth();
 
     const handleUsernameChange = (e) => {
         setNewUsername(e.target.value);
     };
 
-    const handleUpdateUsername = () => {
+    const handleUpdateUsername = async () => {
         console.log(
             `User is trying to update username from ${user.username} to ${newUsername}`,
         );
-        // UPDATE USERNAME LOGIC
+        const res = await updateUserData({ username: newUsername });
+        console.log(res);
         setIsEditing(false);
     };
 
