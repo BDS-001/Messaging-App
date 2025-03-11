@@ -42,21 +42,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async (credentials) => {
-        try {
-            const result = await loginUser(credentials);
+        const result = await loginUser(credentials);
 
-            if (result.success) {
-                const { token, user } = result.data;
-                localStorage.setItem('token', token);
-                setIsAuth(true);
-                setUser(user);
-                return true;
-            } else {
-                console.error('Login failed:', result.error);
-                return false;
-            }
-        } catch (error) {
-            console.error('Login error:', error);
+        if (result.success) {
+            const { token, user } = result.data;
+            localStorage.setItem('token', token);
+            setIsAuth(true);
+            setUser(user);
+            return true;
+        } else {
+            console.error('Login failed:', result.message);
             return false;
         }
     };
@@ -69,17 +64,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     async function updateUserData(userData) {
-        try {
-            const updatedUser = await updateUserInfo(user.id, userData);
-            console.log(user, updatedUser);
-            if (updatedUser) {
-                setUser(updatedUser);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (error) {
-            console.error('Error sending message', error);
+        const result = await updateUserInfo(user.id, userData);
+
+        if (result.success) {
+            setUser(result.data);
+            return true;
+        } else {
             return false;
         }
     }

@@ -4,8 +4,9 @@ export async function updateUserInfo(userId, userData) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            return null;
+            return { success: false, message: 'No token found', data: null };
         }
+
         const response = await fetch(`${API_URL}/users/${userId}`, {
             method: 'PUT',
             headers: {
@@ -14,21 +15,15 @@ export async function updateUserInfo(userId, userData) {
             },
             body: JSON.stringify(userData),
         });
+
         const result = await response.json();
-        if (response.ok) {
-            const user = result.data;
-            return user;
-        } else {
-            console.error(
-                'Failed to update user:',
-                response.status,
-                response.statusText,
-                result.message,
-            );
-            return null;
-        }
+        return result;
     } catch (error) {
-        console.error('update user failed:', error);
-        return null;
+        console.error('Update user failed:', error);
+        return {
+            success: false,
+            message: 'Network error occurred',
+            data: null,
+        };
     }
 }

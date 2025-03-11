@@ -22,35 +22,36 @@ export const ChatProvider = ({ children }) => {
     async function fetchUserChats() {
         setIsLoading(true);
         try {
-            const chats = await getUserChats();
-            setChats(chats);
-            console.log('fetched user chats:', chats);
+            const result = await getUserChats();
+            if (result.success) {
+                setChats(result.data);
+                console.log('fetched user chats:', result.data);
+            } else {
+                console.error('Error fetching chats:', result.message);
+                setChats([]);
+            }
         } catch (error) {
             console.error('Error fetching chats:', error);
+            setChats([]);
         } finally {
             setIsLoading(false);
         }
     }
 
     async function processSendMessage(messageData) {
-        try {
-            const newMessage = await sendMessage(messageData);
-            if (newMessage) {
-                setActiveChatDetails((prev) => ({
-                    ...prev,
-                    messages: [...prev.messages, newMessage],
-                }));
-                return true; // Return success
-            } else {
-                setChatError("Message couldn't be sent. Please try again.");
-                return false; // Return failure
-            }
-        } catch (error) {
-            console.error('Error sending message', error);
+        const result = await sendMessage(messageData);
+
+        if (result.success) {
+            setActiveChatDetails((prev) => ({
+                ...prev,
+                messages: [...prev.messages, result.data],
+            }));
+            return true;
+        } else {
             setChatError(
-                'Network error. Please check your connection and try again.',
+                result.message || "Message couldn't be sent. Please try again.",
             );
-            return false; // Return failure
+            return false;
         }
     }
 
@@ -72,11 +73,17 @@ export const ChatProvider = ({ children }) => {
         }
 
         try {
-            const details = await getChatDetails(activeChat);
-            setActiveChatDetails(details);
-            console.log('fetched chat details:', details);
+            const result = await getChatDetails(activeChat);
+            if (result.success) {
+                setActiveChatDetails(result.data);
+                console.log('fetched chat details:', result.data);
+            } else {
+                console.error('Error fetching chat details:', result.message);
+                setActiveChatDetails(null);
+            }
         } catch (error) {
             console.error('Error fetching chat details:', error);
+            setActiveChatDetails(null);
         } finally {
             setIsLoading(false);
         }
