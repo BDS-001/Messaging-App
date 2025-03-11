@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
 import Message from '../Message/Message';
 import MessageSender from '../MessageSender/MessageSender';
+import ParticipantsDisplay from '../ParticipantsDisplay/ParticipantsDisplay';
 import styles from './MessageContainer.module.css';
 
 const MessageContainer = () => {
@@ -85,10 +86,18 @@ const MessageContainer = () => {
             ? otherParticipant?.username
             : activeChatDetails.name;
 
+    const isGroupChat = activeChatDetails.type === 'group';
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h3>{chatName}</h3>
+                {isGroupChat && (
+                    <ParticipantsDisplay
+                        participants={activeChatDetails.participants}
+                        chatId={activeChatDetails.id}
+                    />
+                )}
             </div>
 
             <div className={styles.messagesWrapper}>

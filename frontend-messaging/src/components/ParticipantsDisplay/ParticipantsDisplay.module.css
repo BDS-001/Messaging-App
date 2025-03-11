@@ -1,0 +1,261 @@
+.participantsContainer {
+    position: relative;
+}
+
+.participantsButton {
+    background-color: var(--navbar-main);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.participantsButton:hover {
+    background-color: #1a2c3a;
+}
+
+.participantsDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 280px;
+    z-index: 100;
+    border: 1px solid var(--main-border);
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.participantsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--main-border);
+}
+
+.participantsHeader h4 {
+    margin: 0;
+    color: var(--navbar-main);
+    font-size: 1rem;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    color: #777;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.closeButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+/* Add participant section */
+.participantsActions {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.addButton {
+    background-color: var(--navbar-main);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.addButton:hover {
+    background-color: #1a2c3a;
+}
+
+.participantsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 250px;
+}
+
+.participantItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.participantItem:last-child {
+    border-bottom: none;
+}
+
+.participantInfo {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.participantAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--navbar-main);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 0.75rem;
+}
+
+.participantName {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.participantYou {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+}
+
+.removeButton {
+    background-color: transparent;
+    border: none;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 0;
+}
+
+.removeButton:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Leave group section */
+.leaveGroupContainer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--main-border);
+}
+
+.leaveButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.leaveButton:hover {
+    background-color: #c0392b;
+}
+
+/* Modal styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--navbar-main);
+    font-size: 1.2rem;
+}
+
+.modalText {
+    margin-bottom: 1.5rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.cancelButton {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+    background-color: #ddd;
+}
+
+.confirmButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.confirmButton:hover {
+    background-color: #c0392b;
+}

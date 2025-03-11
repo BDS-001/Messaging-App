@@ -9,6 +9,9 @@
     padding: 1rem;
     border-bottom: 1px solid var(--main-border);
     background-color: var(--main-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header h3 {
