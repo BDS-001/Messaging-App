@@ -4,7 +4,7 @@ export async function updateUserInfo(userId, userData) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            return [];
+            return null;
         }
         const response = await fetch(`${API_URL}/users/${userId}`, {
             method: 'PUT',
@@ -14,20 +14,21 @@ export async function updateUserInfo(userId, userData) {
             },
             body: JSON.stringify(userData),
         });
+        const result = await response.json();
         if (response.ok) {
-            const result = await response.json();
             const user = result.data;
             return user;
         } else {
             console.error(
-                'Failed to fetch chats:',
+                'Failed to update user:',
                 response.status,
                 response.statusText,
+                result.message,
             );
-            return [];
+            return null;
         }
     } catch (error) {
-        console.error('Get user chats failed:', error);
-        return [];
+        console.error('update user failed:', error);
+        return null;
     }
 }

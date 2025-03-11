@@ -1,15 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import styles from './UserInfoSection.module.css';
 
 const UserInfoSection = ({ user }) => {
     const [newUsername, setNewUsername] = useState(user?.username || '');
     const [isEditing, setIsEditing] = useState(false);
+    const [responseMessage, setResponseMessage] = useState('');
+    const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+    const [showMessage, setShowMessage] = useState(false);
     const { updateUserData } = useAuth();
 
     const handleUsernameChange = (e) => {
         setNewUsername(e.target.value);
+    };
+
+    const displayMessage = (message, type) => {
+        setResponseMessage(message);
+        setMessageType(type);
+        setShowMessage(true);
+
+        // Hide message after 3 seconds
+        setTimeout(() => {
+            setShowMessage(false);
+        }, 3000);
     };
 
     const handleUpdateUsername = async () => {
@@ -18,6 +32,16 @@ const UserInfoSection = ({ user }) => {
         );
         const res = await updateUserData({ username: newUsername });
         console.log(res);
+
+        if (res === true) {
+            displayMessage('Username updated successfully!', 'success');
+        } else {
+            displayMessage(
+                'Failed to update username. Please try again.',
+                'error',
+            );
+        }
+
         setIsEditing(false);
     };
 
@@ -28,6 +52,13 @@ const UserInfoSection = ({ user }) => {
             setNewUsername(user?.username || '');
         }
     };
+
+    // Clear message when component unmounts
+    useEffect(() => {
+        return () => {
+            setShowMessage(false);
+        };
+    }, []);
 
     return (
         <div className={styles.section}>
@@ -74,6 +105,16 @@ const UserInfoSection = ({ user }) => {
                         </button>
                     </div>
                 )}
+
+                <div
+                    className={`${styles.responseMessageContainer} ${showMessage ? styles.visible : ''}`}
+                >
+                    <div
+                        className={`${styles.responseMessage} ${styles[messageType]}`}
+                    >
+                        {responseMessage}
+                    </div>
+                </div>
             </div>
         </div>
     );
