@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
+    // Check authentication status when component mounts
     useEffect(() => {
         checkAuth();
     }, []);

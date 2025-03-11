@@ -82,6 +82,7 @@ export const ChatProvider = ({ children }) => {
         }
     }, [activeChat]);
 
+    // Fetch user chats when auth state changes
     useEffect(() => {
         if (isAuth) {
             fetchUserChats();
@@ -107,6 +108,7 @@ export const ChatProvider = ({ children }) => {
         [activeChat],
     );
 
+    // Fetch chat details when active chat changes
     useEffect(() => {
         if (isAuth && activeChat) {
             fetchChatDetails();

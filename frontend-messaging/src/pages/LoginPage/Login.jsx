@@ -14,6 +14,7 @@ function LoginPage() {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
+    // Display success message when user is redirected from signup page
     useEffect(() => {
         if (location.state?.fromSignup) {
             setSuccessMessage(
