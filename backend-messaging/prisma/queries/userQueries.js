@@ -84,7 +84,7 @@ async function getUserForAuth(email) {
   })
 }
 
-async function getUserByUsername(q) {
+async function getUsersBySearchQuery(q) {
   return await prisma.user.findMany({
     where: {
       username: {
@@ -103,4 +103,4 @@ async function getUserByUsername(q) {
   });
 }
 
-module.exports = { getUserById, createUser, updateUser, softDeleteUser, getUserForAuth, getUserByUsername }
+module.exports = { getUserById, createUser, updateUser, softDeleteUser, getUserForAuth, getUsersBySearchQuery }
