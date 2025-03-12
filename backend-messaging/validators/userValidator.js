@@ -122,8 +122,8 @@ const userValidators = {
               .trim()
               .notEmpty()
               .withMessage('Search term is required')
-              .isLength({ min: 3, max: 30 })
-              .withMessage('Search must be between 3 and 30 characters')
+              .isLength({ min: 2, max: 30 })
+              .withMessage('Search must be between 2 and 30 characters')
           ],
 }
 
