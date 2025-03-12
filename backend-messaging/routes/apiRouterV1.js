@@ -28,7 +28,7 @@ router.post('/chats', isAuthenticated, validateRequest('chat', 'create'), chatCo
 router.put('/chats/:chatId', isAuthenticated, validateRequest('chat', 'update'), chatController.updateChat);
 router.post('/chats/:chatId/leave', isAuthenticated, validateRequest('chat', 'leave'), chatController.leaveChat);
 router.post('/chats/:chatId/clear', isAuthenticated, validateRequest('chat', 'clear'), chatController.clearChatHistory);
-router.post('/chats/:chatId/users', isAuthenticated, validateRequest('chat', 'addUser'), chatController.addUserToChat);
+router.put('/chats/:chatId/users/:userId', isAuthenticated, validateRequest('chat', 'addUser'), chatController.addUserToChat);
 router.delete('/chats/:chatId/users/:userId', isAuthenticated, validateRequest('chat', 'removeUser'), chatController.removeUserFromChat);
 
 //message

@@ -74,7 +74,7 @@ const chatValidators = {
             .withMessage('Chat ID must be a number')
             .toInt(),
         
-        body('userId')
+        param('userId')
             .exists()
             .withMessage('User ID is required')
             .isInt()

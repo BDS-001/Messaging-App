@@ -102,8 +102,8 @@ async function updateChat(req, res) {
 
 async function addUserToChat(req, res) {
     try {
-        const { chatId } = matchedData(req, { locations: ['params'], onlyValidData: true });
-        const { userId } = matchedData(req, { locations: ['body'], onlyValidData: true });
+        // Updated: Get both chatId and userId from params instead of body
+        const { chatId, userId } = matchedData(req, { locations: ['params'], onlyValidData: true });
         const currentUserId = req.user.id;
         
         // Check if current user is a participant
