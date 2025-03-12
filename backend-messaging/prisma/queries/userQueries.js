@@ -84,10 +84,13 @@ async function getUserForAuth(email) {
   })
 }
 
-async function getUserByUsername(username) {
-  return await prisma.user.findUnique({
+async function getUserByUsername(q) {
+  return await prisma.user.findMany({
     where: {
-      username: username,
+      username: {
+        contains: q,
+        mode: 'insensitive',
+      },
       isDeleted: false
     },
     select: {

@@ -1,4 +1,4 @@
-const { body, param } = require('express-validator');
+const { body, param, query } = require('express-validator');
 
 const userValidators = {
     get: [
@@ -116,12 +116,12 @@ const userValidators = {
                 return true;
               })
           ],
-          findUser: [
-            param('username')
+          findUsers: [
+            query('q')
               .isString()
               .trim()
               .notEmpty()
-              .withMessage('Username is required')
+              .withMessage('Search term is required')
               .isLength({ min: 3, max: 30 })
               .withMessage('Username must be between 3 and 30 characters')
           ],

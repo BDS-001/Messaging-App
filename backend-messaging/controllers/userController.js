@@ -85,12 +85,12 @@ async function deleteUser(req, res) {
     }
 }
 
-async function getUserByUsername(req, res) {
+async function getUsersBySearchQuery(req, res) {
     try {
-        const { username } = matchedData(req, { locations: ['params'], onlyValidData: true });
-        const user = await userQueries.getUserByUsername(username);
+        const { q } = matchedData(req, { locations: ['query'], onlyValidData: true });
+        const users = await userQueries.getUsersBySearchQuery(q);
         
-        if (!user) {
+        if (!users) {
             return res.status(httpStatusCodes.NOT_FOUND).json({
                 success: false,
                 message: 'User not found'
@@ -100,7 +100,7 @@ async function getUserByUsername(req, res) {
         return res.status(httpStatusCodes.OK).json({
             success: true,
             message: 'User found',
-            data: user
+            data: users
         });
     } catch (error) {
         console.log(error);
@@ -112,4 +112,4 @@ async function getUserByUsername(req, res) {
     }
 }
 
-module.exports = { getUserById, createUser, updateUser, deleteUser, getUserByUsername };
+module.exports = { getUserById, createUser, updateUser, deleteUser, getUsersBySearchQuery };

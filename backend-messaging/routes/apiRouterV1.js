@@ -15,11 +15,11 @@ router.get('/users/auth', isAuthenticated, authController.getCurrentUser);
 router.post('/users/login', validateRequest('auth', 'login'), authController.login);
 
 //user
+router.get('/users/search', isAuthenticated, validateRequest('user', 'findUsers'), userController.getUsersBySearchQuery); //format: q=searchterm
 router.get('/users/:id', validateRequest('user', 'get'), userController.getUserById);
 router.post('/users', validateRequest('user', 'create'), userController.createUser);
 router.put('/users/:id', isAuthenticated, validateRequest('user', 'update'), userController.updateUser);
 router.delete('/users', isAuthenticated, userController.deleteUser);
-router.get('/users/find/:username', isAuthenticated, validateRequest('user', 'findUser'), userController.getUserByUsername);
 
 //chat
 router.get('/chats', isAuthenticated, chatController.getUserChats);
