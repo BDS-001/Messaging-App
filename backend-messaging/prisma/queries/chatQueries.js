@@ -166,7 +166,9 @@ async function addUserToChat(chatId, userId) {
         select: {
           id: true,
           username: true,
-          email: true
+          email: true,
+          createdAt: true,
+          updatedAt: true
         }
       },
       chat: true
