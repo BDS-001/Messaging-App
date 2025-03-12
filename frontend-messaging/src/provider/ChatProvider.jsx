@@ -5,6 +5,7 @@ import {
     getChatDetails,
     sendMessage,
     leaveGroup,
+    removeParticipant,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -134,6 +135,37 @@ export const ChatProvider = ({ children }) => {
         return true;
     }
 
+    async function removeGroupParticipant(chatId, userId) {
+        const result = await removeParticipant(chatId, userId);
+        if (!result.success) return false;
+
+        // Update active chat details and chats to reflect the participant removal
+        if (activeChatDetails && activeChatDetails.id === chatId) {
+            setActiveChatDetails((prev) => ({
+                ...prev,
+                participants: prev.participants.filter(
+                    (participant) => participant.userId !== userId,
+                ),
+            }));
+        }
+
+        setChats((prevChats) =>
+            prevChats.map((chat) => {
+                if (chat.id === chatId) {
+                    return {
+                        ...chat,
+                        participants: chat.participants.filter(
+                            (participant) => participant.userId !== userId,
+                        ),
+                    };
+                }
+                return chat;
+            }),
+        );
+
+        return true;
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -149,6 +181,7 @@ export const ChatProvider = ({ children }) => {
                 isInitialChatLoad,
                 setIsInitialChatLoad,
                 leaveGroupChat,
+                removeGroupParticipant,
             }}
         >
             {children}

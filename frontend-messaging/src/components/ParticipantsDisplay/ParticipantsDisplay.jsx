@@ -7,8 +7,12 @@ import styles from './ParticipantsDisplay.module.css';
 const ParticipantsDisplay = ({ participants, chatId }) => {
     const [showParticipants, setShowParticipants] = useState(false);
     const [showLeaveModal, setShowLeaveModal] = useState(false);
+    const [showRemoveModal, setShowRemoveModal] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUsername, setSelectedUsername] = useState('');
+    const [removeError, setRemoveError] = useState(null);
     const { user } = useAuth();
-    const { leaveGroupChat } = useChat();
+    const { leaveGroupChat, removeGroupParticipant } = useChat();
 
     const toggleParticipants = () => {
         setShowParticipants(!showParticipants);
@@ -18,6 +22,10 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
     useEffect(() => {
         setShowParticipants(false);
         setShowLeaveModal(false);
+        setShowRemoveModal(false);
+        setSelectedUserId(null);
+        setSelectedUsername('');
+        setRemoveError(null);
     }, [chatId]);
 
     const handleAddParticipant = () => {
@@ -25,17 +33,42 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
         console.log('Add participant clicked');
     };
 
-    const handleRemoveParticipant = (userId) => {
-        // TODO: Implement API call to remove participant from the group
-        console.log('Remove participant clicked', userId);
+    const confirmRemoveParticipant = (userId, username) => {
+        setSelectedUserId(userId);
+        setSelectedUsername(username);
+        setShowRemoveModal(true);
     };
 
-    const handleLeaveGroup = () => {
-        const res = leaveGroupChat(chatId);
-        res
-            ? console.log('Leave group confirmed')
-            : console.log('Error leaving group');
+    const handleRemoveParticipant = async () => {
+        if (!selectedUserId) return;
+
+        setRemoveError(null);
+        const success = await removeGroupParticipant(chatId, selectedUserId);
+
+        if (success) {
+            setShowRemoveModal(false);
+            setSelectedUserId(null);
+            setSelectedUsername('');
+        } else {
+            setRemoveError('Failed to remove participant. Please try again.');
+        }
+    };
+
+    const handleLeaveGroup = async () => {
+        const success = await leaveGroupChat(chatId);
+        if (success) {
+            console.log('Left group successfully');
+        } else {
+            console.log('Error leaving group');
+        }
         setShowLeaveModal(false);
+    };
+
+    const cancelRemoveParticipant = () => {
+        setShowRemoveModal(false);
+        setSelectedUserId(null);
+        setSelectedUsername('');
+        setRemoveError(null);
     };
 
     return (
@@ -97,8 +130,9 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                                     <button
                                         className={styles.removeButton}
                                         onClick={() =>
-                                            handleRemoveParticipant(
+                                            confirmRemoveParticipant(
                                                 participant.userId,
+                                                participant.user.username,
                                             )
                                         }
                                         aria-label="Remove participant"
@@ -143,6 +177,41 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                                 onClick={handleLeaveGroup}
                             >
                                 Leave Group
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Remove Participant Confirmation Modal */}
+            {showRemoveModal && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <h4 className={styles.modalTitle}>
+                            Remove Participant
+                        </h4>
+                        <p className={styles.modalText}>
+                            Are you sure you want to remove {selectedUsername}{' '}
+                            from this group? They will no longer be able to see
+                            messages or participate in this chat.
+                        </p>
+                        {removeError && (
+                            <div className={styles.modalError}>
+                                {removeError}
+                            </div>
+                        )}
+                        <div className={styles.modalButtons}>
+                            <button
+                                className={styles.cancelButton}
+                                onClick={cancelRemoveParticipant}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className={styles.confirmButton}
+                                onClick={handleRemoveParticipant}
+                            >
+                                Remove
                             </button>
                         </div>
                     </div>

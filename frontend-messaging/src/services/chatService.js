@@ -95,3 +95,28 @@ export async function leaveGroup(chatId) {
         return { success: false, message: 'Network error occurred' };
     }
 }
+
+export async function removeParticipant(chatId, userId) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+
+        const response = await fetch(
+            `${API_URL}/chats/${chatId}/users/${userId}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        );
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Remove participant failed:', error);
+        return { success: false, message: 'Network error occurred' };
+    }
+}
