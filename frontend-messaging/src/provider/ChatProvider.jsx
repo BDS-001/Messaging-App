@@ -6,6 +6,8 @@ import {
     sendMessage,
     leaveGroup,
     removeParticipant,
+    searchUsers,
+    addParticipant,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -139,7 +141,7 @@ export const ChatProvider = ({ children }) => {
         const result = await removeParticipant(chatId, userId);
         if (!result.success) return false;
 
-        // Update active chat details and chats to reflect the participant removal
+        // Update active chat details to reflect the participant removal
         if (activeChatDetails && activeChatDetails.id === chatId) {
             setActiveChatDetails((prev) => ({
                 ...prev,
@@ -166,6 +168,46 @@ export const ChatProvider = ({ children }) => {
         return true;
     }
 
+    async function searchForUsers(searchTerm) {
+        if (!searchTerm || searchTerm.trim().length < 2) {
+            return {
+                success: false,
+                message: 'Search term must be at least 2 characters',
+                data: [],
+            };
+        }
+
+        return await searchUsers(searchTerm);
+    }
+
+    async function addGroupParticipant(chatId, userId) {
+        const result = await addParticipant(chatId, userId);
+        if (!result.success) return { success: false, message: result.message };
+
+        // Update active chat details to reflect the new participant
+        if (activeChatDetails && activeChatDetails.id === chatId) {
+            setActiveChatDetails((prev) => ({
+                ...prev,
+                participants: [...prev.participants, result.data],
+            }));
+            console.log(activeChatDetails);
+        }
+
+        setChats((prev) =>
+            prev.map((chat) => {
+                return chat.id === chatId
+                    ? {
+                          ...chat,
+                          participants: [...chat.participants, result.data],
+                      }
+                    : chat;
+            }),
+        );
+        console.log(chats);
+
+        return { success: true, data: result.data };
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -182,6 +224,8 @@ export const ChatProvider = ({ children }) => {
                 setIsInitialChatLoad,
                 leaveGroupChat,
                 removeGroupParticipant,
+                searchForUsers,
+                addGroupParticipant,
             }}
         >
             {children}

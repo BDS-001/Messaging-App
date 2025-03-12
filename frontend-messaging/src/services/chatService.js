@@ -120,3 +120,53 @@ export async function removeParticipant(chatId, userId) {
         return { success: false, message: 'Network error occurred' };
     }
 }
+
+export async function searchUsers(searchTerm) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found', data: [] };
+        }
+
+        const response = await fetch(
+            `${API_URL}/users/search?q=${encodeURIComponent(searchTerm)}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        );
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.error('Search users failed:', error);
+        return { success: false, message: 'Network error occurred', data: [] };
+    }
+}
+
+export async function addParticipant(chatId, userId) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+        const response = await fetch(
+            `${API_URL}/chats/${chatId}/users/${userId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        );
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.error('Add participant failed:', error);
+        return { success: false, message: 'Network error occurred' };
+    }
+}

@@ -1,0 +1,147 @@
+.userSearchContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.searchContainer {
+    margin-bottom: 1rem;
+    position: relative;
+    width: 100%;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.searchInput:focus {
+    border-color: var(--navbar-main);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+}
+
+.searchingIndicator {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    color: #777;
+    font-style: italic;
+    background-color: white;
+    padding: 0 5px;
+}
+
+.searchResults {
+    overflow-y: auto;
+    max-height: 300px;
+    margin-top: 0.5rem;
+}
+
+.userList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+}
+
+.userItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.userItem:hover {
+    background-color: #f8f9fa;
+}
+
+.userItem:last-child {
+    border-bottom: none;
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--navbar-main);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.userName {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userEmail {
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selectButton {
+    background-color: var(--navbar-main);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 0.5rem;
+}
+
+.selectButton:hover {
+    background-color: #1a2c3a;
+}
+
+.noResults, .searchPrompt {
+    text-align: center;
+    padding: 1.5rem;
+    color: #777;
+    font-style: italic;
+    background-color: #f8f9fa;
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+}
+
+.errorMessage {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid #f5c6cb;
+}

@@ -44,7 +44,6 @@ const MessageContainer = () => {
 
         if (isInitialChatLoad || isNewChat) {
             // For initial load or chat change, scroll immediately without animation
-            console.log('Using auto scroll behavior for new chat');
             requestAnimationFrame(() => {
                 scrollToBottom('auto');
                 // Only set isInitialChatLoad to false AFTER we've scrolled
@@ -52,7 +51,6 @@ const MessageContainer = () => {
             });
         } else {
             // For new messages in the current chat, use smooth scrolling
-            console.log('Using smooth scroll for new message');
             scrollToBottom('smooth');
         }
     }, [

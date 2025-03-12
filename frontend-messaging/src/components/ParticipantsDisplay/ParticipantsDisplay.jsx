@@ -2,17 +2,21 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
+import UserSearch from '../UserSearch/UserSearch';
 import styles from './ParticipantsDisplay.module.css';
 
 const ParticipantsDisplay = ({ participants, chatId }) => {
     const [showParticipants, setShowParticipants] = useState(false);
     const [showLeaveModal, setShowLeaveModal] = useState(false);
     const [showRemoveModal, setShowRemoveModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUsername, setSelectedUsername] = useState('');
     const [removeError, setRemoveError] = useState(null);
+    const [addError, setAddError] = useState(null);
     const { user } = useAuth();
-    const { leaveGroupChat, removeGroupParticipant } = useChat();
+    const { leaveGroupChat, removeGroupParticipant, addGroupParticipant } =
+        useChat();
 
     const toggleParticipants = () => {
         setShowParticipants(!showParticipants);
@@ -23,14 +27,41 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
         setShowParticipants(false);
         setShowLeaveModal(false);
         setShowRemoveModal(false);
+        setShowAddModal(false);
         setSelectedUserId(null);
         setSelectedUsername('');
         setRemoveError(null);
+        setAddError(null);
     }, [chatId]);
 
     const handleAddParticipant = () => {
-        // TODO: Implement API call to add participant to the group
-        console.log('Add participant clicked');
+        setShowAddModal(true);
+        setAddError(null);
+    };
+
+    const handleSelectUser = async (user) => {
+        setAddError(null);
+
+        const result = await addGroupParticipant(chatId, user.id);
+        if (result.success) {
+            setShowAddModal(false);
+        } else {
+            // Handle the specific error format
+            if (
+                result.errors &&
+                Array.isArray(result.errors) &&
+                result.errors.length > 0
+            ) {
+                // Get all error messages from the array
+                const errorMessages = result.errors.map((err) => err.msg);
+                setAddError(errorMessages.join('. '));
+            } else {
+                setAddError(
+                    result.message ||
+                        `Failed to add ${user.username} to the group`,
+                );
+            }
+        }
     };
 
     const confirmRemoveParticipant = (userId, username) => {
@@ -214,6 +245,37 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                                 Remove
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Participant Modal */}
+            {showAddModal && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <div className={styles.modalHeader}>
+                            <h4 className={styles.modalTitle}>
+                                Add Participant
+                            </h4>
+                            <button
+                                className={styles.closeModalButton}
+                                onClick={() => setShowAddModal(false)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {addError && (
+                            <div className={styles.modalError}>{addError}</div>
+                        )}
+
+                        <UserSearch
+                            onSelectUser={handleSelectUser}
+                            excludeUserIds={participants.map((p) => p.userId)}
+                            placeholder="Search for users to add..."
+                            buttonLabel="Add"
+                            noResultsMessage="No users found to add"
+                        />
                     </div>
                 </div>
             )}
