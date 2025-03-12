@@ -74,7 +74,7 @@ export async function sendMessage(messageData) {
     }
 }
 
-export async function leaveGroupChat(chatId) {
+export async function leaveGroup(chatId) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {

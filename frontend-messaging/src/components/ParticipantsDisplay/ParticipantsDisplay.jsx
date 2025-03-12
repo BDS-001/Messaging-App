@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useChat } from '../../context/ChatContext';
 import styles from './ParticipantsDisplay.module.css';
 
 const ParticipantsDisplay = ({ participants, chatId }) => {
     const [showParticipants, setShowParticipants] = useState(false);
     const [showLeaveModal, setShowLeaveModal] = useState(false);
     const { user } = useAuth();
+    const { leaveGroupChat } = useChat();
 
     const toggleParticipants = () => {
         setShowParticipants(!showParticipants);
@@ -29,8 +31,10 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
     };
 
     const handleLeaveGroup = () => {
-        // TODO: Implement API call to remove current user from the group
-        console.log('Leave group confirmed');
+        const res = leaveGroupChat(chatId);
+        res
+            ? console.log('Leave group confirmed')
+            : console.log('Error leaving group');
         setShowLeaveModal(false);
     };
 

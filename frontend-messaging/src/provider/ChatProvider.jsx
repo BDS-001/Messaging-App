@@ -4,6 +4,7 @@ import {
     getUserChats,
     getChatDetails,
     sendMessage,
+    leaveGroup,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -124,6 +125,15 @@ export const ChatProvider = ({ children }) => {
         }
     }, [activeChat, fetchChatDetails, isAuth]);
 
+    async function leaveGroupChat(chatId) {
+        const result = await leaveGroup(chatId);
+        if (!result.success) return false;
+
+        setChats((prev) => prev.filter((chat) => chat.id !== chatId));
+        setActiveChat(null);
+        return true;
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -138,6 +148,7 @@ export const ChatProvider = ({ children }) => {
                 clearChatError,
                 isInitialChatLoad,
                 setIsInitialChatLoad,
+                leaveGroupChat,
             }}
         >
             {children}
