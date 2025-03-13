@@ -4,6 +4,7 @@ import Homapage from '../pages/Homepage/Homepage.jsx';
 import Login from '../pages/LoginPage/Login.jsx';
 import Signup from '../pages/SignupPage/SignupPage.jsx';
 import SettingsPage from '../pages/SettingsPage/Settings.jsx';
+import ContactPage from '../pages/ContactPage/Contact.jsx';
 import {
     ProtectedRoute,
     AuthRoute,
@@ -44,6 +45,14 @@ const routes = [
                 element: (
                     <ProtectedRoute>
                         <SettingsPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'contacts',
+                element: (
+                    <ProtectedRoute>
+                        <ContactPage />
                     </ProtectedRoute>
                 ),
             },

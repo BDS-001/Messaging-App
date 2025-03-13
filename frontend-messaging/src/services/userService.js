@@ -27,3 +27,29 @@ export async function updateUserInfo(userId, userData) {
         };
     }
 }
+
+export async function getUserContacts() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found', data: null };
+        }
+
+        const response = await fetch(`${API_URL}/contacts`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Get user contacts failed:', error);
+        return {
+            success: false,
+            message: 'Network error occurred',
+            data: null,
+        };
+    }
+}
