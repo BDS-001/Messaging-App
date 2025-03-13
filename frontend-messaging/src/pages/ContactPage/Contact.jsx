@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useContact } from '../../context/ContactContext';
+import { useAuth } from '../../context/AuthContext'; // Import AuthContext
 import UserSearch from '../../components/UserSearch/UserSearch';
 import styles from './Contact.module.css';
 
@@ -12,13 +13,18 @@ function ContactsPage() {
         removeUserContact,
         updateUserContactNickname,
     } = useContact();
+    const { user } = useAuth(); // Get current user
 
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredContacts, setFilteredContacts] = useState([]);
     const [actionInProgress, setActionInProgress] = useState(false);
     const [actionError, setActionError] = useState(null);
     const [actionSuccess, setActionSuccess] = useState(null);
+    const [selectedContact, setSelectedContact] = useState(null);
+    const [newNickname, setNewNickname] = useState('');
 
     useEffect(() => {
         if (contactsArray.length > 0) {
@@ -72,49 +78,103 @@ function ContactsPage() {
         setActionInProgress(false);
     };
 
-    const handleRemoveContact = async (contact) => {
-        if (
-            window.confirm(
-                `Are you sure you want to remove ${contact.nickname} from your contacts?`,
-            )
-        ) {
-            setActionInProgress(true);
-
-            const result = await removeUserContact(contact);
-
-            if (result.success) {
-                setActionSuccess(`Removed ${contact.nickname} from contacts`);
-            } else {
-                setActionError(result.message || 'Failed to remove contact');
-            }
-
-            setActionInProgress(false);
-        }
+    const openRemoveModal = (contact) => {
+        setSelectedContact(contact);
+        setShowRemoveModal(true);
     };
 
-    const handleEditNickname = async (contact) => {
-        const newNickname = prompt('Enter new nickname', contact.nickname);
+    const handleRemoveContact = async () => {
+        if (!selectedContact) return;
 
-        if (newNickname && newNickname !== contact.nickname) {
-            setActionInProgress(true);
+        setActionInProgress(true);
+        const result = await removeUserContact(selectedContact);
 
-            const result = await updateUserContactNickname(
-                contact,
-                newNickname,
+        if (result.success) {
+            setActionSuccess(
+                `Removed ${selectedContact.nickname} from contacts`,
             );
+        } else {
+            setActionError(result.message || 'Failed to remove contact');
+        }
 
-            if (result.success) {
-                setActionSuccess(`Updated nickname to ${newNickname}`);
-            } else {
-                setActionError(result.message || 'Failed to update nickname');
+        setActionInProgress(false);
+        setShowRemoveModal(false);
+        setSelectedContact(null);
+    };
+
+    const openEditModal = (contact) => {
+        setSelectedContact(contact);
+        setNewNickname(contact.nickname);
+        setShowEditModal(true);
+    };
+
+    const handleEditNickname = async () => {
+        if (!selectedContact || !newNickname.trim()) return;
+
+        if (newNickname === selectedContact.nickname) {
+            setShowEditModal(false);
+            setSelectedContact(null);
+            setNewNickname('');
+            return;
+        }
+
+        setActionInProgress(true);
+        const result = await updateUserContactNickname(
+            selectedContact,
+            newNickname.trim(),
+        );
+
+        if (result.success) {
+            setActionSuccess(`Updated nickname to ${newNickname.trim()}`);
+        } else {
+            setActionError(result.message || 'Failed to update nickname');
+        }
+
+        setActionInProgress(false);
+        setShowEditModal(false);
+        setSelectedContact(null);
+        setNewNickname('');
+    };
+
+    // Handle key press in modals
+    const handleKeyDown = (e, callback) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            callback();
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            if (showEditModal) {
+                setShowEditModal(false);
+                setSelectedContact(null);
+                setNewNickname('');
+            } else if (showRemoveModal) {
+                setShowRemoveModal(false);
+                setSelectedContact(null);
+            } else if (showAddModal) {
+                setShowAddModal(false);
             }
-
-            setActionInProgress(false);
         }
     };
+
+    // Get IDs to exclude from search (current contacts and current user)
+    const excludedIds = [
+        ...contactsArray.map((c) => c.contactId),
+        user?.id, // Add current user ID
+    ].filter(Boolean); // Filter out undefined values
 
     return (
         <div className={styles.pageContainer}>
+            {/* Notification messages container - positioned fixed */}
+            <div className={styles.notificationsContainer}>
+                {error && <div className={styles.errorMessage}>{error}</div>}
+                {actionError && (
+                    <div className={styles.errorMessage}>{actionError}</div>
+                )}
+                {actionSuccess && (
+                    <div className={styles.successMessage}>{actionSuccess}</div>
+                )}
+            </div>
+
             <div className={styles.contactsContainer}>
                 <div className={styles.contactsHeader}>
                     <h2 className={styles.title}>Contacts</h2>
@@ -136,14 +196,6 @@ function ContactsPage() {
                         onChange={handleSearchChange}
                     />
                 </div>
-
-                {error && <div className={styles.errorMessage}>{error}</div>}
-                {actionError && (
-                    <div className={styles.errorMessage}>{actionError}</div>
-                )}
-                {actionSuccess && (
-                    <div className={styles.successMessage}>{actionSuccess}</div>
-                )}
 
                 {isLoading || actionInProgress ? (
                     <div className={styles.loadingMessage}>
@@ -174,18 +226,14 @@ function ContactsPage() {
                                 <div className={styles.contactActions}>
                                     <button
                                         className={styles.editButton}
-                                        onClick={() =>
-                                            handleEditNickname(contact)
-                                        }
+                                        onClick={() => openEditModal(contact)}
                                         disabled={actionInProgress}
                                     >
                                         Edit
                                     </button>
                                     <button
                                         className={styles.removeButton}
-                                        onClick={() =>
-                                            handleRemoveContact(contact)
-                                        }
+                                        onClick={() => openRemoveModal(contact)}
                                         disabled={actionInProgress}
                                     >
                                         Remove
@@ -205,8 +253,14 @@ function ContactsPage() {
 
             {/* Add Contact Modal */}
             {showAddModal && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modal}>
+                <div
+                    className={styles.modalOverlay}
+                    onClick={() => !actionInProgress && setShowAddModal(false)}
+                >
+                    <div
+                        className={styles.modal}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <div className={styles.modalHeader}>
                             <h4 className={styles.modalTitle}>
                                 Add New Contact
@@ -221,13 +275,139 @@ function ContactsPage() {
                         </div>
                         <UserSearch
                             onSelectUser={handleAddContact}
-                            excludeUserIds={contactsArray.map(
-                                (c) => c.contactId,
-                            )}
+                            excludeUserIds={excludedIds}
                             placeholder="Search for users to add..."
                             buttonLabel="Add"
                             noResultsMessage="No users found"
                         />
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Nickname Modal */}
+            {showEditModal && selectedContact && (
+                <div
+                    className={styles.modalOverlay}
+                    onClick={() => !actionInProgress && setShowEditModal(false)}
+                >
+                    <div
+                        className={styles.modal}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className={styles.modalHeader}>
+                            <h4 className={styles.modalTitle}>Edit Nickname</h4>
+                            <button
+                                className={styles.closeModalButton}
+                                onClick={() => {
+                                    setShowEditModal(false);
+                                    setSelectedContact(null);
+                                    setNewNickname('');
+                                }}
+                                disabled={actionInProgress}
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <div className={styles.modalContent}>
+                            <p>
+                                Update nickname for{' '}
+                                {selectedContact.contact.username}
+                            </p>
+                            <div className={styles.inputGroup}>
+                                <input
+                                    type="text"
+                                    value={newNickname}
+                                    onChange={(e) =>
+                                        setNewNickname(e.target.value)
+                                    }
+                                    onKeyDown={(e) =>
+                                        handleKeyDown(e, handleEditNickname)
+                                    }
+                                    className={styles.modalInput}
+                                    placeholder="Enter new nickname"
+                                    autoFocus
+                                />
+                            </div>
+                            <div className={styles.modalButtons}>
+                                <button
+                                    className={styles.cancelButton}
+                                    onClick={() => {
+                                        setShowEditModal(false);
+                                        setSelectedContact(null);
+                                        setNewNickname('');
+                                    }}
+                                    disabled={actionInProgress}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className={styles.confirmButton}
+                                    onClick={handleEditNickname}
+                                    disabled={
+                                        actionInProgress || !newNickname.trim()
+                                    }
+                                >
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Remove Contact Confirmation Modal */}
+            {showRemoveModal && selectedContact && (
+                <div
+                    className={styles.modalOverlay}
+                    onClick={() =>
+                        !actionInProgress && setShowRemoveModal(false)
+                    }
+                >
+                    <div
+                        className={styles.modal}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className={styles.modalHeader}>
+                            <h4 className={styles.modalTitle}>
+                                Remove Contact
+                            </h4>
+                            <button
+                                className={styles.closeModalButton}
+                                onClick={() => {
+                                    setShowRemoveModal(false);
+                                    setSelectedContact(null);
+                                }}
+                                disabled={actionInProgress}
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <div className={styles.modalContent}>
+                            <p>
+                                Are you sure you want to remove{' '}
+                                <strong>{selectedContact.nickname}</strong> from
+                                your contacts?
+                            </p>
+                            <div className={styles.modalButtons}>
+                                <button
+                                    className={styles.cancelButton}
+                                    onClick={() => {
+                                        setShowRemoveModal(false);
+                                        setSelectedContact(null);
+                                    }}
+                                    disabled={actionInProgress}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className={`${styles.confirmButton} ${styles.removeConfirmButton}`}
+                                    onClick={handleRemoveContact}
+                                    disabled={actionInProgress}
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
