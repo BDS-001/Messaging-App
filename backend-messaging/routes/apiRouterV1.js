@@ -40,7 +40,7 @@ router.delete('/messages/:id', isAuthenticated, validateRequest('message', 'get'
 router.get('/contacts', isAuthenticated, contactController.getUserContacts);
 router.post('/contacts', isAuthenticated, validateRequest('contact', 'add'), contactController.addContact);
 router.put('/contacts/:contactId', isAuthenticated, validateRequest('contact', 'update'), contactController.updateContact);
-router.delete('/contacts/:contactId', isAuthenticated, contactController.removeContact);
+router.delete('/contacts/:contactId', isAuthenticated, validateRequest('contact', 'delete'), contactController.removeContact);
 
 
 module.exports = router

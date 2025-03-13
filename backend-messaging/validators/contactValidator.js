@@ -24,6 +24,12 @@ const contactValidation = {
       .trim()
       .isLength({ max: 50 })
       .withMessage('Nickname cannot exceed 50 characters')
+  ],
+  delete: [
+    param('contactId')
+      .isInt()
+      .withMessage('Contact ID must be an integer')
+      .toInt(),
   ]
 };
 
