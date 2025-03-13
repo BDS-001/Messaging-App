@@ -4,10 +4,21 @@ import UserSearch from '../../components/UserSearch/UserSearch';
 import styles from './Contact.module.css';
 
 function ContactsPage() {
-    const { contactsArray, isLoading, error } = useContact();
+    const {
+        contactsArray,
+        isLoading,
+        error,
+        addUserContact,
+        removeUserContact,
+        updateUserContactNickname,
+    } = useContact();
+
     const [showAddModal, setShowAddModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredContacts, setFilteredContacts] = useState([]);
+    const [actionInProgress, setActionInProgress] = useState(false);
+    const [actionError, setActionError] = useState(null);
+    const [actionSuccess, setActionSuccess] = useState(null);
 
     useEffect(() => {
         if (contactsArray.length > 0) {
@@ -24,33 +35,82 @@ function ContactsPage() {
                         .includes(searchQuery.toLowerCase()),
             );
             setFilteredContacts(filtered);
+        } else {
+            setFilteredContacts([]);
         }
     }, [contactsArray, searchQuery]);
+
+    // Clear action messages after 3 seconds
+    useEffect(() => {
+        if (actionError || actionSuccess) {
+            const timer = setTimeout(() => {
+                setActionError(null);
+                setActionSuccess(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [actionError, actionSuccess]);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
-    const handleAddContact = (user) => {
-        // This would call an API function to add contact
-        console.log('Adding contact:', user);
-        setShowAddModal(false);
-        // After successful addition, you would reload the contacts
-        // fetchContacts();
+    const handleAddContact = async (user) => {
+        setActionInProgress(true);
+        // Use username as default nickname
+        const nickname = user.username;
+
+        const result = await addUserContact(user.id, nickname);
+
+        if (result.success) {
+            setActionSuccess(`Added ${nickname} to contacts`);
+            setShowAddModal(false);
+        } else {
+            setActionError(result.message || 'Failed to add contact');
+        }
+
+        setActionInProgress(false);
     };
 
-    const handleRemoveContact = (contactId) => {
-        // This would call an API function to remove contact
-        console.log('Removing contact:', contactId);
-        // After successful removal, you would reload the contacts
-        // fetchContacts();
+    const handleRemoveContact = async (contact) => {
+        if (
+            window.confirm(
+                `Are you sure you want to remove ${contact.nickname} from your contacts?`,
+            )
+        ) {
+            setActionInProgress(true);
+
+            const result = await removeUserContact(contact);
+
+            if (result.success) {
+                setActionSuccess(`Removed ${contact.nickname} from contacts`);
+            } else {
+                setActionError(result.message || 'Failed to remove contact');
+            }
+
+            setActionInProgress(false);
+        }
     };
 
-    const handleEditNickname = (contactId, newNickname) => {
-        // This would call an API function to update nickname
-        console.log('Updating nickname for contact:', contactId, newNickname);
-        // After successful update, you would reload the contacts
-        // fetchContacts();
+    const handleEditNickname = async (contact) => {
+        const newNickname = prompt('Enter new nickname', contact.nickname);
+
+        if (newNickname && newNickname !== contact.nickname) {
+            setActionInProgress(true);
+
+            const result = await updateUserContactNickname(
+                contact,
+                newNickname,
+            );
+
+            if (result.success) {
+                setActionSuccess(`Updated nickname to ${newNickname}`);
+            } else {
+                setActionError(result.message || 'Failed to update nickname');
+            }
+
+            setActionInProgress(false);
+        }
     };
 
     return (
@@ -61,6 +121,7 @@ function ContactsPage() {
                     <button
                         className={styles.addButton}
                         onClick={() => setShowAddModal(true)}
+                        disabled={actionInProgress}
                     >
                         Add Contact
                     </button>
@@ -77,10 +138,16 @@ function ContactsPage() {
                 </div>
 
                 {error && <div className={styles.errorMessage}>{error}</div>}
+                {actionError && (
+                    <div className={styles.errorMessage}>{actionError}</div>
+                )}
+                {actionSuccess && (
+                    <div className={styles.successMessage}>{actionSuccess}</div>
+                )}
 
-                {isLoading ? (
+                {isLoading || actionInProgress ? (
                     <div className={styles.loadingMessage}>
-                        Loading contacts...
+                        {isLoading ? 'Loading contacts...' : 'Processing...'}
                     </div>
                 ) : filteredContacts.length > 0 ? (
                     <ul className={`${styles.contactsList} custom-scrollbar`}>
@@ -107,29 +174,19 @@ function ContactsPage() {
                                 <div className={styles.contactActions}>
                                     <button
                                         className={styles.editButton}
-                                        onClick={() => {
-                                            const newNickname = prompt(
-                                                'Enter new nickname',
-                                                contact.nickname,
-                                            );
-                                            if (
-                                                newNickname &&
-                                                newNickname !== contact.nickname
-                                            ) {
-                                                handleEditNickname(
-                                                    contact.id,
-                                                    newNickname,
-                                                );
-                                            }
-                                        }}
+                                        onClick={() =>
+                                            handleEditNickname(contact)
+                                        }
+                                        disabled={actionInProgress}
                                     >
                                         Edit
                                     </button>
                                     <button
                                         className={styles.removeButton}
                                         onClick={() =>
-                                            handleRemoveContact(contact.id)
+                                            handleRemoveContact(contact)
                                         }
+                                        disabled={actionInProgress}
                                     >
                                         Remove
                                     </button>
@@ -157,6 +214,7 @@ function ContactsPage() {
                             <button
                                 className={styles.closeModalButton}
                                 onClick={() => setShowAddModal(false)}
+                                disabled={actionInProgress}
                             >
                                 ×
                             </button>
