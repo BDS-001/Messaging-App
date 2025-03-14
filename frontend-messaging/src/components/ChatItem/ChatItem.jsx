@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useAuth } from '../../context/AuthContext';
+import { useContactName } from '../../hooks/useContactName';
 import styles from './ChatItem.module.css';
 
 const ChatItem = ({ chat, handleOnClick, isActive }) => {
     const { user } = useAuth();
+    const getContactName = useContactName();
 
     const isGroupChat = chat.type === 'group';
     const otherUser = !isGroupChat
@@ -38,7 +40,12 @@ const ChatItem = ({ chat, handleOnClick, isActive }) => {
             <div className={styles.chatInfo}>
                 <div className={styles.chatHeader}>
                     <h4 className={styles.chatName}>
-                        {isGroupChat ? chat.name : otherUser?.username}
+                        {isGroupChat
+                            ? chat.name
+                            : getContactName(
+                                  otherUser?.id,
+                                  otherUser?.username,
+                              )}
                     </h4>
                     <span className={styles.timeStamp}>{lastActive}</span>
                 </div>

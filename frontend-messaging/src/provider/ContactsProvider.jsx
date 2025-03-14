@@ -28,7 +28,7 @@ export const ContactProvider = ({ children }) => {
                     setContactsArray(result.data);
                     setContacts(
                         result.data.reduce((acc, contact) => {
-                            acc[contact.id] = contact;
+                            acc[contact.contact.id] = contact;
                             return acc;
                         }, {}),
                     );
@@ -60,7 +60,7 @@ export const ContactProvider = ({ children }) => {
                 ]);
                 setContacts((prevContacts) => ({
                     ...prevContacts,
-                    [newContact.id]: newContact,
+                    [newContact.contact.id]: newContact,
                 }));
                 return { success: true, data: newContact };
             } else {
@@ -93,7 +93,7 @@ export const ContactProvider = ({ children }) => {
                 );
                 setContacts((prevContacts) => {
                     const updatedContacts = { ...prevContacts };
-                    delete updatedContacts[contact.id];
+                    delete updatedContacts[contact.contact.id];
                     return updatedContacts;
                 });
                 return { success: true };
@@ -132,7 +132,7 @@ export const ContactProvider = ({ children }) => {
                 );
                 setContacts((prevContacts) => ({
                     ...prevContacts,
-                    [contact.id]: updatedContact,
+                    [updatedContact.contact.id]: updatedContact,
                 }));
                 return { success: true, data: updatedContact };
             } else {

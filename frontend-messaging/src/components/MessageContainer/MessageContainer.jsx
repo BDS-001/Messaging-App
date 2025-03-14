@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
+import { useContactName } from '../../hooks/useContactName';
 import Message from '../Message/Message';
 import MessageSender from '../MessageSender/MessageSender';
 import ParticipantsDisplay from '../ParticipantsDisplay/ParticipantsDisplay';
@@ -14,6 +15,7 @@ const MessageContainer = () => {
         isInitialChatLoad,
         setIsInitialChatLoad,
     } = useChat();
+    const getContactName = useContactName();
 
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
@@ -81,7 +83,7 @@ const MessageContainer = () => {
 
     const chatName =
         activeChatDetails.type === 'one_on_one'
-            ? otherParticipant?.username
+            ? getContactName(otherParticipant?.id, otherParticipant?.username)
             : activeChatDetails.name;
 
     const isGroupChat = activeChatDetails.type === 'group';
@@ -109,7 +111,10 @@ const MessageContainer = () => {
                             (p) => p.userId === message.senderId,
                         );
                         const senderName = participant
-                            ? participant.user.username
+                            ? getContactName(
+                                  participant.user.id,
+                                  participant.user.username,
+                              )
                             : 'Unknown User';
 
                         return (
