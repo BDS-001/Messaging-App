@@ -3,10 +3,12 @@ import { useChat } from '../../context/ChatContext';
 import styles from './Sidebar.module.css';
 import SidebarHeader from '../SidebarHeader/SidebarHeader';
 import ChatItem from '../ChatItem/ChatItem';
+import CreateChatModal from '../CreateChatModal/CreateChatModal';
 
 const Sidebar = () => {
     const [activeTab, setActiveTab] = useState('one_on_one');
     const [displayedChats, setDisplayedChats] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { chats, activeChat, setActiveChat } = useChat();
 
     useEffect(() => {
@@ -20,6 +22,14 @@ const Sidebar = () => {
 
     const handleOnClick = (e, id) => {
         setActiveChat(id);
+    };
+
+    const openCreateChatModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeCreateChatModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
@@ -61,12 +71,21 @@ const Sidebar = () => {
             </div>
 
             <div className={styles.createButtonContainer}>
-                <button className={styles.createButton}>
+                <button
+                    className={styles.createButton}
+                    onClick={openCreateChatModal}
+                >
                     {activeTab === 'one_on_one'
                         ? 'New Message'
                         : 'New Group Chat'}
                 </button>
             </div>
+
+            <CreateChatModal
+                isOpen={isModalOpen}
+                onClose={closeCreateChatModal}
+                type={activeTab}
+            />
         </aside>
     );
 };
