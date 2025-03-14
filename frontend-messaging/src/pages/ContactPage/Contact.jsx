@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useContact } from '../../context/ContactContext';
-import { useAuth } from '../../context/AuthContext'; // Import AuthContext
+import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../hooks/useToast';
+import ToastNotification from '../../components/ToastNotification/ToastNotification';
 import UserSearch from '../../components/UserSearch/UserSearch';
 import styles from './Contact.module.css';
 
@@ -13,7 +15,8 @@ function ContactsPage() {
         removeUserContact,
         updateUserContactNickname,
     } = useContact();
-    const { user } = useAuth(); // Get current user
+    const { user } = useAuth();
+    const { toast, showToast } = useToast();
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -21,8 +24,6 @@ function ContactsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredContacts, setFilteredContacts] = useState([]);
     const [actionInProgress, setActionInProgress] = useState(false);
-    const [actionError, setActionError] = useState(null);
-    const [actionSuccess, setActionSuccess] = useState(null);
     const [selectedContact, setSelectedContact] = useState(null);
     const [newNickname, setNewNickname] = useState('');
 
@@ -46,17 +47,6 @@ function ContactsPage() {
         }
     }, [contactsArray, searchQuery]);
 
-    // Clear action messages after 3 seconds
-    useEffect(() => {
-        if (actionError || actionSuccess) {
-            const timer = setTimeout(() => {
-                setActionError(null);
-                setActionSuccess(null);
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [actionError, actionSuccess]);
-
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -69,10 +59,10 @@ function ContactsPage() {
         const result = await addUserContact(user.id, nickname);
 
         if (result.success) {
-            setActionSuccess(`Added ${nickname} to contacts`);
+            showToast(`Added ${nickname} to contacts`);
             setShowAddModal(false);
         } else {
-            setActionError(result.message || 'Failed to add contact');
+            showToast(result.message || 'Failed to add contact', 'error');
         }
 
         setActionInProgress(false);
@@ -90,11 +80,9 @@ function ContactsPage() {
         const result = await removeUserContact(selectedContact);
 
         if (result.success) {
-            setActionSuccess(
-                `Removed ${selectedContact.nickname} from contacts`,
-            );
+            showToast(`Removed ${selectedContact.nickname} from contacts`);
         } else {
-            setActionError(result.message || 'Failed to remove contact');
+            showToast(result.message || 'Failed to remove contact', 'error');
         }
 
         setActionInProgress(false);
@@ -125,9 +113,9 @@ function ContactsPage() {
         );
 
         if (result.success) {
-            setActionSuccess(`Updated nickname to ${newNickname.trim()}`);
+            showToast(`Updated nickname to ${newNickname.trim()}`);
         } else {
-            setActionError(result.message || 'Failed to update nickname');
+            showToast(result.message || 'Failed to update nickname', error);
         }
 
         setActionInProgress(false);
@@ -164,16 +152,7 @@ function ContactsPage() {
 
     return (
         <div className={styles.pageContainer}>
-            {/* Notification messages container - positioned fixed */}
-            <div className={styles.notificationsContainer}>
-                {error && <div className={styles.errorMessage}>{error}</div>}
-                {actionError && (
-                    <div className={styles.errorMessage}>{actionError}</div>
-                )}
-                {actionSuccess && (
-                    <div className={styles.successMessage}>{actionSuccess}</div>
-                )}
-            </div>
+            <ToastNotification toast={toast} />
 
             <div className={styles.contactsContainer}>
                 <div className={styles.contactsHeader}>
