@@ -14,13 +14,16 @@
 }
 
 .errorMessage, .successMessage {
-    animation: fadeInOut 5s ease forwards;
+    animation: fadeIn 0.3s ease forwards;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
-    text-align: center;
     font-weight: 500;
     pointer-events: auto;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
 }
 
 .errorMessage {
@@ -35,21 +38,42 @@
     border: 1px solid #c8e6c9;
 }
 
-@keyframes fadeInOut {
+.messageText {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton:hover {
+    opacity: 1;
+}
+
+@keyframes fadeIn {
     0% {
         opacity: 0;
         transform: translateY(-20px);
     }
-    10% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    90% {
-        opacity: 1;
-        transform: translateY(0);
-    }
     100% {
-        opacity: 0;
-        transform: translateY(-20px);
+        opacity: 1;
+        transform: translateY(0);
     }
 }

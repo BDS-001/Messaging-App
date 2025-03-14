@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useContact } from '../../context/ContactContext';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from '../../hooks/useToast';
-import ToastNotification from '../../components/ToastNotification/ToastNotification';
+import { useToast } from '../../context/ToastContext';
 import UserSearch from '../../components/UserSearch/UserSearch';
 import styles from './Contact.module.css';
 
@@ -16,7 +15,7 @@ function ContactsPage() {
         updateUserContactNickname,
     } = useContact();
     const { user } = useAuth();
-    const { toast, showToast } = useToast();
+    const { showToast } = useToast();
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -152,8 +151,6 @@ function ContactsPage() {
 
     return (
         <div className={styles.pageContainer}>
-            <ToastNotification toast={toast} />
-
             <div className={styles.contactsContainer}>
                 <div className={styles.contactsHeader}>
                     <h2 className={styles.title}>Contacts</h2>
