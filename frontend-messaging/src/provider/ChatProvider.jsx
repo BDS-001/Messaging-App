@@ -21,7 +21,6 @@ export const ChatProvider = ({ children }) => {
     const [activeChatDetails, setActiveChatDetails] = useState(null);
     const [chatError, setChatError] = useState(null);
     const [isInitialChatLoad, setIsInitialChatLoad] = useState(true);
-    // Track the last active chat to detect changes
     const lastActiveChatRef = useRef(null);
 
     async function fetchUserChats() {
@@ -209,8 +208,32 @@ export const ChatProvider = ({ children }) => {
         return { success: true, data: result.data };
     }
 
-    async function handleChatCreation(type, name = null, participantIds) {
-        const result = await createNewChat({ type, name, participantIds });
+    function checkExistingChat(otherUserId) {
+        const chat = chats.filter(
+            (chat) =>
+                chat.type === 'one_on_one' &&
+                chat.participants.some(
+                    (user) => Number(user.userId) === Number(otherUserId),
+                ),
+        );
+        if (chat.length < 1) return false;
+        setActiveChat(chat[0].id);
+        console.log('exists');
+        return true;
+    }
+
+    async function handleChatCreation(
+        type,
+        name = null,
+        participantIds,
+        userId,
+    ) {
+        if (type === 'one_on_one') {
+            const otherUserId = participantIds[0];
+            if (checkExistingChat(otherUserId)) return { sucess: true };
+        }
+        const newParticipants = [userId, ...participantIds];
+        const result = await createNewChat({ type, name, newParticipants });
         if (!result.success) return { ...result, success: false };
         setChats((prev) => [...prev, result.data]);
         return result;
