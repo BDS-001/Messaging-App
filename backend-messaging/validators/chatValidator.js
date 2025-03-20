@@ -11,8 +11,9 @@ const chatValidators = {
     ],
     create: [
         body('name')
+            .if(body('type').equals('GROUP'))
             .exists()
-            .withMessage('Chat name is required')
+            .withMessage('Chat name is required for group chats')
             .trim()
             .isLength({ min: 1, max: 100 })
             .withMessage('Chat name must be between 1 and 100 characters'),
@@ -20,8 +21,8 @@ const chatValidators = {
         body('type')
             .exists()
             .withMessage('Chat type is required')
-            .isIn(['DIRECT', 'GROUP'])
-            .withMessage('Chat type must be either DIRECT or GROUP'),
+            .isIn(['one_on_one', 'group'])
+            .withMessage('Chat type must be either one_on_one or group'),
         
         body('participantIds')
             .exists()
