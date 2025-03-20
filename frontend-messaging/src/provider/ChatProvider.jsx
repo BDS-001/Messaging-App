@@ -8,6 +8,7 @@ import {
     removeParticipant,
     searchUsers,
     addParticipant,
+    createNewChat,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -208,6 +209,13 @@ export const ChatProvider = ({ children }) => {
         return { success: true, data: result.data };
     }
 
+    async function handleChatCreation(type, name = null, participantIds) {
+        const result = await createNewChat({ type, name, participantIds });
+        if (!result.success) return { ...result, success: false };
+        setChats((prev) => [...prev, result.data]);
+        return result;
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -226,6 +234,7 @@ export const ChatProvider = ({ children }) => {
                 removeGroupParticipant,
                 searchForUsers,
                 addGroupParticipant,
+                handleChatCreation,
             }}
         >
             {children}

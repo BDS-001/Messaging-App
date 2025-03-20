@@ -170,3 +170,26 @@ export async function addParticipant(chatId, userId) {
         return { success: false, message: 'Network error occurred' };
     }
 }
+
+export async function createNewChat(chatData) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+        const response = await fetch(`${API_URL}/chats`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(chatData),
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Create Chat failed:', error);
+        return { success: false, message: 'Network error occurred' };
+    }
+}

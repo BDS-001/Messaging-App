@@ -1,10 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
+import { useChat } from '../../context/ChatContext';
+import { useToast } from '../../context/ToastContext';
+import { useAuth } from '../../context/AuthContext';
 import styles from './CreateChatModal.module.css';
 
 const CreateChatModal = ({ isOpen, onClose, type }) => {
     const [chatName, setChatName] = useState('');
+    const [participants, setParticipants] = useState([]);
     const inputRef = useRef(null);
+    const { handleChatCreation } = useChat();
+    const { showToast } = useToast();
+    const { user } = useAuth();
 
     // Reset form and focus input when modal opens
     useEffect(() => {
@@ -19,10 +26,22 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
         }
     }, [isOpen]);
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        !user ? setParticipants([]) : setParticipants([user.id]);
+    }, [user]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // This will be implemented later with API functionality
-        console.log('Creating new chat:', { type, chatName });
+        const useChatName = type === 'group' ? chatName : null;
+        const result = await handleChatCreation(
+            type,
+            useChatName,
+            participants,
+        );
+        if (!result.success) {
+            result.errors.forEach((item) => showToast(item.msg, 'error'));
+        }
+        console.log(result);
         onClose();
     };
 
