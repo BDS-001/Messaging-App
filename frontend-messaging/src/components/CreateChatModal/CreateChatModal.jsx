@@ -7,6 +7,7 @@ import styles from './CreateChatModal.module.css';
 
 const CreateChatModal = ({ isOpen, onClose, type }) => {
     const [chatName, setChatName] = useState('');
+    // eslint-disable-next-line no-unused-vars
     const [participants, setParticipants] = useState([]);
     const inputRef = useRef(null);
     const { handleChatCreation } = useChat();
@@ -26,10 +27,6 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
         }
     }, [isOpen]);
 
-    useEffect(() => {
-        !user ? setParticipants([]) : setParticipants([user.id]);
-    }, [user]);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const useChatName = type === 'group' ? chatName : null;
@@ -37,6 +34,7 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
             type,
             useChatName,
             participants,
+            user.id,
         );
         if (!result.success) {
             result.errors.forEach((item) => showToast(item.msg, 'error'));
