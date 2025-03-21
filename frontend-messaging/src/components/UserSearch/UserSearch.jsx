@@ -137,6 +137,7 @@ const UserSearch = ({
                                 </div>
                                 {buttonLabel && (
                                     <button
+                                        type="button"
                                         className={styles.selectButton}
                                         onClick={(e) => {
                                             e.stopPropagation();

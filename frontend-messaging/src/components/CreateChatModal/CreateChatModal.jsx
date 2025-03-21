@@ -4,11 +4,12 @@ import { useChat } from '../../context/ChatContext';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import styles from './CreateChatModal.module.css';
+import UserSearch from '../../components/UserSearch/UserSearch';
 
 const CreateChatModal = ({ isOpen, onClose, type }) => {
     const [chatName, setChatName] = useState('');
-    // eslint-disable-next-line no-unused-vars
     const [participants, setParticipants] = useState([]);
+    const [selectedParticipants, setSelectedParticipants] = useState([]);
     const inputRef = useRef(null);
     const { handleChatCreation } = useChat();
     const { showToast } = useToast();
@@ -55,6 +56,16 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
         return () => window.removeEventListener('keydown', handleEscape);
     }, [isOpen, onClose]);
 
+    const handleAddParticipant = async (user) => {
+        if (type === 'one_on_one') {
+            setParticipants([user.id]);
+            setSelectedParticipants([user]);
+        } else {
+            setParticipants((prev) => [...prev, user.id]);
+            setSelectedParticipants((prev) => [...prev, user]);
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -94,15 +105,17 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                     )}
                     {type === 'one_on_one' && (
                         <div className={styles.formGroup}>
+                            {selectedParticipants.length > 0 &&
+                                selectedParticipants.map((user) => (
+                                    <div key={user.id}>{user.username}</div>
+                                ))}
                             <label htmlFor="recipient">Recipient</label>
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                id="recipient"
-                                value={chatName}
-                                onChange={(e) => setChatName(e.target.value)}
-                                placeholder="Enter username to start chatting"
-                                required
+                            <UserSearch
+                                onSelectUser={handleAddParticipant}
+                                excludeUserIds={[]}
+                                placeholder="Search for users to add..."
+                                buttonLabel="Add"
+                                noResultsMessage="No users found"
                             />
                         </div>
                     )}
