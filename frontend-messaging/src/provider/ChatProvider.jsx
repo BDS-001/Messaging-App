@@ -230,7 +230,7 @@ export const ChatProvider = ({ children }) => {
     ) {
         if (type === 'one_on_one') {
             const otherUserId = participantIds[0];
-            if (checkExistingChat(otherUserId)) return { sucess: true };
+            if (checkExistingChat(otherUserId)) return { success: true };
         }
         const newParticipants = [userId, ...participantIds];
         const result = await createNewChat({
