@@ -28,6 +28,11 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
         }
     }, [isOpen]);
 
+    useEffect(() => {
+        setParticipants([]);
+        setSelectedParticipants([]);
+    }, [type]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const useChatName = type === 'group' ? chatName : null;
@@ -66,6 +71,13 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
         }
     };
 
+    const handleRemoveParticipant = (userId) => {
+        setParticipants((prev) => prev.filter((id) => id !== userId));
+        setSelectedParticipants((prev) =>
+            prev.filter((user) => user.id !== userId),
+        );
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -91,10 +103,32 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                 <form onSubmit={handleSubmit}>
                     {type === 'group' && (
                         <div className={styles.formGroup}>
-                            {selectedParticipants.length > 0 &&
-                                selectedParticipants.map((user) => (
-                                    <div key={user.id}>{user.username}</div>
-                                ))}
+                            {selectedParticipants.length > 0 && (
+                                <div className={styles.participantsContainer}>
+                                    {selectedParticipants.map((user) => (
+                                        <div
+                                            key={user.id}
+                                            className={styles.participantChip}
+                                        >
+                                            <span>{user.username}</span>
+                                            <button
+                                                type="button"
+                                                className={
+                                                    styles.removeParticipant
+                                                }
+                                                onClick={() =>
+                                                    handleRemoveParticipant(
+                                                        user.id,
+                                                    )
+                                                }
+                                                aria-label={`Remove ${user.username}`}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                             <label htmlFor="chatName">Group Name</label>
                             <input
                                 ref={inputRef}
@@ -107,7 +141,7 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                             />
                             <UserSearch
                                 onSelectUser={handleAddParticipant}
-                                excludeUserIds={[]}
+                                excludeUserIds={participants}
                                 placeholder="Search for users to add..."
                                 buttonLabel="Add"
                                 noResultsMessage="No users found"
@@ -116,14 +150,36 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                     )}
                     {type === 'one_on_one' && (
                         <div className={styles.formGroup}>
-                            {selectedParticipants.length > 0 &&
-                                selectedParticipants.map((user) => (
-                                    <div key={user.id}>{user.username}</div>
-                                ))}
+                            {selectedParticipants.length > 0 && (
+                                <div className={styles.participantsContainer}>
+                                    {selectedParticipants.map((user) => (
+                                        <div
+                                            key={user.id}
+                                            className={styles.participantChip}
+                                        >
+                                            <span>{user.username}</span>
+                                            <button
+                                                type="button"
+                                                className={
+                                                    styles.removeParticipant
+                                                }
+                                                onClick={() =>
+                                                    handleRemoveParticipant(
+                                                        user.id,
+                                                    )
+                                                }
+                                                aria-label={`Remove ${user.username}`}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                             <label htmlFor="recipient">Recipient</label>
                             <UserSearch
                                 onSelectUser={handleAddParticipant}
-                                excludeUserIds={[]}
+                                excludeUserIds={participants}
                                 placeholder="Search for users to add..."
                                 buttonLabel="Add"
                                 noResultsMessage="No users found"

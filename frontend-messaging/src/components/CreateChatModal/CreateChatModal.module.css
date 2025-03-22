@@ -155,4 +155,59 @@ form {
     background-color: #94a3b3;
     transform: none;
     box-shadow: none;
-} 
+}
+
+/* New styles for participants */
+.participantsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+}
+
+.participantChip {
+    display: flex;
+    align-items: center;
+    background-color: #e9f0f7;
+    border-radius: 100px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    color: var(--navbar-main);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #d0e1f2;
+    transition: all 0.2s ease;
+}
+
+.participantChip:hover {
+    background-color: #dae6f3;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.participantChip span {
+    margin-right: 0.4rem;
+    font-weight: 500;
+}
+
+.removeParticipant {
+    background: none;
+    border: none;
+    color: #6c757d;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.removeParticipant:hover {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: #495057;
+}
