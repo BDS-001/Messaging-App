@@ -91,6 +91,10 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                 <form onSubmit={handleSubmit}>
                     {type === 'group' && (
                         <div className={styles.formGroup}>
+                            {selectedParticipants.length > 0 &&
+                                selectedParticipants.map((user) => (
+                                    <div key={user.id}>{user.username}</div>
+                                ))}
                             <label htmlFor="chatName">Group Name</label>
                             <input
                                 ref={inputRef}
@@ -100,6 +104,13 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                                 onChange={(e) => setChatName(e.target.value)}
                                 placeholder="Enter a name for your group"
                                 required
+                            />
+                            <UserSearch
+                                onSelectUser={handleAddParticipant}
+                                excludeUserIds={[]}
+                                placeholder="Search for users to add..."
+                                buttonLabel="Add"
+                                noResultsMessage="No users found"
                             />
                         </div>
                     )}
