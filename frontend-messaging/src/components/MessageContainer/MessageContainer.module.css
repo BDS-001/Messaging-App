@@ -19,6 +19,75 @@
     color: var(--navbar-main);
 }
 
+.chatNameContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.editNameButton {
+    background-color: transparent;
+    border: 1px solid var(--navbar-main);
+    color: var(--navbar-main);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.editNameButton:hover {
+    background-color: var(--navbar-main);
+    color: var(--main-color);
+}
+
+.editNameContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.editNameInput {
+    padding: 0.5rem;
+    border: 1px solid var(--main-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 200px;
+}
+
+.editNameButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.saveButton, .cancelButton {
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saveButton {
+    background-color: var(--navbar-main);
+    color: white;
+    border: 1px solid var(--navbar-main);
+}
+
+.saveButton:hover {
+    background-color: var(--navbar-hover);
+}
+
+.cancelButton {
+    background-color: transparent;
+    border: 1px solid var(--main-border);
+    color: var(--text-color);
+}
+
+.cancelButton:hover {
+    background-color: #f0f0f0;
+}
+
 .messagesWrapper {
     flex: 1;
     position: relative;

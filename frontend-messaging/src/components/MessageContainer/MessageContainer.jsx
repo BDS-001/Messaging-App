@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
 import { useContactName } from '../../hooks/useContactName';
@@ -16,6 +16,8 @@ const MessageContainer = () => {
         setIsInitialChatLoad,
     } = useChat();
     const getContactName = useContactName();
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [newChatName, setNewChatName] = useState('');
 
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
@@ -62,6 +64,13 @@ const MessageContainer = () => {
         setIsInitialChatLoad,
     ]);
 
+    // Update newChatName when active chat changes
+    useEffect(() => {
+        if (activeChatDetails && activeChatDetails.name) {
+            setNewChatName(activeChatDetails.name);
+        }
+    }, [activeChatDetails]);
+
     if (isLoading) {
         return <div className={styles.emptyState}>Loading chat...</div>;
     }
@@ -88,10 +97,63 @@ const MessageContainer = () => {
 
     const isGroupChat = activeChatDetails.type === 'group';
 
+    const handleEditName = () => {
+        setIsEditingName(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditingName(false);
+        setNewChatName(activeChatDetails.name);
+    };
+
+    const handleSaveName = () => {
+        //TODO: api privider logic here
+        console.log(
+            `Saving new chat name: ${newChatName} for chat ID: ${activeChatDetails.id}`,
+        );
+        setIsEditingName(false);
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h3>{chatName}</h3>
+                {isGroupChat && isEditingName ? (
+                    <div className={styles.editNameContainer}>
+                        <input
+                            type="text"
+                            value={newChatName}
+                            onChange={(e) => setNewChatName(e.target.value)}
+                            className={styles.editNameInput}
+                            autoFocus
+                        />
+                        <div className={styles.editNameButtons}>
+                            <button
+                                onClick={handleSaveName}
+                                className={styles.saveButton}
+                            >
+                                Save
+                            </button>
+                            <button
+                                onClick={handleCancelEdit}
+                                className={styles.cancelButton}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className={styles.chatNameContainer}>
+                        <h3>{chatName}</h3>
+                        {isGroupChat && (
+                            <button
+                                onClick={handleEditName}
+                                className={styles.editNameButton}
+                            >
+                                Edit Name
+                            </button>
+                        )}
+                    </div>
+                )}
                 {isGroupChat && (
                     <ParticipantsDisplay
                         participants={activeChatDetails.participants}
