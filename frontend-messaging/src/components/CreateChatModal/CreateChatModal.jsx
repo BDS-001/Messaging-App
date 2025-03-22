@@ -141,7 +141,11 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                         <button
                             type="submit"
                             className={styles.submitButton}
-                            disabled={!chatName.trim()}
+                            disabled={
+                                type === 'group'
+                                    ? !chatName.trim()
+                                    : participants.length < 1
+                            }
                         >
                             {type === 'one_on_one'
                                 ? 'Start Chat'
