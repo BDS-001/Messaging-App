@@ -5,6 +5,7 @@ import { useContactName } from '../../hooks/useContactName';
 import Message from '../Message/Message';
 import MessageSender from '../MessageSender/MessageSender';
 import ParticipantsDisplay from '../ParticipantsDisplay/ParticipantsDisplay';
+import ClearChatButton from '../ClearChatButton/ClearChatButton';
 import styles from './MessageContainer.module.css';
 
 const MessageContainer = () => {
@@ -144,14 +145,17 @@ const MessageContainer = () => {
                 ) : (
                     <div className={styles.chatNameContainer}>
                         <h3>{chatName}</h3>
-                        {isGroupChat && (
-                            <button
-                                onClick={handleEditName}
-                                className={styles.editNameButton}
-                            >
-                                Edit Name
-                            </button>
-                        )}
+                        <div className={styles.headerButtons}>
+                            {isGroupChat && (
+                                <button
+                                    onClick={handleEditName}
+                                    className={styles.editNameButton}
+                                >
+                                    Edit Name
+                                </button>
+                            )}
+                            <ClearChatButton chatId={activeChatDetails.id} />
+                        </div>
                     </div>
                 )}
                 {isGroupChat && (

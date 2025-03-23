@@ -25,7 +25,12 @@
     gap: 0.75rem;
 }
 
-.editNameButton {
+.headerButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.editNameButton, .clearChatButton {
     background-color: transparent;
     border: 1px solid var(--navbar-main);
     color: var(--navbar-main);
@@ -36,9 +41,19 @@
     transition: all 0.2s ease;
 }
 
-.editNameButton:hover {
+.editNameButton:hover, .clearChatButton:hover {
     background-color: var(--navbar-main);
     color: var(--main-color);
+}
+
+.clearChatButton {
+    border-color: #d9534f;
+    color: #d9534f;
+}
+
+.clearChatButton:hover {
+    background-color: #d9534f;
+    color: white;
 }
 
 .editNameContainer {
