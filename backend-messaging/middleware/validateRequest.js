@@ -24,7 +24,8 @@ function validateRequest(resource, operation) {
         if (!errors.isEmpty()) {
           return res.status(400).json({
             message: 'Validation error',
-            errors: errors.array()
+            errors: errors.array(),
+            success: false,
           });
         }
         next();
