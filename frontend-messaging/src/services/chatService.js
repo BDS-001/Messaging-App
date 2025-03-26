@@ -193,3 +193,24 @@ export async function createNewChat(chatData) {
         return { success: false, message: 'Network error occurred' };
     }
 }
+
+export async function clearChat(chatId) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+        const response = await fetch(`${API_URL}/chats/${chatId}/clear`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Create Chat failed:', error);
+        return { success: false, message: 'Network error occurred' };
+    }
+}

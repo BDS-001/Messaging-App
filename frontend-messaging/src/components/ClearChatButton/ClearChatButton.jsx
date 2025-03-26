@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import styles from './ClearChatButton.module.css';
+import { useChat } from '../../context/ChatContext';
 
 const ClearChatButton = ({ chatId }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { processClearChat } = useChat();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -13,9 +15,10 @@ const ClearChatButton = ({ chatId }) => {
         setIsModalOpen(false);
     };
 
-    const handleClearChat = () => {
-        // TODO: implement clear messages
+    const handleClearChat = async () => {
         console.log(`Clearing chat for chat ID: ${chatId}`);
+        const result = processClearChat();
+        console.log(`BUTTON HANDLER RESULT: ${result}`);
         closeModal();
     };
 

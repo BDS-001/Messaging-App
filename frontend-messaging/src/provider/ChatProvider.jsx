@@ -9,6 +9,7 @@ import {
     searchUsers,
     addParticipant,
     createNewChat,
+    clearChat,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -243,6 +244,11 @@ export const ChatProvider = ({ children }) => {
         return result;
     }
 
+    async function processClearChat(chatId) {
+        const result = await clearChat(chatId);
+        console.log(result);
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -262,6 +268,7 @@ export const ChatProvider = ({ children }) => {
                 searchForUsers,
                 addGroupParticipant,
                 handleChatCreation,
+                processClearChat,
             }}
         >
             {children}
