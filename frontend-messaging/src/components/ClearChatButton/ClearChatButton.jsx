@@ -17,8 +17,8 @@ const ClearChatButton = ({ chatId }) => {
 
     const handleClearChat = async () => {
         console.log(`Clearing chat for chat ID: ${chatId}`);
-        const result = processClearChat();
-        console.log(`BUTTON HANDLER RESULT: ${result}`);
+        const result = await processClearChat();
+        console.log('BUTTON HANDLER RESULT:', result);
         closeModal();
     };
 

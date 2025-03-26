@@ -246,7 +246,8 @@ export const ChatProvider = ({ children }) => {
 
     async function processClearChat(chatId) {
         const result = await clearChat(chatId);
-        console.log(`PROVIDER: ${result}`);
+        console.log('PROVIDER:', result);
+        return result;
     }
 
     return (
