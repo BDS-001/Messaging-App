@@ -208,6 +208,29 @@ export async function clearChat(chatId) {
         });
 
         const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Clear Chat failed:', error);
+        return { success: false, message: 'Network error occurred' };
+    }
+}
+
+export async function updateChatName(chatId, name) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+        const response = await fetch(`${API_URL}/chats/${chatId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name }),
+        });
+
+        const result = await response.json();
         console.log(result);
         return result;
     } catch (error) {
