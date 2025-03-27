@@ -24,6 +24,7 @@ export const ChatProvider = ({ children }) => {
     const [chatError, setChatError] = useState(null);
     const [isInitialChatLoad, setIsInitialChatLoad] = useState(true);
     const lastActiveChatRef = useRef(null);
+    const heartbeat = useRef(null);
 
     async function fetchUserChats() {
         setIsLoading(true);
@@ -265,6 +266,17 @@ export const ChatProvider = ({ children }) => {
         }
         return result;
     }
+
+    useEffect(() => {
+        if (heartbeat.current) clearInterval(heartbeat.current);
+        heartbeat.current = setInterval(() => {
+            //TODO: heartbeat function implementation
+        }, 5000);
+
+        return () => {
+            if (heartbeat.current) clearInterval(heartbeat.current);
+        };
+    }, [activeChat]);
 
     return (
         <ChatContext.Provider
