@@ -15,6 +15,7 @@ const MessageContainer = () => {
         isLoading,
         isInitialChatLoad,
         setIsInitialChatLoad,
+        processUpdateChatName,
     } = useChat();
     const getContactName = useContactName();
     const [isEditingName, setIsEditingName] = useState(false);
@@ -107,11 +108,15 @@ const MessageContainer = () => {
         setNewChatName(activeChatDetails.name);
     };
 
-    const handleSaveName = () => {
-        //TODO: api privider logic here
+    const handleSaveName = async () => {
         console.log(
             `Saving new chat name: ${newChatName} for chat ID: ${activeChatDetails.id}`,
         );
+        const result = await processUpdateChatName(
+            activeChatDetails.id,
+            newChatName,
+        );
+        console.log(result);
         setIsEditingName(false);
     };
 

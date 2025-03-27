@@ -252,7 +252,7 @@ export const ChatProvider = ({ children }) => {
     }
 
     async function processUpdateChatName(chatId, chatName) {
-        const result = updateChatName(chatId, chatName);
+        const result = await updateChatName(chatId, chatName);
         console.log(result);
         if (result.success) {
             setChats((prev) =>
@@ -260,6 +260,8 @@ export const ChatProvider = ({ children }) => {
                     chat.id === chatId ? { ...chat, name: chatName } : chat,
                 ),
             );
+            if (activeChat === chatId)
+                setActiveChatDetails((prev) => ({ ...prev, name: chatName }));
         }
         return result;
     }
