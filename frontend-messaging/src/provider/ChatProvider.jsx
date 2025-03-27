@@ -10,6 +10,7 @@ import {
     addParticipant,
     createNewChat,
     clearChat,
+    updateChatName,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -250,6 +251,19 @@ export const ChatProvider = ({ children }) => {
         return result;
     }
 
+    async function processUpdateChatName(chatId, chatName) {
+        const result = updateChatName(chatId, chatName);
+        console.log(result);
+        if (result.success) {
+            setChats((prev) =>
+                prev.map((chat) =>
+                    chat.id === chatId ? { ...chat, name: chatName } : chat,
+                ),
+            );
+        }
+        return result;
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -270,6 +284,7 @@ export const ChatProvider = ({ children }) => {
                 addGroupParticipant,
                 handleChatCreation,
                 processClearChat,
+                processUpdateChatName,
             }}
         >
             {children}
