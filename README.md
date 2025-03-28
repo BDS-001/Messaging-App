@@ -141,10 +141,6 @@ npm run dev
 - **End-to-End Encryption** - Enhance security with message encryption
 - **Mobile App** - Create native mobile applications
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - This project was created as a learning exercise
