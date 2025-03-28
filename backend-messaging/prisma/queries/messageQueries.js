@@ -61,8 +61,15 @@ async function getMessageById(messageId) {
 }
 
 async function getLatestMessages(chatId, timestamp) {
-  //TODO: implement query logic
-  return
+  return await prisma.message.findMany({
+    where: {
+      chatId,
+      sentAt: {
+        gt: timestamp
+      }
+    },
+    orderBy: {sentAt: 'asc'}
+  })
 }
 
 module.exports = {createMessage, softDeleteMessage, updateMessage, getMessageById, getLatestMessages}
