@@ -248,17 +248,6 @@ export const ChatProvider = ({ children }) => {
         return result;
     }
 
-    useEffect(() => {
-        if (heartbeat.current) clearInterval(heartbeat.current);
-        heartbeat.current = setInterval(() => {
-            processGetLatestMessages();
-        }, 10000);
-
-        return () => {
-            if (heartbeat.current) clearInterval(heartbeat.current);
-        };
-    }, [activeChat, processGetLatestMessages]);
-
     const processGetLatestMessages = useCallback(async () => {
         const cursor = activeChatDetails?.messages[activeChatDetails?.messages.length - 1]?.id;
         if (!activeChat || !cursor) return { success: false, message: 'no active chat found' };
@@ -271,6 +260,17 @@ export const ChatProvider = ({ children }) => {
         }
         return result;
     }, [activeChat, activeChatDetails]);
+
+    useEffect(() => {
+        if (heartbeat.current) clearInterval(heartbeat.current);
+        heartbeat.current = setInterval(() => {
+            processGetLatestMessages();
+        }, 10000);
+
+        return () => {
+            if (heartbeat.current) clearInterval(heartbeat.current);
+        };
+    }, [activeChat, processGetLatestMessages]);
 
     return (
         <ChatContext.Provider
