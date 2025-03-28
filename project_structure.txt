@@ -1,0 +1,154 @@
+./
+├── backend-messaging
+│   ├── app.js
+│   ├── config
+│   │   └── passport.js
+│   ├── controllers
+│   │   ├── authController.js
+│   │   ├── chatController.js
+│   │   ├── contactController.js
+│   │   ├── messageController.js
+│   │   └── userController.js
+│   ├── database-seed.js
+│   ├── middleware
+│   │   ├── isAuthenticated.js
+│   │   └── validateRequest.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── prisma
+│   │   ├── migrations
+│   │   │   ├── 20250304230304_init
+│   │   │   │   └── migration.sql
+│   │   │   └── migration_lock.toml
+│   │   ├── prismaClient.js
+│   │   ├── queries
+│   │   │   ├── chatQueries.js
+│   │   │   ├── contactQueries.js
+│   │   │   ├── messageQueries.js
+│   │   │   └── userQueries.js
+│   │   └── schema.prisma
+│   ├── routes
+│   │   └── apiRouterV1.js
+│   ├── utils
+│   │   └── httpStatusCodes.js
+│   └── validators
+│       ├── authValidator.js
+│       ├── chatValidator.js
+│       ├── contactValidator.js
+│       ├── messageValidator.js
+│       └── userValidator.js
+├── frontend-messaging
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   └── vite.svg
+│   ├── README.md
+│   ├── src
+│   │   ├── assets
+│   │   │   └── react.svg
+│   │   ├── components
+│   │   │   ├── ChatItem
+│   │   │   │   ├── ChatItem.jsx
+│   │   │   │   └── ChatItem.module.css
+│   │   │   ├── ClearChatButton
+│   │   │   │   ├── ClearChatButton.jsx
+│   │   │   │   └── ClearChatButton.module.css
+│   │   │   ├── CreateChatModal
+│   │   │   │   ├── CreateChatModal.jsx
+│   │   │   │   └── CreateChatModal.module.css
+│   │   │   ├── Header
+│   │   │   │   ├── Header.jsx
+│   │   │   │   └── Header.module.css
+│   │   │   ├── Message
+│   │   │   │   ├── Message.jsx
+│   │   │   │   └── Message.module.css
+│   │   │   ├── MessageContainer
+│   │   │   │   ├── MessageContainer.jsx
+│   │   │   │   └── MessageContainer.module.css
+│   │   │   ├── MessageSender
+│   │   │   │   ├── MessageSender.jsx
+│   │   │   │   └── MessageSender.module.css
+│   │   │   ├── ParticipantsDisplay
+│   │   │   │   ├── ParticipantsDisplay.jsx
+│   │   │   │   └── ParticipantsDisplay.module.css
+│   │   │   ├── ProtectedRoute
+│   │   │   │   └── ProtectedRoute.jsx
+│   │   │   ├── SecuritySection
+│   │   │   │   ├── SecuritySection.jsx
+│   │   │   │   └── SecuritySection.module.css
+│   │   │   ├── Sidebar
+│   │   │   │   ├── Sidebar.jsx
+│   │   │   │   └── Sidebar.module.css
+│   │   │   ├── SidebarHeader
+│   │   │   │   ├── SidebarHeader.jsx
+│   │   │   │   └── SidebarHeader.module.css
+│   │   │   ├── ToastNotification
+│   │   │   │   ├── ToastNotification.jsx
+│   │   │   │   └── ToastNotification.module.css
+│   │   │   ├── UserInfoSection
+│   │   │   │   ├── UserInfoSection.jsx
+│   │   │   │   └── UserInfoSection.module.css
+│   │   │   └── UserSearch
+│   │   │       ├── UserSearch.jsx
+│   │   │       └── UserSearch.module.css
+│   │   ├── context
+│   │   │   ├── AuthContext.jsx
+│   │   │   ├── ChatContext.jsx
+│   │   │   ├── ContactContext.jsx
+│   │   │   └── ToastContext.jsx
+│   │   ├── globalStyles.css
+│   │   ├── hooks
+│   │   │   └── useContactName.js
+│   │   ├── layouts
+│   │   │   ├── App.jsx
+│   │   │   └── App.module.css
+│   │   ├── main.jsx
+│   │   ├── pages
+│   │   │   ├── ContactPage
+│   │   │   │   ├── Contact.jsx
+│   │   │   │   └── Contact.module.css
+│   │   │   ├── ErrorPage
+│   │   │   │   ├── ErrorPage.jsx
+│   │   │   │   └── ErrorPage.module.css
+│   │   │   ├── Homepage
+│   │   │   │   ├── Homepage.jsx
+│   │   │   │   └── Homepage.module.css
+│   │   │   ├── LoginPage
+│   │   │   │   ├── Login.jsx
+│   │   │   │   └── Login.module.css
+│   │   │   ├── SettingsPage
+│   │   │   │   ├── Settings.jsx
+│   │   │   │   └── SettingsPage.module.css
+│   │   │   └── SignupPage
+│   │   │       ├── SignupPage.jsx
+│   │   │       └── SignupPage.module.css
+│   │   ├── provider
+│   │   │   ├── AuthProvider.jsx
+│   │   │   ├── ChatProvider.jsx
+│   │   │   ├── ContactsProvider.jsx
+│   │   │   └── ToastProvider.jsx
+│   │   ├── routes
+│   │   │   └── router.jsx
+│   │   └── services
+│   │       ├── apiService.js
+│   │       ├── authService.js
+│   │       ├── chatService.js
+│   │       └── userService.js
+│   └── vite.config.js
+├── project_structure.txt
+├── README.md
+└── temp
+    ├── clres.html
+    ├── cspace.html
+    ├── ctests.html
+    ├── gptres.html
+    ├── gspace.html
+    ├── login.txt
+    ├── rain.html
+    ├── shipCL.html
+    ├── shipGPT.html
+    └── template.html
+
+46 directories, 106 files
