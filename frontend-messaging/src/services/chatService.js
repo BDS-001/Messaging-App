@@ -230,19 +230,17 @@ export async function updateChatName(chatId, name) {
     }
 }
 
-export async function getLatestMessages(chatId, name) {
+export async function getLatestMessages(chatId, messageId) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
             return { success: false, message: 'No token found' };
         }
-        const response = await fetch(`${API_URL}/chats/${chatId}`, {
-            method: 'PUT',
+        const response = await fetch(`${API_URL}/chats/${chatId}/messages/${messageId}`, {
+            method: 'get',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name }),
         });
 
         const result = await response.json();

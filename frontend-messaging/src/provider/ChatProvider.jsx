@@ -262,7 +262,7 @@ export const ChatProvider = ({ children }) => {
     const processGetLatestMessages = useCallback(async () => {
         const cursor = activeChatDetails?.messages[activeChatDetails?.messages.length - 1]?.id;
         if (!activeChat || !cursor) return { success: false, message: 'no active chat found' };
-        const result = await getLatestMessages();
+        const result = await getLatestMessages(activeChat, cursor);
         if (result.success) {
             setActiveChatDetails((prev) => ({
                 ...prev,
