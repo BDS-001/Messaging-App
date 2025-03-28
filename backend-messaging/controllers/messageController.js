@@ -103,6 +103,7 @@ async function deleteMessage(req, res) {
 }
 
 async function getLatestMessages(req, res) {
+    //TODO: process request data, get data from database with query, return json result to client
     return
 }
 
