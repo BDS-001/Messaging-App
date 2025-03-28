@@ -1,6 +1,7 @@
 const { matchedData } = require('express-validator');
 const messageQueries = require('../prisma/queries/messageQueries');
 const httpStatusCodes = require('../utils/httpStatusCodes');
+const { isUserParticipantInChat } = require('../prisma/queries/chatQueries')
 
 async function createMessage(req, res) {
     try {
@@ -103,8 +104,33 @@ async function deleteMessage(req, res) {
 }
 
 async function getLatestMessages(req, res) {
-    //TODO: process request data, get data from database with query, return json result to client
-    return
+    try {
+        const { chatId, timestamp } = matchedData(req, { locations: ['params', 'query'], onlyValidData: true });
+        const userId = req.user.id;
+        const isParticipant = await isUserParticipantInChat(userId, chatId);
+        
+        if (!isParticipant) {
+            return res.status(httpStatusCodes.FORBIDDEN).json({
+                success: false,
+                message: 'Your are not authorized to fetch messages from this chat'
+            });
+        }
+        
+        const newMessages = await messageQueries.getLatestMessages(chatId, timestamp);
+        
+        return res.status(httpStatusCodes.OK).json({
+            success: true,
+            message: 'Messages retrieved successfully',
+            data: newMessages
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(error.status || httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: error.message || 'An error occurred while deleting the message',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+    }
 }
 
 module.exports = { createMessage, updateMessage, deleteMessage, getLatestMessages };

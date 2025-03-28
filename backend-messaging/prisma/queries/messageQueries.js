@@ -60,4 +60,9 @@ async function getMessageById(messageId) {
   });
 }
 
-module.exports = {createMessage, softDeleteMessage, updateMessage, getMessageById}
+async function getLatestMessages(chatId, timestamp) {
+  //TODO: implement query logic
+  return
+}
+
+module.exports = {createMessage, softDeleteMessage, updateMessage, getMessageById, getLatestMessages}
