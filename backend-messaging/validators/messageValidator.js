@@ -45,17 +45,17 @@ const messageValidators = {
     getLatest: [
         param('chatId')
             .exists()
+            .withMessage('Chat ID is required')
+            .isInt()
+            .withMessage('Chat ID must be a number')
+            .toInt(),
+  
+        param('messageId')
+            .exists()
             .withMessage('Message ID is required')
             .isInt()
             .withMessage('Message ID must be a number')
             .toInt(),
-  
-        query('messageId')
-        .exists()
-        .withMessage('Message ID is required')
-        .isInt()
-        .withMessage('Message ID must be a number')
-        .toInt(),
       ]
 };
 
