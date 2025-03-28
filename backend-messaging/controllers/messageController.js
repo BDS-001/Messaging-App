@@ -105,7 +105,7 @@ async function deleteMessage(req, res) {
 
 async function getLatestMessages(req, res) {
     try {
-        const { chatId, timestamp } = matchedData(req, { locations: ['params', 'query'], onlyValidData: true });
+        const { chatId, messageId } = matchedData(req, { locations: ['params', 'query'], onlyValidData: true });
         const userId = req.user.id;
         const isParticipant = await isUserParticipantInChat(userId, chatId);
         
@@ -116,7 +116,7 @@ async function getLatestMessages(req, res) {
             });
         }
         
-        const newMessages = await messageQueries.getLatestMessages(chatId, timestamp);
+        const newMessages = await messageQueries.getLatestMessages(chatId, messageId);
         
         return res.status(httpStatusCodes.OK).json({
             success: true,

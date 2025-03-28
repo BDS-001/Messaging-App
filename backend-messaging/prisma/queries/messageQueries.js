@@ -60,12 +60,12 @@ async function getMessageById(messageId) {
   });
 }
 
-async function getLatestMessages(chatId, timestamp) {
+async function getLatestMessages(chatId, messageId) {
   return await prisma.message.findMany({
     where: {
       chatId,
-      sentAt: {
-        gt: timestamp
+      id: {
+        gt: messageId
       }
     },
     orderBy: {sentAt: 'asc'}

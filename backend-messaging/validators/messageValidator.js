@@ -50,23 +50,12 @@ const messageValidators = {
             .withMessage('Message ID must be a number')
             .toInt(),
   
-        query('timestamp')
-          .exists()
-          .withMessage('timestamp is required')
-          .isNumeric()
-          .withMessage('timestamp must be a number')
-          .toInt()
-          .customSanitizer(value => {
-            // Convert the numeric timestamp to a Date object for Prisma
-            return new Date(value);
-          })
-          .custom((value) => {
-            // Ensure timestamp is a valid date
-            if (isNaN(value.getTime())) {
-              throw new Error('timestamp must be a valid date timestamp');
-            }
-            return true;
-          }),
+        query('messageId')
+        .exists()
+        .withMessage('Message ID is required')
+        .isInt()
+        .withMessage('Message ID must be a number')
+        .toInt(),
       ]
 };
 
