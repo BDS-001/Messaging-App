@@ -36,12 +36,7 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const useChatName = type === 'group' ? chatName : null;
-        const result = await handleChatCreation(
-            type,
-            useChatName,
-            participants,
-            user.id,
-        );
+        const result = await handleChatCreation(type, useChatName, participants, user.id);
         if (!result.success) {
             result.errors.forEach((item) => showToast(item.msg, 'error'));
         }
@@ -73,30 +68,17 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
 
     const handleRemoveParticipant = (userId) => {
         setParticipants((prev) => prev.filter((id) => id !== userId));
-        setSelectedParticipants((prev) =>
-            prev.filter((user) => user.id !== userId),
-        );
+        setSelectedParticipants((prev) => prev.filter((user) => user.id !== userId));
     };
 
     if (!isOpen) return null;
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
-            <div
-                className={styles.modalContent}
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
-                    <h3>
-                        {type === 'one_on_one'
-                            ? 'New Direct Message'
-                            : 'Create Group Chat'}
-                    </h3>
-                    <button
-                        className={styles.closeButton}
-                        onClick={onClose}
-                        aria-label="Close"
-                    >
+                    <h3>{type === 'one_on_one' ? 'New Direct Message' : 'Create Group Chat'}</h3>
+                    <button className={styles.closeButton} onClick={onClose} aria-label="Close">
                         ×
                     </button>
                 </div>
@@ -106,21 +88,12 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                             {selectedParticipants.length > 0 && (
                                 <div className={styles.participantsContainer}>
                                     {selectedParticipants.map((user) => (
-                                        <div
-                                            key={user.id}
-                                            className={styles.participantChip}
-                                        >
+                                        <div key={user.id} className={styles.participantChip}>
                                             <span>{user.username}</span>
                                             <button
                                                 type="button"
-                                                className={
-                                                    styles.removeParticipant
-                                                }
-                                                onClick={() =>
-                                                    handleRemoveParticipant(
-                                                        user.id,
-                                                    )
-                                                }
+                                                className={styles.removeParticipant}
+                                                onClick={() => handleRemoveParticipant(user.id)}
                                                 aria-label={`Remove ${user.username}`}
                                             >
                                                 ×
@@ -153,21 +126,12 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                             {selectedParticipants.length > 0 && (
                                 <div className={styles.participantsContainer}>
                                     {selectedParticipants.map((user) => (
-                                        <div
-                                            key={user.id}
-                                            className={styles.participantChip}
-                                        >
+                                        <div key={user.id} className={styles.participantChip}>
                                             <span>{user.username}</span>
                                             <button
                                                 type="button"
-                                                className={
-                                                    styles.removeParticipant
-                                                }
-                                                onClick={() =>
-                                                    handleRemoveParticipant(
-                                                        user.id,
-                                                    )
-                                                }
+                                                className={styles.removeParticipant}
+                                                onClick={() => handleRemoveParticipant(user.id)}
                                                 aria-label={`Remove ${user.username}`}
                                             >
                                                 ×
@@ -187,25 +151,15 @@ const CreateChatModal = ({ isOpen, onClose, type }) => {
                         </div>
                     )}
                     <div className={styles.formActions}>
-                        <button
-                            type="button"
-                            className={styles.cancelButton}
-                            onClick={onClose}
-                        >
+                        <button type="button" className={styles.cancelButton} onClick={onClose}>
                             Cancel
                         </button>
                         <button
                             type="submit"
                             className={styles.submitButton}
-                            disabled={
-                                type === 'group'
-                                    ? !chatName.trim()
-                                    : participants.length < 1
-                            }
+                            disabled={type === 'group' ? !chatName.trim() : participants.length < 1}
                         >
-                            {type === 'one_on_one'
-                                ? 'Start Chat'
-                                : 'Create Group'}
+                            {type === 'one_on_one' ? 'Start Chat' : 'Create Group'}
                         </button>
                     </div>
                 </form>

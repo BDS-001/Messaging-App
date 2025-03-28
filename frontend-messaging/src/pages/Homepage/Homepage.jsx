@@ -15,10 +15,7 @@ function Homapage() {
                 ) : (
                     <div className={styles.mainContent}>
                         <h2>Welcome to ChatSphere</h2>
-                        <p>
-                            Select a chat from the sidebar or create a new
-                            conversation
-                        </p>
+                        <p>Select a chat from the sidebar or create a new conversation</p>
                     </div>
                 )}
             </main>

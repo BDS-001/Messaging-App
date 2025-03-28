@@ -5,7 +5,20 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
-import prettierOptions from './.prettierrc.js';
+// import prettierOptions from './.prettierrc.js';
+
+const prettierOptions = {
+    semi: true,
+    trailingComma: 'all',
+    singleQuote: true,
+    printWidth: 100,
+    tabWidth: 4,
+    endOfLine: 'lf',
+    useTabs: false,
+    bracketSpacing: true,
+    bracketSameLine: false,
+    arrowParens: 'always',
+};
 
 export default [
     { ignores: ['dist'] },
@@ -33,10 +46,7 @@ export default [
             ...react.configs['jsx-runtime'].rules,
             ...reactHooks.configs.recommended.rules,
             'react/jsx-no-target-blank': 'off',
-            'react-refresh/only-export-components': [
-                'warn',
-                { allowConstantExport: true },
-            ],
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
             'prettier/prettier': ['error', prettierOptions],
         },
     },

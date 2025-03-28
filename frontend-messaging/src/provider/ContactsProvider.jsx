@@ -2,12 +2,7 @@
 import { ContactContext } from '../context/ContactContext';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import {
-    getUserContacts,
-    addContact,
-    removeContact,
-    updateContactNickname,
-} from '../services/userService';
+import { getUserContacts, addContact, removeContact, updateContactNickname } from '../services/userService';
 
 export const ContactProvider = ({ children }) => {
     const { user } = useAuth();
@@ -54,10 +49,7 @@ export const ContactProvider = ({ children }) => {
             if (result.success) {
                 // Update the state directly with the new contact
                 const newContact = result.data;
-                setContactsArray((prevContacts) => [
-                    ...prevContacts,
-                    newContact,
-                ]);
+                setContactsArray((prevContacts) => [...prevContacts, newContact]);
                 setContacts((prevContacts) => ({
                     ...prevContacts,
                     [newContact.contact.id]: newContact,
@@ -88,9 +80,7 @@ export const ContactProvider = ({ children }) => {
 
             if (result.success) {
                 // Update the state by removing the contact
-                setContactsArray((prevContacts) =>
-                    prevContacts.filter((c) => c.id !== contact.id),
-                );
+                setContactsArray((prevContacts) => prevContacts.filter((c) => c.id !== contact.id));
                 setContacts((prevContacts) => {
                     const updatedContacts = { ...prevContacts };
                     delete updatedContacts[contact.contact.id];
@@ -117,19 +107,12 @@ export const ContactProvider = ({ children }) => {
         try {
             // We need to send the contactUserId (foreign key), not the contact entry id
             const contactUserId = contact.contactId;
-            const result = await updateContactNickname(
-                contactUserId,
-                newNickname,
-            );
+            const result = await updateContactNickname(contactUserId, newNickname);
 
             if (result.success) {
                 // Update the contact's nickname in state
                 const updatedContact = result.data;
-                setContactsArray((prevContacts) =>
-                    prevContacts.map((c) =>
-                        c.id === contact.id ? updatedContact : c,
-                    ),
-                );
+                setContactsArray((prevContacts) => prevContacts.map((c) => (c.id === contact.id ? updatedContact : c)));
                 setContacts((prevContacts) => ({
                     ...prevContacts,
                     [updatedContact.contact.id]: updatedContact,

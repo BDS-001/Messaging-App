@@ -19,9 +19,7 @@ export const ToastProvider = ({ children }) => {
     };
 
     const removeToast = (id) => {
-        setToasts((currentToasts) =>
-            currentToasts.filter((toast) => toast.id !== id),
-        );
+        setToasts((currentToasts) => currentToasts.filter((toast) => toast.id !== id));
     };
 
     return (

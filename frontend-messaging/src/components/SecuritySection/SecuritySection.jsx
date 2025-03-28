@@ -19,11 +19,7 @@ const SecuritySection = () => {
     return (
         <div className={styles.section}>
             <h3 className={styles.sectionTitle}>Account Security</h3>
-            <button
-                className={styles.securityButton}
-                onClick={handleChangePassword}
-                disabled={isChangingPassword}
-            >
+            <button className={styles.securityButton} onClick={handleChangePassword} disabled={isChangingPassword}>
                 Change Password
             </button>
         </div>

@@ -62,30 +62,19 @@ const Sidebar = () => {
                         />
                     ))
                 ) : activeTab === 'one_on_one' ? (
-                    <div className={styles.emptyState}>
-                        No direct messages yet
-                    </div>
+                    <div className={styles.emptyState}>No direct messages yet</div>
                 ) : (
                     <div className={styles.emptyState}>No group chats yet</div>
                 )}
             </div>
 
             <div className={styles.createButtonContainer}>
-                <button
-                    className={styles.createButton}
-                    onClick={openCreateChatModal}
-                >
-                    {activeTab === 'one_on_one'
-                        ? 'New Message'
-                        : 'New Group Chat'}
+                <button className={styles.createButton} onClick={openCreateChatModal}>
+                    {activeTab === 'one_on_one' ? 'New Message' : 'New Group Chat'}
                 </button>
             </div>
 
-            <CreateChatModal
-                isOpen={isModalOpen}
-                onClose={closeCreateChatModal}
-                type={activeTab}
-            />
+            <CreateChatModal isOpen={isModalOpen} onClose={closeCreateChatModal} type={activeTab} />
         </aside>
     );
 };

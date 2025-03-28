@@ -15,8 +15,7 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
     const [removeError, setRemoveError] = useState(null);
     const [addError, setAddError] = useState(null);
     const { user } = useAuth();
-    const { leaveGroupChat, removeGroupParticipant, addGroupParticipant } =
-        useChat();
+    const { leaveGroupChat, removeGroupParticipant, addGroupParticipant } = useChat();
 
     const toggleParticipants = () => {
         setShowParticipants(!showParticipants);
@@ -47,19 +46,12 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
             setShowAddModal(false);
         } else {
             // Handle the specific error format
-            if (
-                result.errors &&
-                Array.isArray(result.errors) &&
-                result.errors.length > 0
-            ) {
+            if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
                 // Get all error messages from the array
                 const errorMessages = result.errors.map((err) => err.msg);
                 setAddError(errorMessages.join('. '));
             } else {
-                setAddError(
-                    result.message ||
-                        `Failed to add ${user.username} to the group`,
-                );
+                setAddError(result.message || `Failed to add ${user.username} to the group`);
             }
         }
     };
@@ -104,10 +96,7 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
 
     return (
         <div className={styles.participantsContainer}>
-            <button
-                className={styles.participantsButton}
-                onClick={toggleParticipants}
-            >
+            <button className={styles.participantsButton} onClick={toggleParticipants}>
                 Participants ({participants.length})
             </button>
 
@@ -115,29 +104,20 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                 <div className={styles.participantsDropdown}>
                     <div className={styles.participantsHeader}>
                         <h4>Group Participants</h4>
-                        <button
-                            className={styles.closeButton}
-                            onClick={() => setShowParticipants(false)}
-                        >
+                        <button className={styles.closeButton} onClick={() => setShowParticipants(false)}>
                             ×
                         </button>
                     </div>
 
                     <div className={styles.participantsActions}>
-                        <button
-                            className={styles.addButton}
-                            onClick={handleAddParticipant}
-                        >
+                        <button className={styles.addButton} onClick={handleAddParticipant}>
                             Add Participant
                         </button>
                     </div>
 
                     <ul className={styles.participantsList}>
                         {participants.map((participant) => (
-                            <li
-                                key={participant.userId}
-                                className={styles.participantItem}
-                            >
+                            <li key={participant.userId} className={styles.participantItem}>
                                 <div className={styles.participantInfo}>
                                     <div className={styles.participantAvatar}>
                                         {participant.user.username.charAt(0)}
@@ -145,14 +125,7 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                                     <span className={styles.participantName}>
                                         {participant.user.username}
                                         {participant.userId === user.id && (
-                                            <span
-                                                className={
-                                                    styles.participantYou
-                                                }
-                                            >
-                                                {' '}
-                                                (You)
-                                            </span>
+                                            <span className={styles.participantYou}> (You)</span>
                                         )}
                                     </span>
                                 </div>
@@ -161,10 +134,7 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                                     <button
                                         className={styles.removeButton}
                                         onClick={() =>
-                                            confirmRemoveParticipant(
-                                                participant.userId,
-                                                participant.user.username,
-                                            )
+                                            confirmRemoveParticipant(participant.userId, participant.user.username)
                                         }
                                         aria-label="Remove participant"
                                     >
@@ -176,10 +146,7 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                     </ul>
 
                     <div className={styles.leaveGroupContainer}>
-                        <button
-                            className={styles.leaveButton}
-                            onClick={() => setShowLeaveModal(true)}
-                        >
+                        <button className={styles.leaveButton} onClick={() => setShowLeaveModal(true)}>
                             Leave Group
                         </button>
                     </div>
@@ -192,21 +159,14 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                     <div className={styles.modal}>
                         <h4 className={styles.modalTitle}>Leave Group?</h4>
                         <p className={styles.modalText}>
-                            Are you sure you want to leave this group?
-                            You&apos;ll no longer receive messages from this
+                            Are you sure you want to leave this group? You&apos;ll no longer receive messages from this
                             chat.
                         </p>
                         <div className={styles.modalButtons}>
-                            <button
-                                className={styles.cancelButton}
-                                onClick={() => setShowLeaveModal(false)}
-                            >
+                            <button className={styles.cancelButton} onClick={() => setShowLeaveModal(false)}>
                                 Cancel
                             </button>
-                            <button
-                                className={styles.confirmButton}
-                                onClick={handleLeaveGroup}
-                            >
+                            <button className={styles.confirmButton} onClick={handleLeaveGroup}>
                                 Leave Group
                             </button>
                         </div>
@@ -218,30 +178,17 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
             {showRemoveModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
-                        <h4 className={styles.modalTitle}>
-                            Remove Participant
-                        </h4>
+                        <h4 className={styles.modalTitle}>Remove Participant</h4>
                         <p className={styles.modalText}>
-                            Are you sure you want to remove {selectedUsername}{' '}
-                            from this group? They will no longer be able to see
-                            messages or participate in this chat.
+                            Are you sure you want to remove {selectedUsername} from this group? They will no longer be
+                            able to see messages or participate in this chat.
                         </p>
-                        {removeError && (
-                            <div className={styles.modalError}>
-                                {removeError}
-                            </div>
-                        )}
+                        {removeError && <div className={styles.modalError}>{removeError}</div>}
                         <div className={styles.modalButtons}>
-                            <button
-                                className={styles.cancelButton}
-                                onClick={cancelRemoveParticipant}
-                            >
+                            <button className={styles.cancelButton} onClick={cancelRemoveParticipant}>
                                 Cancel
                             </button>
-                            <button
-                                className={styles.confirmButton}
-                                onClick={handleRemoveParticipant}
-                            >
+                            <button className={styles.confirmButton} onClick={handleRemoveParticipant}>
                                 Remove
                             </button>
                         </div>
@@ -254,20 +201,13 @@ const ParticipantsDisplay = ({ participants, chatId }) => {
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h4 className={styles.modalTitle}>
-                                Add Participant
-                            </h4>
-                            <button
-                                className={styles.closeModalButton}
-                                onClick={() => setShowAddModal(false)}
-                            >
+                            <h4 className={styles.modalTitle}>Add Participant</h4>
+                            <button className={styles.closeModalButton} onClick={() => setShowAddModal(false)}>
                                 ×
                             </button>
                         </div>
 
-                        {addError && (
-                            <div className={styles.modalError}>{addError}</div>
-                        )}
+                        {addError && <div className={styles.modalError}>{addError}</div>}
 
                         <UserSearch
                             onSelectUser={handleSelectUser}

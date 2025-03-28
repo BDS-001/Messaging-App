@@ -407,7 +407,8 @@
     text-overflow: ellipsis;
 }
 
-.noResults, .searchPrompt {
+.noResults,
+.searchPrompt {
     text-align: center;
     padding: 1.5rem;
     color: #777;

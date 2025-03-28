@@ -37,9 +37,7 @@ const UserSearch = ({
 
             if (result.success) {
                 // Filter out excluded users
-                const filteredResults = result.data.filter(
-                    (searchUser) => !excludeUserIds.includes(searchUser.id),
-                );
+                const filteredResults = result.data.filter((searchUser) => !excludeUserIds.includes(searchUser.id));
                 setSearchResults(filteredResults);
 
                 if (filteredResults.length === 0 && result.data.length > 0) {
@@ -51,18 +49,12 @@ const UserSearch = ({
                 setSearchResults([]);
 
                 // Handle the specific error format
-                if (
-                    result.errors &&
-                    Array.isArray(result.errors) &&
-                    result.errors.length > 0
-                ) {
+                if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
                     // Get all error messages from the array
                     const errorMessages = result.errors.map((err) => err.msg);
                     setSearchError(errorMessages.join('. '));
                 } else {
-                    setSearchError(
-                        result.message || 'Failed to search for users',
-                    );
+                    setSearchError(result.message || 'Failed to search for users');
                 }
             }
         }, 500);
@@ -104,36 +96,20 @@ const UserSearch = ({
                     onChange={handleSearchChange}
                     autoFocus
                 />
-                {isSearching && (
-                    <div className={styles.searchingIndicator}>
-                        Searching...
-                    </div>
-                )}
+                {isSearching && <div className={styles.searchingIndicator}>Searching...</div>}
             </div>
 
-            {searchError && (
-                <div className={styles.errorMessage}>{searchError}</div>
-            )}
+            {searchError && <div className={styles.errorMessage}>{searchError}</div>}
 
             <div className={styles.searchResults}>
                 {searchResults.length > 0 ? (
                     <ul className={styles.userList}>
                         {searchResults.map((user) => (
-                            <li
-                                key={user.id}
-                                className={styles.userItem}
-                                onClick={() => handleUserSelect(user)}
-                            >
-                                <div className={styles.userAvatar}>
-                                    {user.username.charAt(0)}
-                                </div>
+                            <li key={user.id} className={styles.userItem} onClick={() => handleUserSelect(user)}>
+                                <div className={styles.userAvatar}>{user.username.charAt(0)}</div>
                                 <div className={styles.userInfo}>
-                                    <span className={styles.userName}>
-                                        {user.username}
-                                    </span>
-                                    <span className={styles.userEmail}>
-                                        {user.email}
-                                    </span>
+                                    <span className={styles.userName}>{user.username}</span>
+                                    <span className={styles.userEmail}>{user.email}</span>
                                 </div>
                                 {buttonLabel && (
                                     <button
@@ -150,14 +126,10 @@ const UserSearch = ({
                             </li>
                         ))}
                     </ul>
-                ) : searchTerm.length >= minSearchLength &&
-                  !isSearching &&
-                  !searchError ? (
+                ) : searchTerm.length >= minSearchLength && !isSearching && !searchError ? (
                     <div className={styles.noResults}>{noResultsMessage}</div>
                 ) : searchTerm.length < minSearchLength ? (
-                    <div className={styles.searchPrompt}>
-                        Type at least {minSearchLength} characters to search
-                    </div>
+                    <div className={styles.searchPrompt}>Type at least {minSearchLength} characters to search</div>
                 ) : null}
             </div>
         </div>

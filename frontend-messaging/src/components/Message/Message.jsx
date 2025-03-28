@@ -8,17 +8,11 @@ const Message = ({ message, isOwnMessage, senderName }) => {
     });
 
     return (
-        <div
-            className={`${styles.messageWrapper} ${isOwnMessage ? styles.ownMessage : styles.otherMessage}`}
-        >
-            {!isOwnMessage && (
-                <div className={styles.senderName}>{senderName}</div>
-            )}
+        <div className={`${styles.messageWrapper} ${isOwnMessage ? styles.ownMessage : styles.otherMessage}`}>
+            {!isOwnMessage && <div className={styles.senderName}>{senderName}</div>}
             <div className={styles.messageContent}>
                 {message.isDeleted ? (
-                    <p className={styles.deletedMessage}>
-                        This message was deleted
-                    </p>
+                    <p className={styles.deletedMessage}>This message was deleted</p>
                 ) : (
                     <p>{message.content}</p>
                 )}

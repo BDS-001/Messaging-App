@@ -9,9 +9,7 @@ const ChatItem = ({ chat, handleOnClick, isActive }) => {
 
     const isGroupChat = chat.type === 'group';
     const otherUser = !isGroupChat
-        ? chat.participants.find(
-              (participant) => participant.user.id !== user.id,
-          )?.user
+        ? chat.participants.find((participant) => participant.user.id !== user.id)?.user
         : null;
 
     const participantCount = isGroupChat ? chat.participants.length : 0;
@@ -40,25 +38,16 @@ const ChatItem = ({ chat, handleOnClick, isActive }) => {
             <div className={styles.chatInfo}>
                 <div className={styles.chatHeader}>
                     <h4 className={styles.chatName}>
-                        {isGroupChat
-                            ? chat.name
-                            : getContactName(
-                                  otherUser?.id,
-                                  otherUser?.username,
-                              )}
+                        {isGroupChat ? chat.name : getContactName(otherUser?.id, otherUser?.username)}
                     </h4>
                     <span className={styles.timeStamp}>{lastActive}</span>
                 </div>
 
                 <div className={styles.chatMeta}>
                     {isGroupChat ? (
-                        <span className={styles.participantCount}>
-                            {participantCount} participants
-                        </span>
+                        <span className={styles.participantCount}>{participantCount} participants</span>
                     ) : (
-                        <span className={styles.lastMessage}>
-                            Click to start chatting
-                        </span>
+                        <span className={styles.lastMessage}>Click to start chatting</span>
                     )}
                 </div>
             </div>

@@ -18,29 +18,20 @@ const Header = () => {
 
             {isAuth && (
                 <nav className={styles.navigation}>
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            isActive ? styles.activeNavLink : styles.navLink
-                        }
-                    >
+                    <NavLink to="/" className={({ isActive }) => (isActive ? styles.activeNavLink : styles.navLink)}>
                         Home
                     </NavLink>
 
                     <NavLink
                         to="/contacts"
-                        className={({ isActive }) =>
-                            isActive ? styles.activeNavLink : styles.navLink
-                        }
+                        className={({ isActive }) => (isActive ? styles.activeNavLink : styles.navLink)}
                     >
                         Contacts
                     </NavLink>
 
                     <NavLink
                         to="/settings"
-                        className={({ isActive }) =>
-                            isActive ? styles.activeNavLink : styles.navLink
-                        }
+                        className={({ isActive }) => (isActive ? styles.activeNavLink : styles.navLink)}
                     >
                         Settings
                     </NavLink>
@@ -50,16 +41,10 @@ const Header = () => {
             <div className={styles.userSection}>
                 {isAuth ? (
                     <div className={styles.userInfo}>
-                        <span
-                            className={styles.username}
-                            onClick={handleUsernameClick}
-                        >
+                        <span className={styles.username} onClick={handleUsernameClick}>
                             {user.username}
                         </span>
-                        <button
-                            className={styles.logoutButton}
-                            onClick={logout}
-                        >
+                        <button className={styles.logoutButton} onClick={logout}>
                             Logout
                         </button>
                     </div>

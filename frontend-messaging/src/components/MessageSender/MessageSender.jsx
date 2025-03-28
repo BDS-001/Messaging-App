@@ -55,11 +55,7 @@ const MessageSender = ({ chatId }) => {
                     className={styles.input}
                     rows={1}
                 />
-                <button
-                    type="submit"
-                    className={styles.sendButton}
-                    disabled={!message.trim()}
-                >
+                <button type="submit" className={styles.sendButton} disabled={!message.trim()}>
                     Send
                 </button>
             </form>

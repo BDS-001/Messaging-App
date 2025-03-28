@@ -6,14 +6,8 @@ import UserSearch from '../../components/UserSearch/UserSearch';
 import styles from './Contact.module.css';
 
 function ContactsPage() {
-    const {
-        contactsArray,
-        isLoading,
-        error,
-        addUserContact,
-        removeUserContact,
-        updateUserContactNickname,
-    } = useContact();
+    const { contactsArray, isLoading, error, addUserContact, removeUserContact, updateUserContactNickname } =
+        useContact();
     const { user } = useAuth();
     const { showToast } = useToast();
 
@@ -30,15 +24,9 @@ function ContactsPage() {
         if (contactsArray.length > 0) {
             const filtered = contactsArray.filter(
                 (contact) =>
-                    contact.nickname
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                    contact.contact.username
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                    contact.contact.email
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()),
+                    contact.nickname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    contact.contact.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    contact.contact.email.toLowerCase().includes(searchQuery.toLowerCase()),
             );
             setFilteredContacts(filtered);
         } else {
@@ -106,10 +94,7 @@ function ContactsPage() {
         }
 
         setActionInProgress(true);
-        const result = await updateUserContactNickname(
-            selectedContact,
-            newNickname.trim(),
-        );
+        const result = await updateUserContactNickname(selectedContact, newNickname.trim());
 
         if (result.success) {
             showToast(`Updated nickname to ${newNickname.trim()}`);
@@ -174,30 +159,20 @@ function ContactsPage() {
                 </div>
 
                 {isLoading || actionInProgress ? (
-                    <div className={styles.loadingMessage}>
-                        {isLoading ? 'Loading contacts...' : 'Processing...'}
-                    </div>
+                    <div className={styles.loadingMessage}>{isLoading ? 'Loading contacts...' : 'Processing...'}</div>
                 ) : filteredContacts.length > 0 ? (
                     <ul className={`${styles.contactsList} custom-scrollbar`}>
                         {filteredContacts.map((contact) => (
                             <li key={contact.id} className={styles.contactItem}>
                                 <div className={styles.contactAvatar}>
-                                    {contact.contact.username
-                                        .charAt(0)
-                                        .toUpperCase()}
+                                    {contact.contact.username.charAt(0).toUpperCase()}
                                 </div>
                                 <div className={styles.contactInfo}>
                                     <div className={styles.contactName}>
                                         {contact.nickname}
-                                        <span
-                                            className={styles.contactUsername}
-                                        >
-                                            ({contact.contact.username})
-                                        </span>
+                                        <span className={styles.contactUsername}>({contact.contact.username})</span>
                                     </div>
-                                    <div className={styles.contactEmail}>
-                                        {contact.contact.email}
-                                    </div>
+                                    <div className={styles.contactEmail}>{contact.contact.email}</div>
                                 </div>
                                 <div className={styles.contactActions}>
                                     <button
@@ -220,27 +195,17 @@ function ContactsPage() {
                     </ul>
                 ) : (
                     <div className={styles.emptyState}>
-                        {searchQuery
-                            ? 'No contacts match your search'
-                            : 'No contacts found. Add some!'}
+                        {searchQuery ? 'No contacts match your search' : 'No contacts found. Add some!'}
                     </div>
                 )}
             </div>
 
             {/* Add Contact Modal */}
             {showAddModal && (
-                <div
-                    className={styles.modalOverlay}
-                    onClick={() => !actionInProgress && setShowAddModal(false)}
-                >
-                    <div
-                        className={styles.modal}
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                <div className={styles.modalOverlay} onClick={() => !actionInProgress && setShowAddModal(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
-                            <h4 className={styles.modalTitle}>
-                                Add New Contact
-                            </h4>
+                            <h4 className={styles.modalTitle}>Add New Contact</h4>
                             <button
                                 className={styles.closeModalButton}
                                 onClick={() => setShowAddModal(false)}
@@ -262,14 +227,8 @@ function ContactsPage() {
 
             {/* Edit Nickname Modal */}
             {showEditModal && selectedContact && (
-                <div
-                    className={styles.modalOverlay}
-                    onClick={() => !actionInProgress && setShowEditModal(false)}
-                >
-                    <div
-                        className={styles.modal}
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                <div className={styles.modalOverlay} onClick={() => !actionInProgress && setShowEditModal(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
                             <h4 className={styles.modalTitle}>Edit Nickname</h4>
                             <button
@@ -285,20 +244,13 @@ function ContactsPage() {
                             </button>
                         </div>
                         <div className={styles.modalContent}>
-                            <p>
-                                Update nickname for{' '}
-                                {selectedContact.contact.username}
-                            </p>
+                            <p>Update nickname for {selectedContact.contact.username}</p>
                             <div className={styles.inputGroup}>
                                 <input
                                     type="text"
                                     value={newNickname}
-                                    onChange={(e) =>
-                                        setNewNickname(e.target.value)
-                                    }
-                                    onKeyDown={(e) =>
-                                        handleKeyDown(e, handleEditNickname)
-                                    }
+                                    onChange={(e) => setNewNickname(e.target.value)}
+                                    onKeyDown={(e) => handleKeyDown(e, handleEditNickname)}
                                     className={styles.modalInput}
                                     placeholder="Enter new nickname"
                                     autoFocus
@@ -319,9 +271,7 @@ function ContactsPage() {
                                 <button
                                     className={styles.confirmButton}
                                     onClick={handleEditNickname}
-                                    disabled={
-                                        actionInProgress || !newNickname.trim()
-                                    }
+                                    disabled={actionInProgress || !newNickname.trim()}
                                 >
                                     Update
                                 </button>
@@ -333,20 +283,10 @@ function ContactsPage() {
 
             {/* Remove Contact Confirmation Modal */}
             {showRemoveModal && selectedContact && (
-                <div
-                    className={styles.modalOverlay}
-                    onClick={() =>
-                        !actionInProgress && setShowRemoveModal(false)
-                    }
-                >
-                    <div
-                        className={styles.modal}
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                <div className={styles.modalOverlay} onClick={() => !actionInProgress && setShowRemoveModal(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
-                            <h4 className={styles.modalTitle}>
-                                Remove Contact
-                            </h4>
+                            <h4 className={styles.modalTitle}>Remove Contact</h4>
                             <button
                                 className={styles.closeModalButton}
                                 onClick={() => {
@@ -360,9 +300,8 @@ function ContactsPage() {
                         </div>
                         <div className={styles.modalContent}>
                             <p>
-                                Are you sure you want to remove{' '}
-                                <strong>{selectedContact.nickname}</strong> from
-                                your contacts?
+                                Are you sure you want to remove <strong>{selectedContact.nickname}</strong> from your
+                                contacts?
                             </p>
                             <div className={styles.modalButtons}>
                                 <button

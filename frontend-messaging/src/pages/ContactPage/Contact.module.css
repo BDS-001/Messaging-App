@@ -139,7 +139,8 @@
     gap: 0.5rem;
 }
 
-.editButton, .removeButton {
+.editButton,
+.removeButton {
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -340,7 +341,8 @@
     background-color: #c0392b;
 }
 
-.confirmButton:disabled, .cancelButton:disabled {
+.confirmButton:disabled,
+.cancelButton:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }

@@ -30,7 +30,8 @@
     gap: 0.5rem;
 }
 
-.editNameButton, .clearChatButton {
+.editNameButton,
+.clearChatButton {
     background-color: transparent;
     border: 1px solid var(--navbar-main);
     color: var(--navbar-main);
@@ -41,7 +42,8 @@
     transition: all 0.2s ease;
 }
 
-.editNameButton:hover, .clearChatButton:hover {
+.editNameButton:hover,
+.clearChatButton:hover {
     background-color: var(--navbar-main);
     color: var(--main-color);
 }
@@ -75,7 +77,8 @@
     gap: 0.5rem;
 }
 
-.saveButton, .cancelButton {
+.saveButton,
+.cancelButton {
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.8rem;

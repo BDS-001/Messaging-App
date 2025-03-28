@@ -10,13 +10,7 @@ import styles from './MessageContainer.module.css';
 
 const MessageContainer = () => {
     const { user } = useAuth();
-    const {
-        activeChatDetails,
-        isLoading,
-        isInitialChatLoad,
-        setIsInitialChatLoad,
-        processUpdateChatName,
-    } = useChat();
+    const { activeChatDetails, isLoading, isInitialChatLoad, setIsInitialChatLoad, processUpdateChatName } = useChat();
     const getContactName = useContactName();
     const [isEditingName, setIsEditingName] = useState(false);
     const [newChatName, setNewChatName] = useState('');
@@ -59,12 +53,7 @@ const MessageContainer = () => {
             // For new messages in the current chat, use smooth scrolling
             scrollToBottom('smooth');
         }
-    }, [
-        activeChatDetails?.id,
-        activeChatDetails?.messages,
-        isInitialChatLoad,
-        setIsInitialChatLoad,
-    ]);
+    }, [activeChatDetails?.id, activeChatDetails?.messages, isInitialChatLoad, setIsInitialChatLoad]);
 
     // Update newChatName when active chat changes
     useEffect(() => {
@@ -78,18 +67,13 @@ const MessageContainer = () => {
     }
 
     if (!activeChatDetails) {
-        return (
-            <div className={styles.emptyState}>
-                Select a chat to start messaging
-            </div>
-        );
+        return <div className={styles.emptyState}>Select a chat to start messaging</div>;
     }
 
     // Find the other participant in a one-on-one chat
     const otherParticipant =
         activeChatDetails.type === 'one_on_one'
-            ? activeChatDetails.participants.find((p) => p.user.id !== user.id)
-                  ?.user
+            ? activeChatDetails.participants.find((p) => p.user.id !== user.id)?.user
             : null;
 
     const chatName =
@@ -109,13 +93,8 @@ const MessageContainer = () => {
     };
 
     const handleSaveName = async () => {
-        console.log(
-            `Saving new chat name: ${newChatName} for chat ID: ${activeChatDetails.id}`,
-        );
-        const result = await processUpdateChatName(
-            activeChatDetails.id,
-            newChatName,
-        );
+        console.log(`Saving new chat name: ${newChatName} for chat ID: ${activeChatDetails.id}`);
+        const result = await processUpdateChatName(activeChatDetails.id, newChatName);
         console.log(result);
         setIsEditingName(false);
     };
@@ -133,16 +112,10 @@ const MessageContainer = () => {
                             autoFocus
                         />
                         <div className={styles.editNameButtons}>
-                            <button
-                                onClick={handleSaveName}
-                                className={styles.saveButton}
-                            >
+                            <button onClick={handleSaveName} className={styles.saveButton}>
                                 Save
                             </button>
-                            <button
-                                onClick={handleCancelEdit}
-                                className={styles.cancelButton}
-                            >
+                            <button onClick={handleCancelEdit} className={styles.cancelButton}>
                                 Cancel
                             </button>
                         </div>
@@ -152,10 +125,7 @@ const MessageContainer = () => {
                         <h3>{chatName}</h3>
                         <div className={styles.headerButtons}>
                             {isGroupChat && (
-                                <button
-                                    onClick={handleEditName}
-                                    className={styles.editNameButton}
-                                >
+                                <button onClick={handleEditName} className={styles.editNameButton}>
                                     Edit Name
                                 </button>
                             )}
@@ -164,28 +134,17 @@ const MessageContainer = () => {
                     </div>
                 )}
                 {isGroupChat && (
-                    <ParticipantsDisplay
-                        participants={activeChatDetails.participants}
-                        chatId={activeChatDetails.id}
-                    />
+                    <ParticipantsDisplay participants={activeChatDetails.participants} chatId={activeChatDetails.id} />
                 )}
             </div>
 
             <div className={styles.messagesWrapper}>
-                <div
-                    className={`${styles.messages} custom-scrollbar`}
-                    ref={messagesContainerRef}
-                >
+                <div className={`${styles.messages} custom-scrollbar`} ref={messagesContainerRef}>
                     {activeChatDetails.messages.map((message) => {
                         // Find the participant whose userId matches the message's senderId
-                        const participant = activeChatDetails.participants.find(
-                            (p) => p.userId === message.senderId,
-                        );
+                        const participant = activeChatDetails.participants.find((p) => p.userId === message.senderId);
                         const senderName = participant
-                            ? getContactName(
-                                  participant.user.id,
-                                  participant.user.username,
-                              )
+                            ? getContactName(participant.user.id, participant.user.username)
                             : 'Unknown User';
 
                         return (

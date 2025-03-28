@@ -124,7 +124,8 @@
     background-color: #1a2c3a;
 }
 
-.noResults, .searchPrompt {
+.noResults,
+.searchPrompt {
     text-align: center;
     padding: 1.5rem;
     color: #777;

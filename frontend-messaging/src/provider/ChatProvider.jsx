@@ -56,9 +56,7 @@ export const ChatProvider = ({ children }) => {
             }));
             return true;
         } else {
-            setChatError(
-                result.message || "Message couldn't be sent. Please try again.",
-            );
+            setChatError(result.message || "Message couldn't be sent. Please try again.");
             return false;
         }
     }
@@ -73,9 +71,7 @@ export const ChatProvider = ({ children }) => {
         setIsLoading(true);
         // Always mark as initial load when fetching a different chat
         if (activeChat !== lastActiveChatRef.current) {
-            console.log(
-                `Chat changed from ${lastActiveChatRef.current} to ${activeChat} - setting initial load`,
-            );
+            console.log(`Chat changed from ${lastActiveChatRef.current} to ${activeChat} - setting initial load`);
             setIsInitialChatLoad(true);
             lastActiveChatRef.current = activeChat;
         }
@@ -112,9 +108,7 @@ export const ChatProvider = ({ children }) => {
     const changeActiveChat = useCallback(
         (chatId) => {
             if (chatId !== activeChat) {
-                console.log(
-                    `Changing active chat from ${activeChat} to ${chatId}`,
-                );
+                console.log(`Changing active chat from ${activeChat} to ${chatId}`);
                 setActiveChat(chatId);
                 // Set initial load flag as soon as we switch chats
                 setIsInitialChatLoad(true);
@@ -149,9 +143,7 @@ export const ChatProvider = ({ children }) => {
         if (activeChatDetails && activeChatDetails.id === chatId) {
             setActiveChatDetails((prev) => ({
                 ...prev,
-                participants: prev.participants.filter(
-                    (participant) => participant.userId !== userId,
-                ),
+                participants: prev.participants.filter((participant) => participant.userId !== userId),
             }));
         }
 
@@ -160,9 +152,7 @@ export const ChatProvider = ({ children }) => {
                 if (chat.id === chatId) {
                     return {
                         ...chat,
-                        participants: chat.participants.filter(
-                            (participant) => participant.userId !== userId,
-                        ),
+                        participants: chat.participants.filter((participant) => participant.userId !== userId),
                     };
                 }
                 return chat;
@@ -216,9 +206,7 @@ export const ChatProvider = ({ children }) => {
         const chat = chats.filter(
             (chat) =>
                 chat.type === 'one_on_one' &&
-                chat.participants.some(
-                    (user) => Number(user.userId) === Number(otherUserId),
-                ),
+                chat.participants.some((user) => Number(user.userId) === Number(otherUserId)),
         );
         if (chat.length < 1) return false;
         setActiveChat(chat[0].id);
@@ -226,12 +214,7 @@ export const ChatProvider = ({ children }) => {
         return true;
     }
 
-    async function handleChatCreation(
-        type,
-        name = null,
-        participantIds,
-        userId,
-    ) {
+    async function handleChatCreation(type, name = null, participantIds, userId) {
         if (type === 'one_on_one') {
             const otherUserId = participantIds[0];
             if (checkExistingChat(otherUserId)) return { success: true };
@@ -258,12 +241,9 @@ export const ChatProvider = ({ children }) => {
         console.log(result);
         if (result.success) {
             setChats((prev) =>
-                prev.map((chat) =>
-                    chat.id === chatId ? { ...chat, name: chatName } : chat,
-                ),
+                prev.map((chat) => (chat.id === chatId ? { ...chat, name: chatName } : chat)),
             );
-            if (activeChat === chatId)
-                setActiveChatDetails((prev) => ({ ...prev, name: chatName }));
+            if (activeChat === chatId) setActiveChatDetails((prev) => ({ ...prev, name: chatName }));
         }
         return result;
     }
@@ -280,11 +260,8 @@ export const ChatProvider = ({ children }) => {
     }, [activeChat, processGetLatestMessages]);
 
     const processGetLatestMessages = useCallback(async () => {
-        const cursor =
-            activeChatDetails?.messages[activeChatDetails?.messages.length - 1]
-                ?.id;
-        if (!activeChat || !cursor)
-            return { success: false, message: 'no active chat found' };
+        const cursor = activeChatDetails?.messages[activeChatDetails?.messages.length - 1]?.id;
+        if (!activeChat || !cursor) return { success: false, message: 'no active chat found' };
         const result = await getLatestMessages();
         if (result.success) {
             setActiveChatDetails((prev) => ({

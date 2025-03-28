@@ -17,9 +17,7 @@ function LoginPage() {
     // Display success message when user is redirected from signup page
     useEffect(() => {
         if (location.state?.fromSignup) {
-            setSuccessMessage(
-                'Account created successfully! Please log in with your credentials.',
-            );
+            setSuccessMessage('Account created successfully! Please log in with your credentials.');
             window.history.replaceState({}, document.title);
         }
     }, [isAuth, location.state, navigate]);
@@ -43,11 +41,7 @@ function LoginPage() {
         <div className={styles.pageContainer}>
             <div className={styles.loginContainer}>
                 <h2 className={styles.title}>Login</h2>
-                {successMessage && (
-                    <div className={styles.successMessage}>
-                        {successMessage}
-                    </div>
-                )}
+                {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
                 {error && <div className={styles.errorMessage}>{error}</div>}
                 <form className={styles.loginForm} onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
@@ -77,8 +71,7 @@ function LoginPage() {
                     </button>
                 </form>
                 <p className={styles.bottomText}>
-                    Don&apos;t have an account?{' '}
-                    <Link to="/signup">Sign Up</Link>
+                    Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
                 </p>
             </div>
         </div>

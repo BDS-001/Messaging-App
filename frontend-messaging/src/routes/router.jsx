@@ -5,10 +5,7 @@ import Login from '../pages/LoginPage/Login.jsx';
 import Signup from '../pages/SignupPage/SignupPage.jsx';
 import SettingsPage from '../pages/SettingsPage/Settings.jsx';
 import ContactPage from '../pages/ContactPage/Contact.jsx';
-import {
-    ProtectedRoute,
-    AuthRoute,
-} from '../components/ProtectedRoute/ProtectedRoute.jsx';
+import { ProtectedRoute, AuthRoute } from '../components/ProtectedRoute/ProtectedRoute.jsx';
 
 const routes = [
     {

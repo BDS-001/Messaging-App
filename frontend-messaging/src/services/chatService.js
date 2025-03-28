@@ -103,15 +103,12 @@ export async function removeParticipant(chatId, userId) {
             return { success: false, message: 'No token found' };
         }
 
-        const response = await fetch(
-            `${API_URL}/chats/${chatId}/users/${userId}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+        const response = await fetch(`${API_URL}/chats/${chatId}/users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-        );
+        });
 
         const result = await response.json();
         return result;
@@ -128,14 +125,11 @@ export async function searchUsers(searchTerm) {
             return { success: false, message: 'No token found', data: [] };
         }
 
-        const response = await fetch(
-            `${API_URL}/users/search?q=${encodeURIComponent(searchTerm)}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+        const response = await fetch(`${API_URL}/users/search?q=${encodeURIComponent(searchTerm)}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-        );
+        });
 
         const result = await response.json();
         console.log(result);
@@ -152,15 +146,12 @@ export async function addParticipant(chatId, userId) {
         if (!token) {
             return { success: false, message: 'No token found' };
         }
-        const response = await fetch(
-            `${API_URL}/chats/${chatId}/users/${userId}`,
-            {
-                method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+        const response = await fetch(`${API_URL}/chats/${chatId}/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-        );
+        });
 
         const result = await response.json();
         console.log(result);

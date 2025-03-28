@@ -31,27 +31,16 @@ const ClearChatButton = ({ chatId }) => {
             {isModalOpen && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalContent}>
-                        <h3 className={styles.modalTitle}>
-                            Clear Chat History
-                        </h3>
-                        <p className={styles.modalText}>
-                            Are you sure you want to clear the chat?
-                        </p>
+                        <h3 className={styles.modalTitle}>Clear Chat History</h3>
+                        <p className={styles.modalText}>Are you sure you want to clear the chat?</p>
                         <p className={styles.modalSubtext}>
-                            This will not delete messages and will not affect
-                            other users
+                            This will not delete messages and will not affect other users
                         </p>
                         <div className={styles.modalButtons}>
-                            <button
-                                onClick={handleClearChat}
-                                className={styles.confirmButton}
-                            >
+                            <button onClick={handleClearChat} className={styles.confirmButton}>
                                 Clear
                             </button>
-                            <button
-                                onClick={closeModal}
-                                className={styles.cancelButton}
-                            >
+                            <button onClick={closeModal} className={styles.cancelButton}>
                                 Cancel
                             </button>
                         </div>

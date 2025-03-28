@@ -15,9 +15,7 @@ const UserInfoSection = ({ user }) => {
     };
 
     const handleUpdateUsername = async () => {
-        console.log(
-            `User is trying to update username from ${user.username} to ${newUsername}`,
-        );
+        console.log(`User is trying to update username from ${user.username} to ${newUsername}`);
         const res = await updateUserData({ username: newUsername });
         console.log(res);
 
@@ -58,16 +56,10 @@ const UserInfoSection = ({ user }) => {
                             className={styles.usernameInput}
                         />
                         <div className={styles.actionButtons}>
-                            <button
-                                className={styles.saveButton}
-                                onClick={handleUpdateUsername}
-                            >
+                            <button className={styles.saveButton} onClick={handleUpdateUsername}>
                                 Save
                             </button>
-                            <button
-                                className={styles.cancelButton}
-                                onClick={handleEditToggle}
-                            >
+                            <button className={styles.cancelButton} onClick={handleEditToggle}>
                                 Cancel
                             </button>
                         </div>
@@ -75,10 +67,7 @@ const UserInfoSection = ({ user }) => {
                 ) : (
                     <div className={styles.usernameDisplay}>
                         <span>{user.username}</span>
-                        <button
-                            className={styles.editButton}
-                            onClick={handleEditToggle}
-                        >
+                        <button className={styles.editButton} onClick={handleEditToggle}>
                             Edit
                         </button>
                     </div>
