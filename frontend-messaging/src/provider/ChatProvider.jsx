@@ -271,7 +271,7 @@ export const ChatProvider = ({ children }) => {
         if (heartbeat.current) clearInterval(heartbeat.current);
         heartbeat.current = setInterval(() => {
             //TODO: heartbeat function implementation
-        }, 5000);
+        }, 10000);
 
         return () => {
             if (heartbeat.current) clearInterval(heartbeat.current);
