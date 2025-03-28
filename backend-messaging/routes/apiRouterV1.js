@@ -35,6 +35,7 @@ router.delete('/chats/:chatId/users/:userId', isAuthenticated, validateRequest('
 router.post('/messages', isAuthenticated, validateRequest('message', 'create'), messageController.createMessage);
 router.put('/messages/:id', isAuthenticated, validateRequest('message', 'update'), messageController.updateMessage);
 router.delete('/messages/:id', isAuthenticated, validateRequest('message', 'get'), messageController.deleteMessage);
+router.get('/messages/:chatId', isAuthenticated, validateRequest('message', 'getLatest'), messageController.getLatestMessages)
 
 //contacts
 router.get('/contacts', isAuthenticated, contactController.getUserContacts);

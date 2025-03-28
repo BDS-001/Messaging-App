@@ -102,4 +102,8 @@ async function deleteMessage(req, res) {
     }
 }
 
-module.exports = { createMessage, updateMessage, deleteMessage };
+async function getLatestMessages(req, res) {
+    return
+}
+
+module.exports = { createMessage, updateMessage, deleteMessage, getLatestMessages };
