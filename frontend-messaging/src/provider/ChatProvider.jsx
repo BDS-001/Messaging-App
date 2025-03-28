@@ -11,6 +11,7 @@ import {
     createNewChat,
     clearChat,
     updateChatName,
+    getLatestMessages,
 } from '../services/chatService';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -270,13 +271,29 @@ export const ChatProvider = ({ children }) => {
     useEffect(() => {
         if (heartbeat.current) clearInterval(heartbeat.current);
         heartbeat.current = setInterval(() => {
-            //TODO: heartbeat function implementation
+            processGetLatestMessages();
         }, 10000);
 
         return () => {
             if (heartbeat.current) clearInterval(heartbeat.current);
         };
-    }, [activeChat]);
+    }, [activeChat, processGetLatestMessages]);
+
+    const processGetLatestMessages = useCallback(async () => {
+        const cursor =
+            activeChatDetails?.messages[activeChatDetails?.messages.length - 1]
+                ?.id;
+        if (!activeChat || !cursor)
+            return { success: false, message: 'no active chat found' };
+        const result = await getLatestMessages();
+        if (result.success) {
+            setActiveChatDetails((prev) => ({
+                ...prev,
+                messages: [...prev.messages, ...result.data],
+            }));
+        }
+        return result;
+    }, [activeChat, activeChatDetails]);
 
     return (
         <ChatContext.Provider
