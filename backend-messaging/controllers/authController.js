@@ -64,4 +64,8 @@ async function login(req, res) {
     }
 }
 
-module.exports = { getCurrentUser, login };
+async function resetUserPassword(req, res) {
+    return
+}
+
+module.exports = { getCurrentUser, login, resetUserPassword };

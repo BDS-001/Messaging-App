@@ -13,6 +13,7 @@ const router = require("express").Router();
 //auth
 router.get('/users/auth', isAuthenticated, authController.getCurrentUser);
 router.post('/users/login', validateRequest('auth', 'login'), authController.login);
+router.post('/users/password-reset', isAuthenticated, validateRequest('auth', 'resetPassword'), authController.resetUserPassword);
 
 //user
 router.get('/users/search', isAuthenticated, validateRequest('user', 'findUsers'), userController.getUsersBySearchQuery); //format: q=searchterm
