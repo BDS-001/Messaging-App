@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useToast } from '../../context/ToastContext';
+import { useAuth } from '../../context/AuthContext';
 import styles from './SecuritySection.module.css';
 
 const SecuritySection = () => {
     const { showToast } = useToast();
+    const { resetUserPassword } = useAuth();
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [passwordData, setPasswordData] = useState({
         oldPassword: '',
@@ -31,7 +33,7 @@ const SecuritySection = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Check if new password and confirm password match
@@ -40,15 +42,14 @@ const SecuritySection = () => {
             return;
         }
 
-        //TODO: change password api call logic
-        // For now, just show a success message
-        showToast('Password validation successful!', 'success');
-        setIsChangingPassword(false);
-        setPasswordData({
-            oldPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-        });
+        const result = await resetUserPassword(passwordData.oldPassword, passwordData.newPassword);
+
+        if (result.success) showToast('Password validation successful!', 'success');
+        else {
+            result.errors.forEach((error) => {
+                showToast(`${error.msg}`, 'error');
+            });
+        }
     };
 
     return (

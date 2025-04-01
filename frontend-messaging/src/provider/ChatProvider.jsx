@@ -71,7 +71,9 @@ export const ChatProvider = ({ children }) => {
         setIsLoading(true);
         // Always mark as initial load when fetching a different chat
         if (activeChat !== lastActiveChatRef.current) {
-            console.log(`Chat changed from ${lastActiveChatRef.current} to ${activeChat} - setting initial load`);
+            console.log(
+                `Chat changed from ${lastActiveChatRef.current} to ${activeChat} - setting initial load`,
+            );
             setIsInitialChatLoad(true);
             lastActiveChatRef.current = activeChat;
         }
@@ -143,7 +145,9 @@ export const ChatProvider = ({ children }) => {
         if (activeChatDetails && activeChatDetails.id === chatId) {
             setActiveChatDetails((prev) => ({
                 ...prev,
-                participants: prev.participants.filter((participant) => participant.userId !== userId),
+                participants: prev.participants.filter(
+                    (participant) => participant.userId !== userId,
+                ),
             }));
         }
 
@@ -152,7 +156,9 @@ export const ChatProvider = ({ children }) => {
                 if (chat.id === chatId) {
                     return {
                         ...chat,
-                        participants: chat.participants.filter((participant) => participant.userId !== userId),
+                        participants: chat.participants.filter(
+                            (participant) => participant.userId !== userId,
+                        ),
                     };
                 }
                 return chat;
@@ -243,7 +249,8 @@ export const ChatProvider = ({ children }) => {
             setChats((prev) =>
                 prev.map((chat) => (chat.id === chatId ? { ...chat, name: chatName } : chat)),
             );
-            if (activeChat === chatId) setActiveChatDetails((prev) => ({ ...prev, name: chatName }));
+            if (activeChat === chatId)
+                setActiveChatDetails((prev) => ({ ...prev, name: chatName }));
         }
         return result;
     }

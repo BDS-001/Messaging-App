@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { checkUserAuth, loginUser, signupUser } from '../services/authService';
+import { checkUserAuth, loginUser, signupUser, resetPassword } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { updateUserInfo } from '../services/userService';
 
@@ -74,6 +74,11 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    async function resetUserPassword(currentPassword, newPassword) {
+        const passwordData = { currentPassword, newPassword };
+        return resetPassword(passwordData);
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -84,6 +89,7 @@ export const AuthProvider = ({ children }) => {
                 signup,
                 user,
                 updateUserData,
+                resetUserPassword,
             }}
         >
             {children}

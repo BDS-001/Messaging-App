@@ -125,11 +125,14 @@ export async function searchUsers(searchTerm) {
             return { success: false, message: 'No token found', data: [] };
         }
 
-        const response = await fetch(`${API_URL}/users/search?q=${encodeURIComponent(searchTerm)}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
+        const response = await fetch(
+            `${API_URL}/users/search?q=${encodeURIComponent(searchTerm)}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             },
-        });
+        );
 
         const result = await response.json();
         console.log(result);
