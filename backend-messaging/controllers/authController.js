@@ -82,7 +82,7 @@ async function resetUserPassword(req, res) {
 
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-        userQueries.updateUser(userToken.id, {password: hashedNewPassword})
+        await userQueries.updateUser(userToken.id, {password: hashedNewPassword})
 
         return res.status(httpStatusCodes.OK).json({
             success: true,
